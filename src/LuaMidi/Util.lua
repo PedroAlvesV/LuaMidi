@@ -112,4 +112,11 @@ function Util.number_to_bytes(number, bytes_needed)
    return hex_array
 end
 
+function Util.table_concat(table1, table2)
+    for i=1,#table2 do
+        table1[#table1+1] = table2[i]
+    end
+    return table1
+end
+
 return Util
