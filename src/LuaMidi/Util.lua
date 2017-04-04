@@ -119,4 +119,12 @@ function Util.table_concat(table1, table2)
     return table1
 end
 
+function Util.round(num)
+   if num >= 0 then
+      return math.floor(num+.5) 
+   else
+      return math.ceil(num-.5)
+   end
+end
+
 return Util
