@@ -21,7 +21,7 @@ function NoteEvent.new(fields)
       if velocity > 100 then
          velocity = 100
       end
-      return math.round(velocity / 100 * 127)
+      return Util.round(velocity / 100 * 127)
    end
    self.velocity = convert_velocity(self.velocity)
    self.get_tick_duration = function(duration, type)
@@ -29,9 +29,10 @@ function NoteEvent.new(fields)
          return string.match(tostring(duration),"%d+")
       end
       local quarter_ticks = Util.number_from_bytes(Constants.HEADER_CHUNK_DIVISION)
-      return math.round(quarter_ticks * self.get_duration_multiplier(duration, type))
+      return Util.round(quarter_ticks * self.get_duration_multiplier(duration, type))
    end
    self.build_data = function()
+      -- must test
       self.data = {}
       local tick_duration = self.get_tick_duration(self.duration, 'note')
       local rest_duration = self.get_tick_duration(self.wait, 'rest')
@@ -41,38 +42,65 @@ function NoteEvent.new(fields)
             for i=1, self.repetition do
                for i, p in ipairs(self.pitch) do
                   local fields = {}
+                  local data
                   if i == 1 then
-                     local data = Util.num_to_var_length(rest_duration)
+                     data = Util.num_to_var_length(rest_duration)
                      data[#data+1] = self.get_note_on_status()
                      data[#data+1] = Util.get_pitch(p)
                      data[#data+1] = self.velocity
-                     fields.data = data
                   else
-                     local data = {0, Util.get_pitch(p), self.velocity}
-                     fields.data = data
+                     data = {0, Util.get_pitch(p), self.velocity}
                   end
+                  fields.data = data
                   note_on = NoteOnEvent.new(fields)
                   self.data = Util.table_concat(self.data, note_on.data)
                end
                for i, p in ipairs(self.pitch) do
                   local fields = {}
+                  local data
                   if i == 1 then
-                     local data = Util.num_to_var_length(tick_duration)
+                     data = Util.num_to_var_length(tick_duration)
                      data[#data+1] = self.get_note_off_status()
                      data[#data+1] = Util.get_pitch(p)
                      data[#data+1] = self.velocity
-                     fields.data = data
                   else
-                     local data = {0, Util.get_pitch(p), self.velocity}
-                     fields.data = data
+                     data = {0, Util.get_pitch(p), self.velocity}
                   end
+                  fields.data = data
                   note_off = NoteOffEvent.new(fields)
                   self.data = Util.table_concat(self.data, note_off.data)
                end
             end
          else
             for i=1, self.repetition do
-               -- TODO
+               for i, p in ipairs(self.pitch) do
+                  local fields = {}
+                  if i > 1 then
+                     rest_duration = 0
+                  end
+                  if (self.duration == '8t') and i == #self.pitch then
+                     local quarter_ticks = Util.number_from_bytes(Constants.HEADER_CHUNK_DIVISION)
+                     tick_duration = quarter_ticks - (tick_duration * 2)
+                  end
+                  local fieldsOn, fieldsOff = {}, {}
+                  
+                  local dataOn = Util.num_to_var_length(rest_duration)
+                  dataOn[#dataOn+1] = self.get_note_on_status()
+                  dataOn[#dataOn+1] = Util.get_pitch(p)
+                  dataOn[#dataOn+1] = self.velocity
+                  fieldsOn.data = dataOn
+                  note_on = NoteOnEvent.new(fieldsOn)
+                  
+                  local dataOff = Util.num_to_var_length(tick_duration)
+                  dataOff[#dataOff+1] = self.get_note_off_status()
+                  dataOff[#dataOff+1] = Util.get_pitch(p)
+                  dataOff[#dataOff+1] = self.velocity
+                  fieldsOff.data = dataOff
+                  note_off = NoteOffEvent.new(fieldsOff)
+                  
+                  self.data = Util.table_concat(self.data, dataOn)
+                  self.data = Util.table_concat(self.data, dataOff)
+               end
             end
          end
       else
