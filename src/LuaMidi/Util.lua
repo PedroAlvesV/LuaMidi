@@ -21,7 +21,7 @@ function Util.string_to_bytes(string)
 end
 
 function Util.is_number(n)
--- return not not tonumber(n)
+   -- return not not tonumber(n)
    return tonumber(n) ~= nil
 end
 
@@ -39,13 +39,13 @@ end
 function Util.num_to_var_length(ticks)
    -- must test
    local buffer = ticks & 0x7F
-   while ticks == ticks >> 7 do
+   while ticks = ticks >> 7 do
       buffer = buffer << 8
       buffer = buffer | ((ticks & 0x7F) | 0x80)
    end
    local buffer_list = {}
    while true do
-      buffer_list[#buffer_list+1] = buffer and 0xFF
+      buffer_list[#buffer_list+1] = buffer & 0xFF
       if buffer & 0x80 then
          buffer = buffer >> 8
       else
@@ -69,7 +69,7 @@ function Util.convert_base(number, base)
    local sign = ""
    if number < 0 then
       sign = "-"
-   number = -number
+      number = -number
    end
    repeat
       local d = (number % base) + 1
@@ -83,17 +83,32 @@ function Util.number_from_bytes(bytes)
    -- must test
    local hex, res = ""
    for _, byte in ipairs(bytes) do
-      res = convert_base(byte, 16)
+      res = tostring(convert_base(byte, 16))
       if #res == 1 then
          res = "0"..res
       end
       hex = hex..res
    end
-   return convert_base(hex, 10)
+   return convert_base(hex, 16)
 end
 
 function Util.number_to_bytes(number, bytes_needed)
-   -- TODO
+   bytes_needed = bytes_needed or 1
+   local hex_string = tostring(convert_base(number, 16))
+   if #hex_string & 1 then
+      hex_string = "0"..hex_string
+   end
+   local hex_array = {}
+   while #hex_string > 0 do
+      table.insert(hex_array, hex_string:sub(1,2))
+      hex_string = hex_string:sub(3)
+   end
+   for i, elem in ipairs(hex_array) do
+      hex_array[i] = convert_base(tonumber(elem), 16)
+   end
+   while #hex_array < bytes_needed then
+      table.insert(hex_array, 1, 0)
+   end
    return hex_array
 end
 
