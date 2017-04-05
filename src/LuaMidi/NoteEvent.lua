@@ -14,17 +14,18 @@ function NoteEvent.new(fields)
       sequential = fields.sequential or false,
       velocity = fields.velocity or 50,
       channel = fields.channel or 1,
-      repeatition = fields.repeat or 1,
+      repetition = fields.repetition or 1,
    }
    function convert_velocity(velocity)
-      -- must test
-      if velocity > 100 then
+		-- must test
+		if velocity > 100 then
          velocity = 100
       end
       return Util.round(velocity / 100 * 127)
    end
    self.velocity = convert_velocity(self.velocity)
    self.get_tick_duration = function(duration, type)
+		-- must test
       if tostring(duration):lower():sub(1,1) == 't' then
          return string.match(tostring(duration),"%d+")
       end
