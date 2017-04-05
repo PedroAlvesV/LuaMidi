@@ -42,8 +42,7 @@ end
 
 function Track:set_tempo(bpm)
    -- must test
-   local fields = {data = {Constants.META_TEMPO_ID}}
-   local event = MetaEvent.new(fields)
+   local event = MetaEvent.new({data = {Constants.META_TEMPO_ID}})
    event.data[#event.data+1] = 0x03
    local tempo = Util.round(60000000/bpm)
    event.data = Util.table_concat(event.data, Util.number_to_bytes(tempo, 3))
@@ -51,11 +50,55 @@ function Track:set_tempo(bpm)
 end
 
 function Track:set_time_signature(numerator, denominator, midi_clocks_per_tick, notes_per_midi_clock)
-   -- TODO
+   -- must test
+   midi_clocks_per_tick = midi_clocks_per_tick or 24
+   notes_per_midi_clock = notes_per_midi_clock or 8
+   local event = MetaEvent.new({data = {Constants.META_TIME_SIGNATURE_ID}})
+   event.data[#event.data+1] = 0x04
+   event.data = Util.table_concat(Util.number_to_bytes(numerator, 1))
+   denominator = math.log(denominator, 2)
+   event.data = Util.table_concat(event.data, Util.number_to_bytes(denominator, 1))
+   event.data = Util.table_concat(event.data, Util.number_to_bytes(midi_clocks_per_tick, 1))
+   event.data = Util.table_concat(event.data, Util.number_to_bytes(notes_per_midi_clock, 1))
+   return self:add_event(event)
 end
 
 function Track:set_key_signature(sf, mi)
-   -- TODO
+   -- must test
+   local event = MetaEvent.new({data = {Constants.META_KEY_SIGNATURE_ID}})
+   event.data[#event.data+1] = 0x02
+   local mode = mi or 0
+   sf = sf or 0
+   if not mi then
+      local fifths = {
+         {'Cb', 'Gb', 'Db', 'Ab', 'Eb', 'Bb', 'F', 'C', 'G', 'D', 'A', 'E', 'B', 'F#', 'C#'},
+         {'ab', 'eb', 'bb', 'f', 'c', 'g', 'd', 'a', 'e', 'b', 'f#', 'c#', 'g#', 'd#', 'a#'}
+      }
+      local note = sf or 'C'
+      if sf:sub(1,1) === string.lower(sf:sub(1,1)) then
+         mode = 1
+      end
+      if #sf > 1 then
+         local starts_with = sf:sub(#sf,#sf)
+         if starts_with == 'm' or starts_with == '-' then
+            mode = 1
+            note = string.lower(sf:sub(1,1))
+         elseif starts_with == 'M' or start_with == '+' then
+            mode = 0
+            note = string.upper(sf:sub(1,1))
+         end
+         note = note .. sf:sub(2, #sf)
+      end
+      local fifth_index = Util.table_index_of(fifths[mode], note)
+      if not fifth_index then
+         sf = 0
+      else
+         fifth_index - 7
+      end
+   end
+   event.data = Util.table_concat(event.data, Util.number_to_bytes(sf,1))
+   event.data = Util.table_concat(event.data, Util.number_to_bytes(mode,1))
+   return self:add_event(event)
 end
 
 local function default_add_text(text, constant)
