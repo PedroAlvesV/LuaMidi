@@ -25,9 +25,17 @@ function Writer.new(tracks)
 end
 
 function Writer:build_file()
-   local build {}
-   self.data = -- TODO
-   return -- TODO
+   local build = {}
+   for _, elem in ipairs(self.data) do
+      build[#build+1] = elem.type
+      build[#build+1] = elem.size
+      build[#build+1] = elem.data
+   end
+   return build
+end
+
+function Writer:base64()
+   -- TODO
 end
 
 function Writer:dataURI()
