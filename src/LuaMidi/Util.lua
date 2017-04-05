@@ -106,17 +106,17 @@ function Util.number_to_bytes(number, bytes_needed)
    for i, elem in ipairs(hex_array) do
       hex_array[i] = convert_base(tonumber(elem), 16)
    end
-   while #hex_array < bytes_needed then
+   while #hex_array < bytes_needed do
       table.insert(hex_array, 1, 0)
    end
    return hex_array
 end
 
 function Util.table_concat(table1, table2)
-    for i=1,#table2 do
-        table1[#table1+1] = table2[i]
-    end
-    return table1
+   for i=1,#table2 do
+      table1[#table1+1] = table2[i]
+   end
+   return table1
 end
 
 function Util.round(num)
@@ -124,6 +124,17 @@ function Util.round(num)
       return math.floor(num+.5) 
    else
       return math.ceil(num-.5)
+   end
+end
+
+function Util.table_index_of(table, object)
+   if type(table) == 'table' then
+      for i=1, #table do
+         if object == table[i] then
+            return i
+         end
+      end
+      return false
    end
 end
 
