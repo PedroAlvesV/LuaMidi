@@ -39,7 +39,7 @@ local table_notes = {
    {'B','Cb'},
 }
 
-for i = -1, i <= 9 do
+for i=-1, 9 do
    -- really must test
    for tone, note in ipairs(table_notes) do
       for _, notation in ipairs(note) do
