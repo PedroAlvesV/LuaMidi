@@ -27,26 +27,27 @@ end
 
 function Util.get_pitch(pitch)
    -- must test
-   if is_number(pitch) then
+   if Util.is_number(pitch) then
       if pitch >= 0 and pitch <= 127 then
          return pitch
       end
    end
    pitch = string.upper(pitch:sub(1,1))..pitch:sub(2)
-   return Constants.NOTES[pitch];
+   return Constants.NOTES[pitch]
 end
 
 function Util.num_to_var_length(ticks)
    -- must test
    local buffer = ticks & 0x7F
-   while ticks = ticks >> 7 do
+   while (ticks >> 7) > 0 do
+		ticks = ticks >> 7
       buffer = buffer << 8
       buffer = buffer | ((ticks & 0x7F) | 0x80)
    end
    local buffer_list = {}
    while true do
       buffer_list[#buffer_list+1] = buffer & 0xFF
-      if buffer & 0x80 then
+      if (buffer & 0x80) > 0 then
          buffer = buffer >> 8
       else
          break
@@ -60,14 +61,17 @@ function Util.string_byte_count(string)
 end
 
 function Util.convert_base(number, base)
-   number = math.floor(number)
+	if not number then return number end
+   if number == tonumber(number) then
+		number = math.floor(number)
+	end
    if not base or base == 10 then
       return tostring(number)
    end
    local digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
    local t = {}
    local sign = ""
-   if number < 0 then
+   if tonumber(number) < 0 then
       sign = "-"
       number = -number
    end
@@ -83,18 +87,18 @@ function Util.number_from_bytes(bytes)
    -- must test
    local hex, res = ""
    for _, byte in ipairs(bytes) do
-      res = tostring(convert_base(byte, 16))
+      res = tostring(Util.convert_base(byte, 16))
       if #res == 1 then
          res = "0"..res
       end
       hex = hex..res
    end
-   return convert_base(hex, 16)
+   return Util.convert_base(hex, 16)
 end
 
 function Util.number_to_bytes(number, bytes_needed)
    bytes_needed = bytes_needed or 1
-   local hex_string = tostring(convert_base(number, 16))
+   local hex_string = tostring(Util.convert_base(number, 16))
    if #hex_string & 1 then
       hex_string = "0"..hex_string
    end
@@ -104,7 +108,7 @@ function Util.number_to_bytes(number, bytes_needed)
       hex_string = hex_string:sub(3)
    end
    for i, elem in ipairs(hex_array) do
-      hex_array[i] = convert_base(tonumber(elem), 16)
+      hex_array[i] = Util.convert_base(tonumber(elem), 16)
    end
    while #hex_array < bytes_needed do
       table.insert(hex_array, 1, 0)

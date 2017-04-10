@@ -18,8 +18,8 @@ end
 function Track:add_event(event, map_function)
    -- must test
    if type(event) == 'table' then
-      for i, e in ipairs(self.event) do
-         if (type(map_function) == 'function') && (e.type == 'note') then
+      for i, e in ipairs(event) do
+         if (type(map_function) == 'function') and (e.type == 'note') then
             local properties = map_function(i, e)
             if type(properties) == 'table' then -- i think (?)
                e.duration = properties.duration
@@ -75,7 +75,7 @@ function Track:set_key_signature(sf, mi)
          {'ab', 'eb', 'bb', 'f', 'c', 'g', 'd', 'a', 'e', 'b', 'f#', 'c#', 'g#', 'd#', 'a#'}
       }
       local note = sf or 'C'
-      if sf:sub(1,1) === string.lower(sf:sub(1,1)) then
+      if sf:sub(1,1) == string.lower(sf:sub(1,1)) then
          mode = 1
       end
       if #sf > 1 then
@@ -93,7 +93,7 @@ function Track:set_key_signature(sf, mi)
       if not fifth_index then
          sf = 0
       else
-         fifth_index - 7
+         sf = fifth_index - 7
       end
    end
    event.data = Util.table_concat(event.data, Util.number_to_bytes(sf,1))

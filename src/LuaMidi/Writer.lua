@@ -1,5 +1,7 @@
 local Util = require('LuaMidi.Util')
 local Constants = require('LuaMidi.Constants')
+local Chunk = require('LuaMidi.Chunk')
+local MetaEvent = require('LuaMidi.MetaEvent')
 
 local Writer = {}
 
@@ -47,7 +49,6 @@ function Writer:stdout()
 end
 
 function Writer:save_MIDI()
-   local buffer = -- TODO
    -- TODO
 end
 
