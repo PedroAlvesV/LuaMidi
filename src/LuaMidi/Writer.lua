@@ -45,11 +45,17 @@ function Writer:data_URI()
 end
 
 function Writer:stdout()
-   -- TODO
+   local mm = require 'mm'
+   mm(self:build_file())
 end
 
-function Writer:save_MIDI()
-   -- TODO
+function Writer:save_MIDI(title)
+   if title:sub(#title-3) ~= ".mid" then title = title..".mid" end
+   local file = io.open(title, 'w')
+   local buffer = self:build_file()
+   -- TODO translate buffer from Lua table to MIDI format
+   file:write(tostring(buffer))
+   file:close()
 end
 
 return Writer
