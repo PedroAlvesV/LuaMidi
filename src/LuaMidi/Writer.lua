@@ -29,9 +29,9 @@ end
 function Writer:build_file()
    local build = {}
    for _, elem in ipairs(self.data) do
-      build[#build+1] = elem.type
-      build[#build+1] = elem.size
-      build[#build+1] = elem.data
+      build = Util.table_concat(build, elem.type)
+      build = Util.table_concat(build, elem.size)
+      build = Util.table_concat(build, elem.data)
    end
    return build
 end
@@ -40,7 +40,7 @@ function Writer:base64()
    -- TODO
 end
 
-function Writer:dataURI()
+function Writer:data_URI()
    -- TODO
 end
 

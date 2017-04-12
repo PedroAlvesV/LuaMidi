@@ -5,7 +5,8 @@ local Writer = LuaMidi.Writer
 
 local track = Track.new()
 
-track:add_event({
+track:add_event(
+   {
       NoteEvent.new({pitch = {'E4', 'D4'}, duration = '4'}),
       NoteEvent.new({pitch = {'C4'}, duration = '2'}),
       NoteEvent.new({pitch = {'E4', 'D4'}, duration = '4'}),
@@ -19,6 +20,5 @@ track:add_event({
    end
 )
 
-
 local writer = Writer.new({track})
---print(writer.dataUri())
+--writer:stdout()
