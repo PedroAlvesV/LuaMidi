@@ -33,6 +33,7 @@ function Writer:build_file()
       build = Util.table_concat(build, elem.size)
       build = Util.table_concat(build, elem.data)
    end
+   for i, n in ipairs(build) do build[i] = tonumber(n) end
    return build
 end
 
@@ -51,10 +52,9 @@ end
 
 function Writer:save_MIDI(title)
    if title:sub(#title-3) ~= ".mid" then title = title..".mid" end
-   local file = io.open(title, 'w')
-   local buffer = self:build_file()
-   -- TODO translate buffer from Lua table to MIDI format
-   file:write(tostring(buffer))
+   local file = io.open(title, 'wb')
+   local buffer = string.char(table.unpack(self:build_file()))
+   file:write(buffer)
    file:close()
 end
 
