@@ -5,20 +5,8 @@ local Writer = LuaMidi.Writer
 
 local track = Track.new()
 
-track:add_event(
-   {
-      NoteEvent.new({pitch = {'E4', 'D4'}, duration = '4'}),
-      NoteEvent.new({pitch = {'C4'}, duration = '2'}),
-      NoteEvent.new({pitch = {'E4', 'D4'}, duration = '4'}),
-      NoteEvent.new({pitch = {'C4'}, duration = '2'}),
-      NoteEvent.new({pitch = {'C4', 'C4', 'C4', 'C4', 'D4', 'D4', 'D4', 'D4'}, duration = '8'}),
-      NoteEvent.new({pitch = {'E4', 'D4'}, duration = '4'}),
-      NoteEvent.new({pitch = {'C4'}, duration = '2'}),
-   },
-   function(index, event)
-      return {sequencial = true}
-   end
-)
+track:add_event({NoteEvent.new({pitch = {'C4'}, duration = '4'})})
 
 local writer = Writer.new({track})
---writer:stdout()
+writer:stdout()
+writer:save_MIDI('test')
