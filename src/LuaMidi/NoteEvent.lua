@@ -75,7 +75,7 @@ function NoteEvent.new(fields)
       local note_on, note_off
       if type(self.pitch) == 'table' then
          if not self.sequential then
-            for i=1, self.repetition do
+            for j=1, self.repetition do
                for i, p in ipairs(self.pitch) do
                   local fields = {}
                   local data
@@ -108,7 +108,7 @@ function NoteEvent.new(fields)
                end
             end
          else
-            for i=1, self.repetition do
+            for j=1, self.repetition do
                for i, p in ipairs(self.pitch) do
                   local fields = {}
                   if i > 1 then
