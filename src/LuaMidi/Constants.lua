@@ -39,12 +39,14 @@ local table_notes = {
    {'B','Cb'},
 }
 
+local counter = 0
 for i=-1, 9 do
    -- really must test
    for tone, note in ipairs(table_notes) do
       for _, notation in ipairs(note) do
-         Constants.NOTES[notation .. i] = tone
+         Constants.NOTES[notation .. i] = counter
       end
+      counter = counter + 1
    end
 end
 
