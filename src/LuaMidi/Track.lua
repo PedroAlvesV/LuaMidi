@@ -136,7 +136,7 @@ end
 
 function Track:poly_mode_on()
    -- must test
-   local event = NoteOnEvent({data = {0x00, 0xB0, 0x7E, 0x00}})
+   local event = NoteOnEvent.new({data = {0x00, 0xB0, 0x7E, 0x00}})
    self:add_event(event)
    print(event)
 end
