@@ -15,7 +15,7 @@ function Writer.new(tracks)
    end
    local chunk_data = Util.table_concat(track_type, Util.number_to_bytes(#tracks, 2))
    chunk_data = Util.table_concat(chunk_data, Constants.HEADER_CHUNK_DIVISION)
-   self.data[#self.data+1] = Chunk.new({
+   self.data[1] = Chunk.new({
       type = Constants.HEADER_CHUNK_TYPE,
       data = chunk_data,
    })
@@ -33,7 +33,6 @@ function Writer:build_file()
       build = Util.table_concat(build, elem.size)
       build = Util.table_concat(build, elem.data)
    end
-   for i, n in ipairs(build) do build[i] = tonumber(n) end
    return build
 end
 

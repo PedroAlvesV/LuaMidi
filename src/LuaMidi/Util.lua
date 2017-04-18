@@ -108,7 +108,7 @@ function Util.number_to_bytes(number, bytes_needed)
       hex_string = hex_string:sub(3)
    end
    for i, elem in ipairs(hex_array) do
-      hex_array[i] = Util.convert_base(tonumber(elem), 16)
+      hex_array[i] = tonumber(Util.convert_base(tonumber(elem), 16))
    end
    while #hex_array < bytes_needed do
       table.insert(hex_array, 1, 0)
