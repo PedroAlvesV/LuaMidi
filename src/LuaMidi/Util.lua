@@ -117,10 +117,14 @@ function Util.number_to_bytes(number, bytes_needed)
 end
 
 function Util.table_concat(table1, table2)
-   for i=1,#table2 do
-      table1[#table1+1] = table2[i]
+   local res = {}
+   for i=1,#table1 do
+      res[i] = table1[i]
    end
-   return table1
+   for i=1,#table2 do
+      res[#res+1] = table2[i]
+   end
+   return res
 end
 
 function Util.round(num)
