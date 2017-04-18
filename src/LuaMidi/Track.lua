@@ -16,12 +16,11 @@ function Track.new()
 end
 
 function Track:add_event(event, map_function)
-   -- must test
-   if type(event) == 'table' then
+   if (type(event) == 'table') and (event[1] ~= nil) then -- roughly checking if it's an array
       for i, e in ipairs(event) do
          if (type(map_function) == 'function') and (e.type == 'note') then
             local properties = map_function(i, e)
-            if type(properties) == 'table' then -- i think (?)
+            if type(properties) == 'table' then -- not accurate
                e.duration = properties.duration
                e.sequential = properties.sequential
                e.velocity = e.convert_velocity(properties.velocity)
