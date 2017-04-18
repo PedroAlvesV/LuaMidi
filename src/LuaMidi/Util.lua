@@ -108,7 +108,7 @@ function Util.number_to_bytes(number, bytes_needed)
       hex_string = hex_string:sub(3)
    end
    for i, elem in ipairs(hex_array) do
-      hex_array[i] = tonumber(Util.convert_base(tonumber(elem), 16))
+      hex_array[i] = tonumber(Util.convert_base(tonumber('0x'..elem), 10))
    end
    while #hex_array < bytes_needed do
       table.insert(hex_array, 1, 0)
@@ -127,14 +127,6 @@ function Util.table_concat(table1, table2)
    return res
 end
 
-function Util.round(num)
-   if num >= 0 then
-      return math.floor(num+.5) 
-   else
-      return math.ceil(num-.5)
-   end
-end
-
 function Util.table_index_of(table, object)
    if type(table) == 'table' then
       for i=1, #table do
@@ -144,6 +136,18 @@ function Util.table_index_of(table, object)
       end
       return false
    end
+end
+
+function Util.round(num)
+   if num >= 0 then
+      return math.floor(num+.5) 
+   else
+      return math.ceil(num-.5)
+   end
+end
+
+function Util.is_track(bytes)
+   return bytes[1] == 0x4D and bytes[2] == 0x54 and bytes[3] == 0x72 and bytes[4] == 0x6B
 end
 
 return Util
