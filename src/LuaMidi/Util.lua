@@ -40,7 +40,7 @@ function Util.num_to_var_length(ticks)
    -- must test
    local buffer = ticks & 0x7F
    while (ticks >> 7) > 0 do
-		ticks = ticks >> 7
+      ticks = ticks >> 7
       buffer = buffer << 8
       buffer = buffer | ((ticks & 0x7F) | 0x80)
    end
@@ -61,10 +61,10 @@ function Util.string_byte_count(string)
 end
 
 function Util.convert_base(number, base)
-	if not number then return number end
+   if not number then return number end
    if number == tonumber(number) then
-		number = math.floor(number)
-	end
+      number = math.floor(number)
+   end
    if not base or base == 10 then
       return tostring(number)
    end
@@ -147,7 +147,7 @@ function Util.round(num)
 end
 
 function Util.is_track_header(bytes)
-   return bytes[1] == 0x4D and bytes[2] == 0x54 and bytes[3] == 0x72 and bytes[4] == 0x6B
+   return #bytes == 4 and bytes[1] == 0x4D and bytes[2] == 0x54 and bytes[3] == 0x72 and bytes[4] == 0x6B
 end
 
 return Util
