@@ -17,7 +17,6 @@ function NoteEvent.new(fields)
       repetition = fields.repetition or 1,
    }
    self.convert_velocity = function(velocity)
-		-- must test
 		velocity = velocity or 50
 		if velocity > 100 then
          velocity = 100
@@ -26,7 +25,6 @@ function NoteEvent.new(fields)
    end
    self.velocity = self.convert_velocity(self.velocity)
    self.get_tick_duration = function(duration, type)
-		-- must test
       if tostring(duration):lower():sub(1,1) == 't' then
          return string.match(tostring(duration),"%d+")
       end
@@ -34,6 +32,7 @@ function NoteEvent.new(fields)
       return Util.round(quarter_ticks * self.get_duration_multiplier(duration, type))
    end
 	self.get_duration_multiplier = function(duration, type)
+	   duration = tostring(duration)
 		if duration == '0' then
 		   return 0
 		elseif duration == '1' then
@@ -68,7 +67,6 @@ function NoteEvent.new(fields)
 		return 128 + self.channel - 1
 	end
    self.build_data = function()
-      -- must test
       self.data = {}
       local tick_duration = self.get_tick_duration(self.duration, 'note')
       local rest_duration = self.get_tick_duration(self.wait, 'rest')
