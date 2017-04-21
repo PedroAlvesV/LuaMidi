@@ -26,7 +26,6 @@ function Util.is_number(n)
 end
 
 function Util.get_pitch(pitch)
-   -- must test
    if Util.is_number(pitch) then
       if pitch >= 0 and pitch <= 127 then
          return pitch
@@ -37,7 +36,6 @@ function Util.get_pitch(pitch)
 end
 
 function Util.num_to_var_length(ticks)
-   -- must test
    local buffer = ticks & 0x7F
    while (ticks >> 7) > 0 do
       ticks = ticks >> 7
@@ -84,7 +82,6 @@ function Util.convert_base(number, base)
 end
 
 function Util.number_from_bytes(bytes)
-   -- must test
    local hex, res = ""
    for _, byte in ipairs(bytes) do
       res = tostring(Util.convert_base(byte, 16))
@@ -93,7 +90,7 @@ function Util.number_from_bytes(bytes)
       end
       hex = hex..res
    end
-   return Util.convert_base(hex, 16)
+   return tonumber(hex, 16)
 end
 
 function Util.number_to_bytes(number, bytes_needed)
