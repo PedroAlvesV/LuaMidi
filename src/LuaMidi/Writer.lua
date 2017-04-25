@@ -49,8 +49,14 @@ function Writer:stdout()
    mm(self:build_file())
 end
 
-function Writer:save_MIDI(title)
+function Writer:save_MIDI(title, directory)
    if title:sub(#title-3) ~= ".mid" then title = title..".mid" end
+   if type(directory) == 'string' and #directory ~= 0 then
+      if not os.rename(directory, directory) then
+         os.execute("mkdir ".."'"..directory.."'")
+      end
+      title = directory..'/'..title
+   end
    local file = io.open(title, 'wb')
    local buffer = string.char(table.unpack(self:build_file()))
    file:write(buffer)
