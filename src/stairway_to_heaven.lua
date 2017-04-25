@@ -40,4 +40,4 @@ track:add_event({
 })
 
 local writer = Writer.new({track})
-writer:save_MIDI('stairway_to_heaven')
+writer:save_MIDI('Stairway to Heaven', 'midi files')

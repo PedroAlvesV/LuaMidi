@@ -21,4 +21,4 @@ track:add_event(
 )
 
 local writer = Writer.new({track})
-writer:save_MIDI('hot-cross-buns')
+writer:save_MIDI('Hot Cross Buns', 'midi files')
