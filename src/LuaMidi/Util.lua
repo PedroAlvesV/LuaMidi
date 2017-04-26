@@ -96,7 +96,7 @@ end
 function Util.number_to_bytes(number, bytes_needed)
    bytes_needed = bytes_needed or 1
    local hex_string = tostring(Util.convert_base(number, 16))
-   if #hex_string & 1 then
+   if (#hex_string & 1) > 0 then
       hex_string = "0"..hex_string
    end
    local hex_array = {}
