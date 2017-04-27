@@ -67,17 +67,26 @@ function Writer:build_file()
    return build
 end
 
-function Writer:base64()
-   -- TODO
-end
-
-function Writer:data_URI()
-   -- TODO
-end
-
-function Writer:stdout()
-   local mm = require 'mm'
-   mm(self:build_file())
+-------------------------------------------------
+-- Prints the array produced by `Writer:build_file()`.
+-- <p>**Note:** The user doesn't need to invoke
+-- this function. It's purpose is debugging LuaMidi.
+--
+-- @bool show_index if `true`, shows elements index
+--
+-- @see save_MIDI
+-------------------------------------------------
+function Writer:stdout(show_index)
+   local buffer = self:build_file()
+   print('{')
+   for i, byte in ipairs(buffer) do
+      io.write('  ')
+      if show_index then io.write(i..' - ') end
+      io.write(byte)
+      if i < #buffer then io.write(',') end
+      io.write('\n')
+   end
+   print('}')
 end
 
 -------------------------------------------------
@@ -92,7 +101,11 @@ function Writer:save_MIDI(title, directory)
       if not os.rename(directory, directory) then
          os.execute("mkdir ".."'"..directory.."'")
       end
-      title = directory..'/'..title
+      if directory:sub(-1) == '/' then
+         title = directory..title
+      else
+         title = directory..'/'..title
+      end
    end
    local file = io.open(title, 'wb')
    local buffer = string.char(table.unpack(self:build_file()))
