@@ -2,7 +2,7 @@
 
 LuaMidi is a library to write MIDI programmatically in Lua.
  
-This project may show a few problems. Please, publish an [issue](https://github.com/PedroAlvesV/LuaMidi/issues) if you find any. 
+This project may present a few bugs. Please, publish an [issue](https://github.com/PedroAlvesV/LuaMidi/issues) if you find any. 
 
 You can check the docs at [the wiki](https://github.com/PedroAlvesV/LuaMidi/wiki).
 
