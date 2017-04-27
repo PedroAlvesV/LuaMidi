@@ -98,7 +98,7 @@ function Track:set_time_signature(num, den, midi_clocks_tick, notes_midi_clock)
    notes_per_midi_clock = notes_per_midi_clock or 8
    local event = MetaEvent.new({data = {Constants.META_TIME_SIGNATURE_ID}})
    event.data[#event.data+1] = 0x04
-   event.data = Util.table_concat(Util.number_to_bytes(numerator, 1))
+   event.data = Util.table_concat(event.data, Util.number_to_bytes(numerator, 1))
    denominator = math.log(denominator, 2)
    event.data = Util.table_concat(event.data, Util.number_to_bytes(denominator, 1))
    event.data = Util.table_concat(event.data, Util.number_to_bytes(midi_clocks_per_tick, 1))
