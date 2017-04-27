@@ -7,14 +7,7 @@ local track = Track.new()
 
 local notes = {'C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4'}
 
-local scale = {}
-
-for i, note in ipairs(notes) do
-   scale[i] = NoteEvent.new({pitch = {note}})
-end
-
-track:add_event(scale)
+track:add_event(NoteEvent.new({pitch = notes, sequential = true}))
 
 local writer = Writer.new({track})
---writer:stdout()
 writer:save_MIDI('C Major Scale', 'midi files')
