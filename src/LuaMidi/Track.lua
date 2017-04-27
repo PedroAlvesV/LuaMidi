@@ -46,10 +46,10 @@ function Track:add_event(event, map_function)
       for i, e in ipairs(event) do
          if (type(map_function) == 'function') and (e.type == 'note') then
             local properties = map_function(i, e)
-            if type(properties) == 'table' then -- not accurate
-               e.duration = properties.duration
-               e.sequential = properties.sequential
-               e.velocity = e.convert_velocity(properties.velocity)
+            if type(properties) == 'table' then
+               e.duration = properties.duration or e.duration
+               e.sequential = properties.sequential or e.sequential
+               e.velocity = e.convert_velocity(properties.velocity or e.velocity)
                e.build_data()
             end
          end
@@ -73,7 +73,6 @@ end
 -- @return 	Track with tempo
 -------------------------------------------------
 function Track:set_tempo(bpm)
-   -- must test
    local event = MetaEvent.new({data = {Constants.META_TEMPO_ID}})
    event.data[#event.data+1] = 0x03
    local tempo = Util.round(60000000/bpm)
