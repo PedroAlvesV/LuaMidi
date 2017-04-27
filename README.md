@@ -2,7 +2,7 @@
 
 LuaMidi is a library to write MIDI programmatically in Lua.
  
-Note that this is a work in progress, but can write working _**basic**_ MIDI files.
+This project may show a few problems. Please, publish an [issue](https://github.com/PedroAlvesV/LuaMidi/issues) if you find any. 
 
 You can check the docs at [the wiki](https://github.com/PedroAlvesV/LuaMidi/wiki).
 
@@ -55,7 +55,7 @@ local writer = Writer.new({track})
 writer:save_MIDI('C Major Scale')
 ```
 
-To avoid this `NoteEvent.new(...)` repetition, here's an alternative: [src/c_major_scale.lua](src/c_major_scale.lua)
+To avoid this `NoteEvent.new(...)` repetition, here's an alternative: [src/c_major_scale.lua](https://github.com/PedroAlvesV/LuaMidi/tree/master/src/c_major_scale.lua)
 
 This short script works over the basics of LuaMidi. Initially, it creates a `Track` object. After that, it adds the C scale, starting on `C3` and closing on `C4`. It instanciates a `NoteEvent` object for every note. Once the track is ready, it creates a `Writer` object that, during its construction, receives a table containing all the tracks. Because it's just a scale, all events were added in a single track. With all tracks' data, the `Writer` can produce a working MIDI file.
 
@@ -110,7 +110,7 @@ local writer = Writer.new({track})
 writer:save_MIDI('Stairway to Heaven', 'midi files')
 ```
 
-The produced MIDI file can be downloaded here: [Stairway to Heaven.mid](src/midi%20files/Stairway%20to%20Heaven.mid)
+The produced MIDI file can be downloaded here: [Stairway to Heaven.mid](https://github.com/PedroAlvesV/LuaMidi/tree/master/src/midi%20files/Stairway%20to%20Heaven.mid)
 
 ## Contributing
 
