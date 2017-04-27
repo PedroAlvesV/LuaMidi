@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>LuaMidi</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>LuaMidi</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Getting_Started">Getting Started </a></li>
+<li><a href="#Contributing">Contributing </a></li>
+<li><a href="#Credits">Credits </a></li>
+</ul>
+
+
+<h2>Topics</h2>
+<ul class="">
+  <li><strong>README</strong></li>
+</ul>
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/LuaMidi.html">LuaMidi</a></li>
+  <li><a href="../classes/Chunk.html">Chunk</a></li>
+  <li><a href="../classes/Constants.html">Constants</a></li>
+  <li><a href="../classes/MetaEvent.html">MetaEvent</a></li>
+  <li><a href="../classes/NoteEvent.html">NoteEvent</a></li>
+  <li><a href="../classes/NoteOffEvent.html">NoteOffEvent</a></li>
+  <li><a href="../classes/NoteOnEvent.html">NoteOnEvent</a></li>
+  <li><a href="../classes/ProgramChangeEvent.html">ProgramChangeEvent</a></li>
+  <li><a href="../classes/Track.html">Track</a></li>
+  <li><a href="../classes/Util.html">Util</a></li>
+  <li><a href="../classes/Writer.html">Writer</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+
+<h1>LuaMidi ♫</h1>
+
+<p>LuaMidi is a library to write MIDI programmatically in Lua.</p>
+
+<p>Note that this is a work in progress, but can write working <em><strong>basic</strong></em> MIDI files.</p>
+
+<p>You can check the docs at <a href="https://github.com/PedroAlvesV/LuaMidi/wiki">the wiki</a>.</p>
+
+<p><a name="Getting_Started"></a></p>
+<h2>Getting Started</h2>
+
+<h3>Installation</h3>
+
+<p>To install LuaMidi, use <a href="https://github.com/luarocks/luarocks">LuaRocks</a>:</p>
+
+<pre><code> $ luarocks install luamidi
+</code></pre>
+
+
+<h3>Usage</h3>
+
+<p>Initially, it must import the main module:</p>
+
+
+<pre>
+<span class="keyword">local</span> LuaMidi = <span class="global">require</span> (<span class="string">'LuaMidi'</span>)
+</pre>
+
+
+<p>Once it's been done, all classes are available. <br/>
+Here is an example of how to write the C Major Scale:</p>
+
+
+<pre>
+<span class="keyword">local</span> LuaMidi = <span class="global">require</span> (<span class="string">'LuaMidi'</span>)
+<span class="keyword">local</span> Track = LuaMidi.Track
+<span class="keyword">local</span> NoteEvent = LuaMidi.NoteEvent
+<span class="keyword">local</span> Writer = LuaMidi.Writer
+
+<span class="comment">-- Creates Track instance
+</span><span class="keyword">local</span> track = Track.new()
+
+<span class="comment">-- Adds notes to Track
+</span>track:add_event({
+   NoteEvent.new({pitch = {<span class="string">'C3'</span>}}),
+   NoteEvent.new({pitch = {<span class="string">'D3'</span>}}),
+   NoteEvent.new({pitch = {<span class="string">'E3'</span>}}),
+   NoteEvent.new({pitch = {<span class="string">'F3'</span>}}),
+   NoteEvent.new({pitch = {<span class="string">'G3'</span>}}),
+   NoteEvent.new({pitch = {<span class="string">'A3'</span>}}),
+   NoteEvent.new({pitch = {<span class="string">'B3'</span>}}),
+   NoteEvent.new({pitch = {<span class="string">'C4'</span>}}),
+})
+
+<span class="comment">-- Creates Writer passing Track
+</span><span class="keyword">local</span> writer = Writer.new({track})
+
+<span class="comment">-- Writes MIDI file called "C Major Scale.mid"
+</span>writer:save_MIDI(<span class="string">'C Major Scale'</span>)
+</pre>
+
+
+<p>To avoid this <code>NoteEvent.new(...)</code> repetition, here's an alternative: <a href="src/c_major_scale.lua">src/c<em>major</em>scale.lua</a></p>
+
+<p>This short script works over the basics of LuaMidi. Initially, it creates a <a href="../classes/Track.html#">Track</a> object. After that, it adds the C scale, starting on <code>C3</code> and closing on <code>C4</code>. It instanciates a <a href="../classes/NoteEvent.html#">NoteEvent</a> object for every note. Once the track is ready, it creates a <a href="../classes/Writer.html#">Writer</a> object that, during its construction, receives a table containing all the tracks. Because it's just a scale, all events were added in a single track. With all tracks' data, the <a href="../classes/Writer.html#">Writer</a> can produce a working MIDI file.</p>
+
+<p>You can check the docs at <a href="https://github.com/PedroAlvesV/LuaMidi/wiki">the wiki</a>.</p>
+
+<h3>Example</h3>
+
+<p>Stairway to Heaven (intro)</p>
+
+<pre>
+<span class="keyword">local</span> LuaMidi = <span class="global">require</span> (<span class="string">'LuaMidi'</span>)
+<span class="keyword">local</span> Track = LuaMidi.Track
+<span class="keyword">local</span> NoteEvent = LuaMidi.NoteEvent
+<span class="keyword">local</span> Writer = LuaMidi.Writer
+
+<span class="keyword">local</span> track = Track.new()
+
+<span class="keyword">local</span> <span class="keyword">function</span> note(pitch, duration)
+   <span class="keyword">return</span> NoteEvent.new({pitch = {pitch}, duration = <span class="global">tostring</span>(duration)})
+<span class="keyword">end</span>
+<span class="keyword">local</span> <span class="keyword">function</span> chord(array, duration)
+   <span class="keyword">return</span> NoteEvent.new({pitch = array, duration = <span class="global">tostring</span>(duration)})
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> A3 = note(<span class="string">'A3'</span>)
+<span class="keyword">local</span> C4 = note(<span class="string">'C4'</span>)
+<span class="keyword">local</span> E4 = note(<span class="string">'E4'</span>)
+<span class="keyword">local</span> A4 = note(<span class="string">'A4'</span>)
+<span class="keyword">local</span> Ab3_B4 = chord({<span class="string">'G#3'</span>, <span class="string">'B4'</span>})
+<span class="keyword">local</span> B4 = note(<span class="string">'B4'</span>)
+<span class="keyword">local</span> G3_C5 = chord({<span class="string">'G3'</span>, <span class="string">'C5'</span>})
+<span class="keyword">local</span> C5 = note(<span class="string">'C5'</span>)
+<span class="keyword">local</span> Gb3_Gb4 = chord({<span class="string">'F#3'</span>, <span class="string">'F#4'</span>})
+<span class="keyword">local</span> D4 = note(<span class="string">'D4'</span>)
+<span class="keyword">local</span> Gb4 = note(<span class="string">'F#4'</span>)
+<span class="keyword">local</span> F3_E4 = chord({<span class="string">'F3'</span>, <span class="string">'E4'</span>})
+<span class="keyword">local</span> long_C4 = note(<span class="string">'C4'</span>, <span class="number">2</span>)
+
+<span class="keyword">local</span> Am = {<span class="string">'A2'</span>, <span class="string">'E3'</span>, <span class="string">'A3'</span>, <span class="string">'C4'</span>}
+
+<span class="keyword">local</span> chord_GB = chord({<span class="string">'B2'</span>, <span class="string">'D3'</span>, <span class="string">'G3'</span>, <span class="string">'B3'</span>})
+<span class="keyword">local</span> chord_Am = chord(Am)
+<span class="keyword">local</span> long_chord_Am = chord(Am, <span class="number">1</span>)
+
+track:add_event({
+   A3, C4, E4, A4, Ab3_B4, E4, C4, B4,
+   G3_C5, E4, C4, C5, Gb3_Gb4, D4, A3,
+   Gb4, F3_E4, C4, A3, long_C4, E4, C4, A3,
+   chord_GB, chord_Am, long_chord_Am
+})
+
+<span class="keyword">local</span> writer = Writer.new({track})
+writer:save_MIDI(<span class="string">'Stairway to Heaven'</span>, <span class="string">'midi files'</span>)
+</pre>
+
+
+<p>The produced MIDI file can be downloaded here: <a href="src/midi%20files/Stairway%20to%20Heaven.mid">Stairway to Heaven.mid</a></p>
+
+<p><a name="Contributing"></a></p>
+<h2>Contributing</h2>
+
+<ol>
+    <li>Create an issue and describe your contribution</li>
+    <li>Fork it (https://github.com/PedroAlvesV/LuaMidi/fork)</li>
+    <li>Create a new branch for your contribution (<code>git checkout -b my-contribution</code>)</li>
+    <li>Commit your changes (<code>git commit -am &apos;New feature added&apos;</code>)</li>
+    <li>Publish the branch (<code>git push origin my-contribution</code>)</li>
+    <li>Create a Pull Request</li>
+    <li>Done :white<em>check</em>mark:</li>
+</ol>
+
+<p><a name="Credits"></a></p>
+<h2>Credits</h2>
+
+<ul>
+    <li>Lua library written by <a href="https://github.com/PedroAlvesV">Pedro Alves</a></li>
+    <li>Based on <a href="https://github.com/grimmdude/MidiWriterJS">♬ MidiWriterJS</a> by <a href="http://grimmdude.com">Garret Grimm</a></li>
+</ul>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2017-04-27 00:08:48 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

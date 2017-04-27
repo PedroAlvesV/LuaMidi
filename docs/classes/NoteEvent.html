@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>LuaMidi</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>LuaMidi</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Methods">Methods</a></li>
+</ul>
+
+
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/LuaMidi.html">LuaMidi</a></li>
+  <li><a href="../classes/Chunk.html">Chunk</a></li>
+  <li><a href="../classes/Constants.html">Constants</a></li>
+  <li><a href="../classes/MetaEvent.html">MetaEvent</a></li>
+  <li><strong>NoteEvent</strong></li>
+  <li><a href="../classes/NoteOffEvent.html">NoteOffEvent</a></li>
+  <li><a href="../classes/NoteOnEvent.html">NoteOnEvent</a></li>
+  <li><a href="../classes/ProgramChangeEvent.html">ProgramChangeEvent</a></li>
+  <li><a href="../classes/Track.html">Track</a></li>
+  <li><a href="../classes/Util.html">Util</a></li>
+  <li><a href="../classes/Writer.html">Writer</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Class <code>NoteEvent</code></h1>
+<p>Abstraction of MIDI Note On and Note Off events.</p>
+<p> Handles both.</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>License</strong>: MIT</li>
+        <li><strong>Author</strong>: Pedro Alves</li>
+    </ul>
+
+
+<h2><a href="#Methods">Methods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:new">NoteEvent:new (fields)</a></td>
+	<td class="summary">Creates a new NoteEvent.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Methods"></a>Methods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "NoteEvent:new"></a>
+    <strong>NoteEvent:new (fields)</strong>
+    </dt>
+    <dd>
+
+<p>Creates a new NoteEvent.  Receives a <code>fields</code> table as
+ parameter. This table is expected with some (or all)
+ of these fields:
+ <p></p>
+
+<table border="1">
+    <thead>
+        <tr align="center">
+            <th>Name</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>pitch</b></td>
+            <td>array</td>
+            <td>An array of notes to be triggered.  Can be a string or valid MIDI note code.  Format for string is <code>C#4</code>.</td>
+        </tr>
+        <tr bgcolor="#dddddd">
+            <td><b>duration</b></td>
+            <td>string or array</td>
+            <td>
+                How long the note should sound.
+                <ul>
+                    <li><code>1</code>  : whole</li>
+                    <li><code>2</code>  : half</li>
+                    <li><code>d2</code> : dotted half</li>
+                    <li><code>4</code>  : quarter</li>
+                    <li><code>d4</code> : dotted quarter</li>
+                    <li><code>8</code>  : eighth</li>
+                    <li><code>8t</code> : eighth triplet</li>
+                    <li><code>d8</code> : dotted eighth</li>
+                    <li><code>16</code> : sixteenth</li>
+                    <li><code>Tn</code> : where n is an explicit number of ticks</li>
+                </ul>
+                If an array of durations is passed then the sum of the durations will be used.
+            </td>
+        </tr>
+        <tr>
+            <td><b>wait</b></td>
+            <td>string</td>
+            <td>How long to wait before sounding note (rest).  Takes same values as <b>duration</b>.</td>
+        </tr>
+        <tr bgcolor="#dddddd">
+            <td><b>sequential</b></td>
+            <td>boolean</td>
+            <td>If true then array of pitches will be played sequentially as opposed to simulatanously.  Default: <code>false</code></td>
+        </tr>
+        <tr>
+            <td><b>velocity</b></td>
+            <td>number</td>
+            <td>How loud the note should sound, values 1-100.  Default: <code>50</code></td>
+        </tr>
+        <tr bgcolor="#dddddd">
+            <td><b>repeat</b></td>
+            <td>number</td>
+            <td>How many times this event should be repeated. Default: <code>1</code></td>
+        </tr>
+        <tr>
+            <td><b>channel</b></td>
+            <td>number</td>
+            <td>MIDI channel to use. Default: <code>1</code></td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">fields</span>
+         a table containing NoteEvent's proprieties
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        new NoteEvent object
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2017-04-27 00:08:48 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

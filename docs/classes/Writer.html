@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>LuaMidi</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>LuaMidi</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Methods">Methods</a></li>
+</ul>
+
+
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/LuaMidi.html">LuaMidi</a></li>
+  <li><a href="../classes/Chunk.html">Chunk</a></li>
+  <li><a href="../classes/Constants.html">Constants</a></li>
+  <li><a href="../classes/MetaEvent.html">MetaEvent</a></li>
+  <li><a href="../classes/NoteEvent.html">NoteEvent</a></li>
+  <li><a href="../classes/NoteOffEvent.html">NoteOffEvent</a></li>
+  <li><a href="../classes/NoteOnEvent.html">NoteOnEvent</a></li>
+  <li><a href="../classes/ProgramChangeEvent.html">ProgramChangeEvent</a></li>
+  <li><a href="../classes/Track.html">Track</a></li>
+  <li><a href="../classes/Util.html">Util</a></li>
+  <li><strong>Writer</strong></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Class <code>Writer</code></h1>
+<p>Manage to join all tracks and features output
+ methods.</p>
+<p>
+
+</p>
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/Track.html#">Track</a>
+    </ul>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>License</strong>: MIT</li>
+        <li><strong>Author</strong>: Pedro Alves</li>
+    </ul>
+
+
+<h2><a href="#Methods">Methods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Writer:new">Writer:new (tracks)</a></td>
+	<td class="summary">Creates a new Writer</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Writer:build_file">Writer:build_file ()</a></td>
+	<td class="summary">Concatenates everything to an array.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Writer:stdout">Writer:stdout (show_index)</a></td>
+	<td class="summary">Prints the array produced by <code>Writer:build_file()</code>.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Writer:save_MIDI">Writer:save_MIDI (title[, directory])</a></td>
+	<td class="summary">Writes MIDI file.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Methods"></a>Methods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Writer:new"></a>
+    <strong>Writer:new (tracks)</strong>
+    </dt>
+    <dd>
+    Creates a new Writer
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">tracks</span>
+         a table containing tracks
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        new Writer object
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/Track.html#">Track</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Writer:build_file"></a>
+    <strong>Writer:build_file ()</strong>
+    </dt>
+    <dd>
+    Concatenates everything to an array.
+ This array is must be unpacked and translated
+ to binary to produce a MIDI file.
+ <p><strong>Note:</strong> This function should not be invoked
+ by the user. It's purpose is debugging LuaMidi.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        builded array
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/Writer.html#Writer:save_MIDI">save_MIDI</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Writer:stdout"></a>
+    <strong>Writer:stdout (show_index)</strong>
+    </dt>
+    <dd>
+    Prints the array produced by <code>Writer:build_file()</code>.
+ <p><strong>Note:</strong> The user doesn't need to invoke
+ this function. It's purpose is debugging LuaMidi.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">show_index</span>
+            <span class="types"><span class="type">bool</span></span>
+         if <code>true</code>, shows elements index
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/Writer.html#Writer:save_MIDI">save_MIDI</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Writer:save_MIDI"></a>
+    <strong>Writer:save_MIDI (title[, directory])</strong>
+    </dt>
+    <dd>
+    Writes MIDI file.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">title</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+         file's title
+        </li>
+        <li><span class="parameter">directory</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+         a directory path to save the file
+         (<em>optional</em>)
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2017-04-27 00:08:48 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

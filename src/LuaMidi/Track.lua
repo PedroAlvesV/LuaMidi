@@ -1,3 +1,11 @@
+-------------------------------------------------
+-- Contains all Track's data
+--
+-- @classmod Track
+-- @author Pedro Alves
+-- @license MIT
+-------------------------------------------------
+
 local Constants = require('LuaMidi.Constants')
 local Util = require('LuaMidi.Util')
 local MetaEvent = require('LuaMidi.MetaEvent')
@@ -5,6 +13,11 @@ local NoteOnEvent = require('LuaMidi.NoteOnEvent')
 
 local Track = {}
 
+-------------------------------------------------
+-- Creates a new Track
+--
+-- @return 	new Track object
+-------------------------------------------------
 function Track.new()
    local self = {
       type = Constants.TRACK_CHUNK_TYPE,
@@ -15,6 +28,19 @@ function Track.new()
    return setmetatable(self, { __index = Track })
 end
 
+-------------------------------------------------
+-- Adds an event (or event-list) to the track. These events can be
+-- `MetaEvents`, `NoteEvents` or `ProgramChangeEvents`. 
+--
+-- @param event a single event or event-list (array of events).
+-- @param map_function function to be applied to `event` (being it an array or not).
+--
+-- @see MetaEvent
+-- @see NoteEvent
+-- @see ProgramChangeEvent
+--
+-- @return 	new Track object
+-------------------------------------------------
 function Track:add_event(event, map_function)
    if (type(event) == 'table') and (event[1] ~= nil) then -- roughly checking if it's an array
       for i, e in ipairs(event) do
@@ -39,6 +65,13 @@ function Track:add_event(event, map_function)
    return self
 end
 
+-------------------------------------------------
+-- Sets Track's tempo
+--
+-- @number bpm the tempo in beats per minute.
+--
+-- @return 	Track with tempo
+-------------------------------------------------
 function Track:set_tempo(bpm)
    -- must test
    local event = MetaEvent.new({data = {Constants.META_TEMPO_ID}})
@@ -48,8 +81,19 @@ function Track:set_tempo(bpm)
    return self:add_event(event)
 end
 
-function Track:set_time_signature(numerator, denominator, midi_clocks_per_tick, notes_per_midi_clock)
-   -- must test
+-------------------------------------------------
+-- Sets Track's time signature
+--
+-- @int num signature's numerator (top number)
+-- @int den signature's denominator (bottom number)
+-- @param[opt=<code>24</code>] midi_clocks_tick number of MIDI clocks per ticks
+-- @param[opt=<code>8</code>] notes_midi_clock number of notes per MIDI clock
+--
+-- @see MetaEvent
+--
+-- @return 	Track with time signature
+-------------------------------------------------
+function Track:set_time_signature(num, den, midi_clocks_tick, notes_midi_clock)
    midi_clocks_per_tick = midi_clocks_per_tick or 24
    notes_per_midi_clock = notes_per_midi_clock or 8
    local event = MetaEvent.new({data = {Constants.META_TIME_SIGNATURE_ID}})
@@ -62,6 +106,16 @@ function Track:set_time_signature(numerator, denominator, midi_clocks_per_tick, 
    return self:add_event(event)
 end
 
+-------------------------------------------------
+-- Sets Track's key signature
+--
+-- @param sf signature's top number
+-- @param mi signature's bottom number
+--
+-- @see MetaEvent
+--
+-- @return 	Track with key signature
+-------------------------------------------------
 function Track:set_key_signature(sf, mi)
    -- must test
    local event = MetaEvent.new({data = {Constants.META_KEY_SIGNATURE_ID}})
@@ -100,8 +154,7 @@ function Track:set_key_signature(sf, mi)
    return self:add_event(event)
 end
 
-local function default_add_text(text, constant)
-   -- must test
+local function default_add_text(self, text, constant)
    local event = MetaEvent.new({data = {constant}})
    local string_bytes = Util.string_to_bytes(text)
    event.data = Util.table_concat(event.data, Util.num_to_var_length(#string_bytes))
@@ -109,35 +162,93 @@ local function default_add_text(text, constant)
    return self:add_event(event)
 end
 
+-------------------------------------------------
+-- Adds text to Track
+--
+-- @string text the text to be added
+--
+-- @see MetaEvent
+--
+-- @return 	Track with text
+-------------------------------------------------
 function Track:add_text(text)
-   return default_add_text(text, Constants.META_TEXT_ID)
+   return default_add_text(self, text, Constants.META_TEXT_ID)
 end
 
+-------------------------------------------------
+-- Adds copyright to Track
+--
+-- @string text the copyright to be added
+--
+-- @see MetaEvent
+--
+-- @return 	Track with copyright
+-------------------------------------------------
 function Track:add_copyright(text)
-   return default_add_text(text, Constants.META_COPYRIGHT_ID)
+   return default_add_text(self, text, Constants.META_COPYRIGHT_ID)
 end
 
+-------------------------------------------------
+-- Adds instrument name to Track
+--
+-- @string name the instrument name to be added
+--
+-- @see MetaEvent
+--
+-- @return 	Track with instrument name
+-------------------------------------------------
 function Track:add_instrument_name(name)
-   return default_add_text(name, Constants.META_INSTRUMENT_NAME_ID)
+   return default_add_text(self, name, Constants.META_INSTRUMENT_NAME_ID)
 end
 
+-------------------------------------------------
+-- Adds marker text to Track
+--
+-- @string text the marker text to be added
+--
+-- @see MetaEvent
+--
+-- @return 	Track with the marker text
+-------------------------------------------------
 function Track:add_marker(text)
-   return default_add_text(text, Constants.META_MARKER_ID)
+   return default_add_text(self, text, Constants.META_MARKER_ID)
 end
 
+-------------------------------------------------
+-- Adds cue point to Track
+--
+-- @string text the cue point text to be added
+--
+-- @see MetaEvent
+--
+-- @return 	Track with the cue point
+-------------------------------------------------
 function Track:add_cue_point(text)
-   return default_add_text(text, Constants.META_CUE_POINT)
+   return default_add_text(self, text, Constants.META_CUE_POINT)
 end
 
+-------------------------------------------------
+-- Adds lyric to Track
+--
+-- @string lyric the lyric text to be added
+--
+-- @see MetaEvent
+--
+-- @return 	Track with the lyric
+-------------------------------------------------
 function Track:add_lyric(lyric)
-   return default_add_text(lyric, Constants.META_LYRIC_ID)
+   return default_add_text(self, lyric, Constants.META_LYRIC_ID)
 end
 
+-------------------------------------------------
+-- Activates poly mode
+--
+-- @return 	Track with poly mode activated
+-------------------------------------------------
 function Track:poly_mode_on()
    -- must test
    local event = NoteOnEvent.new({data = {0x00, 0xB0, 0x7E, 0x00}})
-   self:add_event(event)
-   print(event)
+   return self:add_event(event)
 end
 
 return Track

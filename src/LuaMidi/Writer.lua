@@ -1,3 +1,14 @@
+-------------------------------------------------
+-- Manage to join all tracks and features output
+-- methods.
+--
+-- @classmod Writer
+-- @author Pedro Alves
+-- @license MIT
+--
+-- @see Track
+-------------------------------------------------
+
 local Util = require('LuaMidi.Util')
 local Constants = require('LuaMidi.Constants')
 local Chunk = require('LuaMidi.Chunk')
@@ -5,6 +16,15 @@ local MetaEvent = require('LuaMidi.MetaEvent')
 
 local Writer = {}
 
+-------------------------------------------------
+-- Creates a new Writer
+--
+-- @param tracks a table containing tracks
+--
+-- @return 	new Writer object
+--
+-- @see Track
+-------------------------------------------------
 function Writer.new(tracks)
    local self = {
       data = {},
@@ -26,6 +46,17 @@ function Writer.new(tracks)
    return setmetatable(self, { __index = Writer })
 end
 
+-------------------------------------------------
+-- Concatenates everything to an array.
+-- This array is must be unpacked and translated
+-- to binary to produce a MIDI file.
+-- <p>**Note:** This function should not be invoked
+-- by the user. It's purpose is debugging LuaMidi.
+--
+-- @return 	builded array
+--
+-- @see save_MIDI
+-------------------------------------------------
 function Writer:build_file()
    local build = {}
    for _, elem in ipairs(self.data) do
@@ -49,6 +80,12 @@ function Writer:stdout()
    mm(self:build_file())
 end
 
+-------------------------------------------------
+-- Writes MIDI file.
+--
+-- @string title file's title
+-- @string[opt] directory a directory path to save the file
+-------------------------------------------------
 function Writer:save_MIDI(title, directory)
    if title:sub(#title-3) ~= ".mid" then title = title..".mid" end
    if type(directory) == 'string' and #directory ~= 0 then

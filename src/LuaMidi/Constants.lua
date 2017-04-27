@@ -1,3 +1,11 @@
+-------------------------------------------------
+-- MIDI Constants
+-- 
+-- @classmod Constants
+-- @author Pedro Alves
+-- @license MIT
+-- @see LuaMidi
+-------------------------------------------------
 local Constants = {
     HEADER_CHUNK_TYPE      = {0x4d, 0x54, 0x68, 0x64}, -- Mthd
     HEADER_CHUNK_LENGTH    = {0x00, 0x00, 0x00, 0x06}, -- Header size for SMF
@@ -18,8 +26,6 @@ local Constants = {
     META_TIME_SIGNATURE_ID = 0x58,
     META_KEY_SIGNATURE_ID  = 0x59,
     META_END_OF_TRACK_ID   = {0x2F, 0x00},
-    --NOTE_ON_STATUS         = 0x90, -- includes channel number (0)
-    --NOTE_OFF_STATUS        = 0x80, -- includes channel number (0)
     PROGRAM_CHANGE_STATUS  = 0xC0, -- includes channel number (0)
     NOTES                  = {},
 }
@@ -41,7 +47,6 @@ local table_notes = {
 
 local counter = 0
 for i=-1, 9 do
-   -- really must test
    for tone, note in ipairs(table_notes) do
       for _, notation in ipairs(note) do
          Constants.NOTES[notation .. i] = counter

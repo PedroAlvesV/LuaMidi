@@ -1,3 +1,11 @@
+-------------------------------------------------
+-- Abstraction of MIDI Note On and Note Off events. Handles both.
+--
+-- @classmod NoteEvent
+-- @author Pedro Alves
+-- @license MIT
+-------------------------------------------------
+
 local Constants = require('LuaMidi.Constants')
 local Util = require('LuaMidi.Util')
 local NoteOnEvent = require('LuaMidi.NoteOnEvent')
@@ -5,6 +13,77 @@ local NoteOffEvent = require('LuaMidi.NoteOffEvent')
 
 local NoteEvent = {}
 
+-------------------------------------------------
+-- Creates a new NoteEvent. Receives a `fields` table as
+-- parameter. This table is expected with some (or all)
+-- of these fields:
+-- <p>
+--<table border="1">
+--	<thead>
+--		<tr align="center">
+--			<th>Name</th>
+--			<th>Type</th>
+--			<th>Description</th>
+--		</tr>
+--	</thead>
+--	<tbody>
+--		<tr>
+--			<td><b>pitch</b></td>
+--			<td>array</td>
+--			<td>An array of notes to be triggered.  Can be a string or valid MIDI note code.  Format for string is <code>C#4</code>.</td>
+--		</tr>
+--		<tr bgcolor="#dddddd">
+--			<td><b>duration</b></td>
+--			<td>string or array</td>
+--			<td>
+--				How long the note should sound.
+--				<ul>
+--					<li><code>1</code>  : whole</li>
+--					<li><code>2</code>  : half</li>
+--					<li><code>d2</code> : dotted half</li>
+--					<li><code>4</code>  : quarter</li>
+--					<li><code>d4</code> : dotted quarter</li>
+--					<li><code>8</code>  : eighth</li>
+--					<li><code>8t</code> : eighth triplet</li>
+--					<li><code>d8</code> : dotted eighth</li>
+--					<li><code>16</code> : sixteenth</li>
+--					<li><code>Tn</code> : where n is an explicit number of ticks</li>
+--				</ul>
+--				If an array of durations is passed then the sum of the durations will be used.
+--			</td>
+--		</tr>
+--		<tr>
+--			<td><b>wait</b></td>
+--			<td>string</td>
+--			<td>How long to wait before sounding note (rest).  Takes same values as <b>duration</b>.</td>
+--		</tr>
+--		<tr bgcolor="#dddddd">
+--			<td><b>sequential</b></td>
+--			<td>boolean</td>
+--			<td>If true then array of pitches will be played sequentially as opposed to simulatanously.  Default: <code>false</code></td>
+--		</tr>
+--		<tr>
+--			<td><b>velocity</b></td>
+--			<td>number</td>
+--			<td>How loud the note should sound, values 1-100.  Default: <code>50</code></td>
+--		</tr>
+--		<tr bgcolor="#dddddd">
+--			<td><b>repeat</b></td>
+--			<td>number</td>
+--			<td>How many times this event should be repeated. Default: <code>1</code></td>
+--		</tr>
+--		<tr>
+--			<td><b>channel</b></td>
+--			<td>number</td>
+--			<td>MIDI channel to use. Default: <code>1</code></td>
+--		</tr>
+--	</tbody>
+--</table>
+--
+-- @param fields a table containing NoteEvent's proprieties
+--
+-- @return 	new NoteEvent object
+-------------------------------------------------
 function NoteEvent.new(fields)
    local self = {
       type = 'note',

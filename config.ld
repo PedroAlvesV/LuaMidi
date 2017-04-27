@@ -1,0 +1,7 @@
+format = "markdown"
+file = "src"
+dir = "docs"
+title = "LuaMidi"
+description = "LuaMidi ♫ – A library to write MIDI programmatically in Lua."
+project = "LuaMidi"
+readme = "README.md"

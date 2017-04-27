@@ -1,0 +1,497 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>LuaMidi</title>
+    <link rel="stylesheet" href="../ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>LuaMidi</h1>
+
+<ul>
+  <li><a href="../index.html">Index</a></li>
+</ul>
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Methods">Methods</a></li>
+</ul>
+
+
+<h2>Classes</h2>
+<ul class="nowrap">
+  <li><a href="../classes/LuaMidi.html">LuaMidi</a></li>
+  <li><a href="../classes/Chunk.html">Chunk</a></li>
+  <li><a href="../classes/Constants.html">Constants</a></li>
+  <li><a href="../classes/MetaEvent.html">MetaEvent</a></li>
+  <li><a href="../classes/NoteEvent.html">NoteEvent</a></li>
+  <li><a href="../classes/NoteOffEvent.html">NoteOffEvent</a></li>
+  <li><a href="../classes/NoteOnEvent.html">NoteOnEvent</a></li>
+  <li><a href="../classes/ProgramChangeEvent.html">ProgramChangeEvent</a></li>
+  <li><strong>Track</strong></li>
+  <li><a href="../classes/Util.html">Util</a></li>
+  <li><a href="../classes/Writer.html">Writer</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Class <code>Track</code></h1>
+<p>Contains all Track's data</p>
+<p>
+
+</p>
+    <h3>Info:</h3>
+    <ul>
+        <li><strong>License</strong>: MIT</li>
+        <li><strong>Author</strong>: Pedro Alves</li>
+    </ul>
+
+
+<h2><a href="#Methods">Methods</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#Track:new">Track:new ()</a></td>
+	<td class="summary">Creates a new Track</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:add_event">Track:add_event (event, map_function)</a></td>
+	<td class="summary">Adds an event (or event-list) to the track.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:set_tempo">Track:set_tempo (bpm)</a></td>
+	<td class="summary">Sets Track's tempo</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:set_time_signature">Track:set_time_signature (num, den[, midi_clocks_tick=<code>24</code>[, notes_midi_clock=<code>8</code>]])</a></td>
+	<td class="summary">Sets Track's time signature</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:set_key_signature">Track:set_key_signature (sf, mi)</a></td>
+	<td class="summary">Sets Track's key signature</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:add_text">Track:add_text (text)</a></td>
+	<td class="summary">Adds text to Track</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:add_copyright">Track:add_copyright (text)</a></td>
+	<td class="summary">Adds copyright to Track</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:add_instrument_name">Track:add_instrument_name (name)</a></td>
+	<td class="summary">Adds instrument name to Track</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:add_marker">Track:add_marker (text)</a></td>
+	<td class="summary">Adds marker text to Track</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:add_cue_point">Track:add_cue_point (text)</a></td>
+	<td class="summary">Adds cue point to Track</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:add_lyric">Track:add_lyric (lyric)</a></td>
+	<td class="summary">Adds lyric to Track</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:poly_mode_on">Track:poly_mode_on ()</a></td>
+	<td class="summary">Activates poly mode</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2 class="section-header "><a name="Methods"></a>Methods</h2>
+
+    <dl class="function">
+    <dt>
+    <a name = "Track:new"></a>
+    <strong>Track:new ()</strong>
+    </dt>
+    <dd>
+    Creates a new Track
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        new Track object
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Track:add_event"></a>
+    <strong>Track:add_event (event, map_function)</strong>
+    </dt>
+    <dd>
+    Adds an event (or event-list) to the track.  These events can be
+ <code>MetaEvents</code>, <code>NoteEvents</code> or <code>ProgramChangeEvents</code>.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">event</span>
+         a single event or event-list (array of events).
+        </li>
+        <li><span class="parameter">map_function</span>
+         function to be applied to <code>event</code> (being it an array or not).
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        new Track object
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="../classes/MetaEvent.html#">MetaEvent</a></li>
+         <li><a href="../classes/NoteEvent.html#">NoteEvent</a></li>
+         <li><a href="../classes/ProgramChangeEvent.html#">ProgramChangeEvent</a></li>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:set_tempo"></a>
+    <strong>Track:set_tempo (bpm)</strong>
+    </dt>
+    <dd>
+    Sets Track's tempo
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">bpm</span>
+            <span class="types"><span class="type">number</span></span>
+         the tempo in beats per minute.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track with tempo
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Track:set_time_signature"></a>
+    <strong>Track:set_time_signature (num, den[, midi_clocks_tick=<code>24</code>[, notes_midi_clock=<code>8</code>]])</strong>
+    </dt>
+    <dd>
+    Sets Track's time signature
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">num</span>
+            <span class="types"><span class="type">int</span></span>
+         signature's numerator (top number)
+        </li>
+        <li><span class="parameter">den</span>
+            <span class="types"><span class="type">int</span></span>
+         signature's denominator (bottom number)
+        </li>
+        <li><span class="parameter">midi_clocks_tick</span>
+         number of MIDI clocks per ticks
+         (<em>default</em> <code>24</code>)
+        </li>
+        <li><span class="parameter">notes_midi_clock</span>
+         number of notes per MIDI clock
+         (<em>default</em> <code>8</code>)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track with time signature
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:set_key_signature"></a>
+    <strong>Track:set_key_signature (sf, mi)</strong>
+    </dt>
+    <dd>
+    Sets Track's key signature
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">sf</span>
+         signature's top number
+        </li>
+        <li><span class="parameter">mi</span>
+         signature's bottom number
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track with key signature
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:add_text"></a>
+    <strong>Track:add_text (text)</strong>
+    </dt>
+    <dd>
+    Adds text to Track
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+         the text to be added
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track with text
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:add_copyright"></a>
+    <strong>Track:add_copyright (text)</strong>
+    </dt>
+    <dd>
+    Adds copyright to Track
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+         the copyright to be added
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track with copyright
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:add_instrument_name"></a>
+    <strong>Track:add_instrument_name (name)</strong>
+    </dt>
+    <dd>
+    Adds instrument name to Track
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+         the instrument name to be added
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track with instrument name
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:add_marker"></a>
+    <strong>Track:add_marker (text)</strong>
+    </dt>
+    <dd>
+    Adds marker text to Track
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+         the marker text to be added
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track with the marker text
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:add_cue_point"></a>
+    <strong>Track:add_cue_point (text)</strong>
+    </dt>
+    <dd>
+    Adds cue point to Track
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">text</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+         the cue point text to be added
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track with the cue point
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:add_lyric"></a>
+    <strong>Track:add_lyric (lyric)</strong>
+    </dt>
+    <dd>
+    Adds lyric to Track
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">lyric</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+         the lyric text to be added
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track with the lyric
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:poly_mode_on"></a>
+    <strong>Track:poly_mode_on ()</strong>
+    </dt>
+    <dd>
+    Activates poly mode
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track with poly mode activated
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
+<i style="float:right;">Last updated 2017-04-27 00:08:48 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

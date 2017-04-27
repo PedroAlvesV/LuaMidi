@@ -1,5 +1,7 @@
 -------------------------------------------------
--- Util functions to LuaMidi
+-- Util functions to LuaMidi classes
+-- <p>**Note:** The user doesn't need to invoke
+-- any of its functions.
 -- 
 -- @classmod Util
 -- @author Pedro Alves

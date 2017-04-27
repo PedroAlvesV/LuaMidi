@@ -1,5 +1,6 @@
 -------------------------------------------------
 -- LuaMidi Library Class
+-- <p>All modules are available through it.
 -- 
 -- @classmod LuaMidi
 -- @author Pedro Alves
