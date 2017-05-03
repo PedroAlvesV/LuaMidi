@@ -26,29 +26,51 @@ local Writer = {}
 -- @see Track
 -------------------------------------------------
 function Writer.new(tracks)
-   local self = {
-      data = {},
-   }
    if #tracks == 0 and tracks.type then
       if Util.is_track_header(tracks.type) then
          tracks = {tracks}
       end
    end
-   local track_type = Constants.HEADER_CHUNK_FORMAT0
-   if #tracks > 1 then
-      track_type = Constants.HEADER_CHUNK_FORMAT1
+   local self = {
+      data = {},
+      tracks = tracks,
+   }
+   self.build_writer = function(new_tracks, total_tracks)
+      local track_type = Constants.HEADER_CHUNK_FORMAT0
+      if total_tracks > 1 then
+         track_type = Constants.HEADER_CHUNK_FORMAT1
+      end
+      local chunk_data = Util.table_concat(track_type, Util.number_to_bytes(total_tracks, 2))
+      chunk_data = Util.table_concat(chunk_data, Constants.HEADER_CHUNK_DIVISION)
+      self.data[1] = Chunk.new({
+         type = Constants.HEADER_CHUNK_TYPE,
+         data = chunk_data,
+      })
+      for i, track in ipairs(new_tracks) do
+         track:add_event(MetaEvent.new({data = Constants.META_END_OF_TRACK_ID}))
+         self.data[#self.data+1] = track
+      end
    end
-   local chunk_data = Util.table_concat(track_type, Util.number_to_bytes(#tracks, 2))
-   chunk_data = Util.table_concat(chunk_data, Constants.HEADER_CHUNK_DIVISION)
-   self.data[1] = Chunk.new({
-      type = Constants.HEADER_CHUNK_TYPE,
-      data = chunk_data,
-   })
-   for i, track in ipairs(tracks) do
-      track:add_event(MetaEvent.new({data = Constants.META_END_OF_TRACK_ID}))
-      self.data[#self.data+1] = track
-   end
+   self.build_writer(self.tracks, #self.tracks)
    return setmetatable(self, { __index = Writer })
+end
+
+-------------------------------------------------
+-- Adds one or more tracks to Writer
+--
+-- @param tracks a track object or a table of tracks
+-- to be added
+--
+-- @see Track
+-------------------------------------------------
+function Writer:add_tracks(tracks)
+   if #tracks == 0 and tracks.type then
+      if Util.is_track_header(tracks.type) then
+         new_tracks = {tracks}
+      end
+   end
+   self.tracks = Util.table_concat(self.tracks, new_tracks)
+   self.build_writer(new_tracks, #self.tracks)
 end
 
 -------------------------------------------------
