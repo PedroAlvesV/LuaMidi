@@ -39,5 +39,5 @@ track:add_event({
    chord_GB, chord_Am, long_chord_Am
 })
 
-local writer = Writer.new({track})
+local writer = Writer.new(track)
 writer:save_MIDI('Stairway to Heaven', 'midi files')

@@ -20,5 +20,5 @@ track:add_event(
    end
 )
 
-local writer = Writer.new({track})
+local writer = Writer.new(track)
 writer:save_MIDI('Hot Cross Buns', 'midi files')

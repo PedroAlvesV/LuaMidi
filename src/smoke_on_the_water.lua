@@ -34,5 +34,5 @@ track:add_event({
    std_Bb5, std_G5
 })
 
-local writer = Writer.new({track})
+local writer = Writer.new(track)
 writer:save_MIDI('Smoke on the Water', 'midi files')
