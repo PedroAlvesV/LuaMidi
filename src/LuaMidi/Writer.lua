@@ -19,7 +19,7 @@ local Writer = {}
 -------------------------------------------------
 -- Creates a new Writer
 --
--- @param tracks a table containing tracks
+-- @param tracks a track object or a table of tracks
 --
 -- @return 	new Writer object
 --
@@ -29,6 +29,11 @@ function Writer.new(tracks)
    local self = {
       data = {},
    }
+   if #tracks == 0 and tracks.type then
+      if Util.is_track_header(tracks.type) then
+         tracks = {tracks}
+      end
+   end
    local track_type = Constants.HEADER_CHUNK_FORMAT0
    if #tracks > 1 then
       track_type = Constants.HEADER_CHUNK_FORMAT1
