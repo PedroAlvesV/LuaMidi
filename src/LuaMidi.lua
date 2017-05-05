@@ -1,6 +1,8 @@
 -------------------------------------------------
 -- LuaMidi Library Class
 -- <p>All modules are available through it.
+-- It also presents useful functions to handle
+-- MIDI files.
 -- 
 -- @classmod LuaMidi
 -- @author Pedro Alves
@@ -20,6 +22,21 @@ LuaMidi.Track = require 'LuaMidi.Track'
 LuaMidi.Util = require 'LuaMidi.Util'
 LuaMidi.Writer = require 'LuaMidi.Writer'
 
+-------------------------------------------------
+-- Functions
+-- @section Functions
+-------------------------------------------------
+
+-------------------------------------------------
+-- Reads all tracks from a MIDI file and convert
+-- them to LuaMidi's Track objects.
+--
+-- @string path the MIDI file path
+--
+-- @return an array of the tracks
+--
+-- @see Track
+-------------------------------------------------
 function LuaMidi.get_MIDI_tracks(path)
    local MIDI = io.open(path, 'rb')
    if MIDI then
