@@ -46,7 +46,7 @@ function Writer.new(tracks)
          type = Constants.HEADER_CHUNK_TYPE,
          data = chunk_data,
       })
-      for i, track in ipairs(new_tracks) do
+      for _, track in ipairs(new_tracks) do
          track:add_event(MetaEvent.new({data = Constants.META_END_OF_TRACK_ID}))
          self.data[#self.data+1] = track
       end
