@@ -1,8 +1,10 @@
 local LuaMidi = require ('LuaMidi')
-local Writer = LuaMidi.Writer
+local Track = LuaMidi.Track
+local NoteEvent = LuaMidi.NoteEvent
 
-local tracks = LuaMidi.get_MIDI_tracks('midi files/C Major Scale.mid')
+local notes = {'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4'}
 
-local writer = Writer.new(tracks)
---writer:stdout()
-writer:save_MIDI('test', 'midi files')
+local fifths = Track.new()
+fifths:add_event(NoteEvent.new({pitch = notes, sequential = true}))
+
+LuaMidi.add_tracks_to_MIDI('midi files/C Major Scale.mid', fifths, 'midi files/test.mid')
