@@ -69,11 +69,28 @@ function LuaMidi.get_MIDI_tracks(path)
       for track_number, raw_track in ipairs(track_list) do
          local track = {
             type = {raw_track[1], raw_track[2], raw_track[3], raw_track[4]},
-            events = {}
+            events = {},
+            metadata = {}
          }
          for i=1, 8 do table.remove(raw_track,1) end
          track.size = LuaMidi.Util.number_to_bytes(#raw_track, 4)
          track.data = raw_track
+         local metadata_types = {"text", "copyright", "name",
+            "instrument_name", "lyric", "marker", "cue_point"}
+         for i=1, #raw_track do
+            if raw_track[i] == 0x00 and raw_track[i+1] == 0xFF then
+               local raw_metadata = {}
+               local k = i+4
+               for j=k, k+raw_track[i+3] do
+                  raw_metadata[#raw_metadata+1] = raw_track[j]
+               end
+               local string_metadata = ""
+               for j=1, #raw_metadata do
+                  string_metadata = string_metadata..string.char(raw_metadata[j])
+               end
+               track.metadata[metadata_types[raw_track[i+2]]] = string_metadata
+            end
+         end
          track = setmetatable(track, { __index = LuaMidi.Track })
          track_list[track_number] = track
       end
