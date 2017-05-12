@@ -24,6 +24,7 @@ function Track.new()
       data = {},
       size = {},
       events = {},
+      metadata = {},
    }
    return setmetatable(self, { __index = Track })
 end
@@ -171,6 +172,7 @@ end
 -- @return 	Track with text
 -------------------------------------------------
 function Track:add_text(text)
+   self.metadata.text = text
    return default_add_text(self, text, Constants.META_TEXT_ID)
 end
 
@@ -184,6 +186,7 @@ end
 -- @return 	Track with copyright
 -------------------------------------------------
 function Track:add_copyright(text)
+   self.metadata.copyright = text
    return default_add_text(self, text, Constants.META_COPYRIGHT_ID)
 end
 
@@ -197,6 +200,7 @@ end
 -- @return 	Track with a name
 -------------------------------------------------
 function Track:add_name(name)
+   self.metadata.name = name
    return default_add_text(self, name, Constants.META_TRACK_NAME_ID)
 end
 
@@ -210,7 +214,22 @@ end
 -- @return 	Track with instrument name
 -------------------------------------------------
 function Track:add_instrument_name(name)
+   self.metadata.instrument_name = name
    return default_add_text(self, name, Constants.META_INSTRUMENT_NAME_ID)
+end
+
+-------------------------------------------------
+-- Adds lyric to Track
+--
+-- @string lyric the lyric text to be added
+--
+-- @see MetaEvent
+--
+-- @return 	Track with the lyric
+-------------------------------------------------
+function Track:add_lyric(lyric)
+   self.metadata.lyric = lyric
+   return default_add_text(self, lyric, Constants.META_LYRIC_ID)
 end
 
 -------------------------------------------------
@@ -223,6 +242,7 @@ end
 -- @return 	Track with the marker text
 -------------------------------------------------
 function Track:add_marker(text)
+   self.metadata.marker = text
    return default_add_text(self, text, Constants.META_MARKER_ID)
 end
 
@@ -236,20 +256,8 @@ end
 -- @return 	Track with the cue point
 -------------------------------------------------
 function Track:add_cue_point(text)
+   self.metadata.cue_point = text
    return default_add_text(self, text, Constants.META_CUE_POINT)
-end
-
--------------------------------------------------
--- Adds lyric to Track
---
--- @string lyric the lyric text to be added
---
--- @see MetaEvent
---
--- @return 	Track with the lyric
--------------------------------------------------
-function Track:add_lyric(lyric)
-   return default_add_text(self, lyric, Constants.META_LYRIC_ID)
 end
 
 -------------------------------------------------
@@ -261,6 +269,83 @@ function Track:poly_mode_on()
    -- must test
    local event = NoteOnEvent.new({data = {0x00, 0xB0, 0x7E, 0x00}})
    return self:add_event(event)
+end
+
+-------------------------------------------------
+-- Gets text from Track
+--
+-- @see MetaEvent
+--
+-- @return 	Track's text
+-------------------------------------------------
+function Track:get_text()
+   return self.metadata.text
+end
+
+-------------------------------------------------
+-- Gets copyright from Track
+--
+-- @see MetaEvent
+--
+-- @return 	Track's copyright
+-------------------------------------------------
+function Track:get_copyright()
+   return self.metadata.copyright
+end
+
+-------------------------------------------------
+-- Gets name from Track
+--
+-- @see MetaEvent
+--
+-- @return 	Track's name
+-------------------------------------------------
+function Track:get_name()
+   return self.metadata.name
+end
+
+-------------------------------------------------
+-- Gets instrument name from Track
+--
+-- @see MetaEvent
+--
+-- @return 	Track's instrument name
+-------------------------------------------------
+function Track:get_instrument_name()
+   return self.metadata.instrument_name
+end
+
+-------------------------------------------------
+-- Gets lyric from Track
+--
+-- @see MetaEvent
+--
+-- @return 	Track's lyric
+-------------------------------------------------
+function Track:get_lyric()
+   return self.metadata.lyric
+end
+
+-------------------------------------------------
+-- Gets marker from Track
+--
+-- @see MetaEvent
+--
+-- @return 	Track's marker
+-------------------------------------------------
+function Track:get_marker()
+   return self.metadata.marker
+end
+
+-------------------------------------------------
+-- Gets cue point from Track
+--
+-- @see MetaEvent
+--
+-- @return 	Track's cue point
+-------------------------------------------------
+function Track:get_cue_point()
+   return self.metadata.cue_point
 end
 
 return Track
