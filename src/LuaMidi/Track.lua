@@ -188,6 +188,19 @@ function Track:add_copyright(text)
 end
 
 -------------------------------------------------
+-- Adds a name to Track
+--
+-- @string name the name to be added
+--
+-- @see MetaEvent
+--
+-- @return 	Track with a name
+-------------------------------------------------
+function Track:add_name(name)
+   return default_add_text(self, name, Constants.META_TRACK_NAME_ID)
+end
+
+-------------------------------------------------
 -- Adds instrument name to Track
 --
 -- @string name the instrument name to be added
