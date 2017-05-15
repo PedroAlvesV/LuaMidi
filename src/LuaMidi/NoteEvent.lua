@@ -85,6 +85,7 @@ local NoteEvent = {}
 -- @return 	new NoteEvent object
 -------------------------------------------------
 function NoteEvent.new(fields)
+   if type(fields.pitch) == 'string' then fields.pitch = {fields.pitch} end
    local self = {
       type = 'note',
       pitch = fields.pitch,
