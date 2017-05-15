@@ -5,6 +5,10 @@ local Writer = LuaMidi.Writer
 
 local track = Track.new()
 
+track:add_name("Intro")
+track:add_copyright("(C) Led Zeppelin")
+track:add_instrument_name("Acoustic Guitar")
+
 local function note(pitch, duration)
    return NoteEvent.new({pitch = {pitch}, duration = tostring(duration)})
 end
@@ -40,4 +44,4 @@ track:add_event({
 })
 
 local writer = Writer.new(track)
-writer:save_MIDI('Stairway to Heaven', 'midi files')
+writer:save_MIDI('stairway_to_heaven', 'midi files')

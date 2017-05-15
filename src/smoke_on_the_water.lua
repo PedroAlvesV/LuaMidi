@@ -5,6 +5,10 @@ local Writer = LuaMidi.Writer
 
 local track = Track.new()
 
+track:add_name("Main riff")
+track:add_copyright("(C) Deep Purple")
+track:add_instrument_name("Guitar")
+
 local function chord(array, duration)
    duration = tostring(duration)
    return NoteEvent.new({pitch = array, duration = duration})
@@ -35,4 +39,4 @@ track:add_event({
 })
 
 local writer = Writer.new(track)
-writer:save_MIDI('Smoke on the Water', 'midi files')
+writer:save_MIDI('smoke_on_the_water', 'midi files')
