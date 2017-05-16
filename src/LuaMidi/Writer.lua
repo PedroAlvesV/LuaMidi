@@ -35,6 +35,16 @@ function Writer.new(tracks)
       data = {},
       tracks = tracks,
    }
+   self.build_track = function(track)
+      for _, event in ipairs(track.events) do
+         if event.type == 'note' then
+            event.build_data()
+         end
+         track.data = Util.table_concat(track.data, event.data)
+         track.size = Util.number_to_bytes(#track.data, 4)
+      end
+      return track
+   end
    self.build_writer = function(new_tracks, total_tracks)
       local track_type = Constants.HEADER_CHUNK_FORMAT0
       if total_tracks > 1 then
@@ -48,6 +58,7 @@ function Writer.new(tracks)
       })
       for _, track in ipairs(new_tracks) do
          track:add_event(MetaEvent.new({data = Constants.META_END_OF_TRACK_ID}))
+         track = self.build_track(track)
          self.data[#self.data+1] = track
       end
    end

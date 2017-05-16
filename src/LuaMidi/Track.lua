@@ -51,11 +51,8 @@ function Track:add_event(events, map_function)
             event.duration = properties.duration or event.duration
             event.sequential = properties.sequential or event.sequential
             event.velocity = event.convert_velocity(properties.velocity or event.velocity)
-            event.build_data()
          end
       end
-      self.data = Util.table_concat(self.data, event.data)
-      self.size = Util.number_to_bytes(#self.data, 4)
       self.events[#self.events+1] = event
    end
    return self
