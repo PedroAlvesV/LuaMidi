@@ -1,5 +1,5 @@
 -------------------------------------------------
--- Manage to join all tracks and features output
+-- Manages to join all tracks and features output
 -- methods.
 --
 -- @classmod Writer
@@ -63,10 +63,10 @@ end
 --
 -- @see Track
 -------------------------------------------------
-function Writer:add_tracks(tracks)
-   if #tracks == 0 and tracks.type then
-      if Util.is_track_header(tracks.type) then
-         new_tracks = {tracks}
+function Writer:add_tracks(new_tracks)
+   if #new_tracks == 0 and new_tracks.type then
+      if Util.is_track_header(new_tracks.type) then
+         new_tracks = {new_tracks}
       end
    end
    self.tracks = Util.table_concat(self.tracks, new_tracks)
