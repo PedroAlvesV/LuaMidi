@@ -30,11 +30,11 @@ function Track.new()
 end
 
 -------------------------------------------------
--- Adds an event (or event-list) to the track. These events can be
+-- Adds an event-list (or single event) to the track. These events can be
 -- `MetaEvents`, `NoteEvents` or `ProgramChangeEvents`. 
 --
--- @param event a single event or event-list (array of events).
--- @param map_function function to be applied to `event` (being it an array or not).
+-- @param events a single event or event-list (array of events).
+-- @param map_function function to be applied to `events` (being it an array or not).
 --
 -- @see MetaEvent
 -- @see NoteEvent
@@ -42,23 +42,18 @@ end
 --
 -- @return 	new Track object
 -------------------------------------------------
-function Track:add_event(event, map_function)
-   if (type(event) == 'table') and (event[1] ~= nil) then -- roughly checking if it's an array
-      for i, e in ipairs(event) do
-         if (type(map_function) == 'function') and (e.type == 'note') then
-            local properties = map_function(i, e)
-            if type(properties) == 'table' then
-               e.duration = properties.duration or e.duration
-               e.sequential = properties.sequential or e.sequential
-               e.velocity = e.convert_velocity(properties.velocity or e.velocity)
-               e.build_data()
-            end
+function Track:add_event(events, map_function)
+   if events.type then events = {events} end
+   for i, event in ipairs(events) do
+      if (type(map_function) == 'function') and (event.type == 'note') then
+         local properties = map_function(i, event)
+         if type(properties) == 'table' then
+            event.duration = properties.duration or event.duration
+            event.sequential = properties.sequential or event.sequential
+            event.velocity = event.convert_velocity(properties.velocity or event.velocity)
+            event.build_data()
          end
-         self.data = Util.table_concat(self.data, e.data)
-         self.size = Util.number_to_bytes(#self.data, 4)
-         self.events[#self.events+1] = e
       end
-   else
       self.data = Util.table_concat(self.data, event.data)
       self.size = Util.number_to_bytes(#self.data, 4)
       self.events[#self.events+1] = event
