@@ -100,7 +100,7 @@ function LuaMidi.get_MIDI_tracks(path)
                   local j=i
                   while raw_track[j] do
                      raw_note[#raw_note+1] = raw_track[j]
-                     if raw_track[j+1] == 0x00 and raw_track[j+2] ~= 0x80 then
+                     if raw_track[j+1] == 0x00 and raw_track[j+2] > 0x80 then
                         break
                      end
                      j=j+1
@@ -111,7 +111,7 @@ function LuaMidi.get_MIDI_tracks(path)
                local pitch = {}
                do
                   local j=3
-                  while raw_note[j] < 0x81 do
+                  while raw_note[j] and raw_note[j] < 0x81 do
                      if j%3 == 0 then
                         pitch[#pitch+1] = LuaMidi.Util.convert_base(raw_note[j],16)
                      end
