@@ -70,32 +70,73 @@ function LuaMidi.get_MIDI_tracks(path)
          local track = {
             type = {raw_track[1], raw_track[2], raw_track[3], raw_track[4]},
             events = {},
-            metadata = {}
+            metadata = {},
+            size = {},
          }
          for i=1, 8 do table.remove(raw_track,1) end
-         track.size = LuaMidi.Util.number_to_bytes(#raw_track, 4)
-         track.data = raw_track
          local metadata_types = {"text", "copyright", "name",
             "instrument_name", "lyric", "marker", "cue_point"}
          for i=1, #raw_track do
             if raw_track[i] == 0x00 and raw_track[i+1] == 0xFF then
                local raw_metadata = {}
-               local k = i+4
-               for j=k, k+raw_track[i+3] do
+               local k = i+3
+               for j=i, k+raw_track[k] do
                   raw_metadata[#raw_metadata+1] = raw_track[j]
                end
                local string_metadata = ""
-               for j=1, #raw_metadata do
+               for j=5, #raw_metadata do
                   string_metadata = string_metadata..string.char(raw_metadata[j])
                end
                track.metadata[metadata_types[raw_track[i+2]]] = string_metadata
+               local event = {
+                  type = "meta",
+                  data = raw_metadata,
+               }
+               event = setmetatable(event, { __index = LuaMidi.MetaEvent })
+               track.events[#track.events+1] = event
+            elseif raw_track[i] == 0x00 and raw_track[i+1] == 0x90 then
+               local raw_note = {}
+               do
+                  local j=i
+                  while raw_track[j] do
+                     raw_note[#raw_note+1] = raw_track[j]
+                     if raw_track[j+1] == 0x00 and raw_track[j+2] ~= 0x80 then
+                        break
+                     end
+                     j=j+1
+                  end
+               end
+               local channel = raw_note[2]-0x8F
+               local velocity = raw_note[4]
+               local pitch = {}
+               do
+                  local j=1
+                  while raw_note[j] < 0x81 do
+                     if j%3 == 0 then
+                        pitch[#pitch+1] = LuaMidi.Util.convert_base(raw_note[j],16)
+                     end
+                     j=j+1
+                  end
+               end
+               local event = {
+                  type = "note",
+                  data = raw_note,
+                  pitch = pitch,
+                  velocity = velocity,
+                  channel = channel,
+                  sequential = false,
+                  repetition = 1,
+               }
+               event = setmetatable(event, { __index = LuaMidi.NoteEvent })
+               track.events[#track.events+1] = event
             end
          end
          track = setmetatable(track, { __index = LuaMidi.Track })
          track_list[track_number] = track
       end
       return track_list
-   end
+   end 
+   return false
 end
 
 -------------------------------------------------
