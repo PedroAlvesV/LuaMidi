@@ -59,6 +59,30 @@ function Track:add_event(events, map_function)
 end
 
 -------------------------------------------------
+-- Gets events from Track
+--
+-- @string filter a string to filter events by type
+--
+-- @see MetaEvent
+-- @see NoteEvent
+-- @see ProgramChangeEvent
+--
+-- @return 	Track's event list
+-------------------------------------------------
+function Track:get_events(filter)
+   if filter then
+      local events = {}
+      for _, event in ipairs(self.events) do
+         if event.type == filter then
+            events[#events+1] = event
+         end
+      end
+      return events
+   end
+   return self.events
+end
+
+-------------------------------------------------
 -- Sets Track's tempo
 --
 -- @number bpm the tempo in beats per minute.
