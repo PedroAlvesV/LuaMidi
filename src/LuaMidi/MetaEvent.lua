@@ -31,4 +31,13 @@ function MetaEvent.new(fields)
    return setmetatable(self, { __index = MetaEvent })
 end
 
+function MetaEvent:print()
+   local str = ""
+   for j=5, #self.data do
+      str = str..string.char(self.data[j])
+   end
+   print("\nType:\t\tMetaEvent")
+   print("Data:\t", str)
+end
+
 return MetaEvent

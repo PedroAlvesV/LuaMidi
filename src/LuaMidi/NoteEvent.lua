@@ -225,4 +225,18 @@ function NoteEvent.new(fields)
    return setmetatable(self, { __index = NoteEvent })
 end
 
+function NoteEvent:print()
+   local pitch = self.pitch
+   if #self.pitch > 0 then
+      pitch = "{ "
+      for i=1, #self.pitch-1 do
+         pitch = pitch..self.pitch[i]..", "
+      end
+      pitch = pitch..self.pitch[#self.pitch].." }"
+   end
+   local str = string.format("Pitch:\t\t%s\nVelocity:\t%d\nChannel:\t%d\nRepetition:\t%d\nSequential:\t%s", pitch,self.velocity,self.channel,self.repetition,self.sequential)
+   print("\nType:\t\tNoteEvent")
+   print(str)
+end
+
 return NoteEvent
