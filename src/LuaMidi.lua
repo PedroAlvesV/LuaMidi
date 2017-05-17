@@ -110,7 +110,7 @@ function LuaMidi.get_MIDI_tracks(path)
                local velocity = raw_note[4]
                local pitch = {}
                do
-                  local j=1
+                  local j=3
                   while raw_note[j] < 0x81 do
                      if j%3 == 0 then
                         pitch[#pitch+1] = LuaMidi.Util.convert_base(raw_note[j],16)
