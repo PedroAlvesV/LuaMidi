@@ -13,20 +13,16 @@ local ProgramChangeEvent = {}
 
 -------------------------------------------------
 -- Creates a new ProgramChangeEvent to change the
--- track instrument
+-- track's instrument
 --
--- @param fields a table containing an `instrument`
--- field with a valid instrument number
+-- @param pcnumber a valid MIDI patch change number
 --
 -- @return 	new ProgramChangeEvent object
 -------------------------------------------------
-function ProgramChangeEvent.new(fields)
-   local data = Util.num_to_var_length(0x00)
-   data[#data+1] = Constants.PROGRAM_CHANGE_STATUS
-   data[#data+1] = fields.instrument
+function ProgramChangeEvent.new(pcnumber)
    local self = {
-      type = 'program',
-		data = data,
+      type = 'program-change',
+      data = { 0x00, Constants.PROGRAM_CHANGE_STATUS, pcnumber },
    }
    return setmetatable(self, { __index = ProgramChangeEvent })
 end
