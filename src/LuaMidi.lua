@@ -89,7 +89,7 @@ function LuaMidi.get_MIDI_tracks(path)
                end
                track.metadata[metadata_types[raw_track[i+2]]] = string_metadata
                local event = {
-                  type = "meta",
+                  type = 'meta',
                   data = raw_metadata,
                }
                event = setmetatable(event, { __index = LuaMidi.MetaEvent })
@@ -113,7 +113,7 @@ function LuaMidi.get_MIDI_tracks(path)
                   local j=3
                   while raw_note[j] and raw_note[j] < 0x81 do
                      if j%3 == 0 then
-                        pitch[#pitch+1] = LuaMidi.Util.convert_base(raw_note[j],16)
+                        pitch[#pitch+1] = "0x"..LuaMidi.Util.convert_base(raw_note[j],16)
                      end
                      j=j+1
                   end
