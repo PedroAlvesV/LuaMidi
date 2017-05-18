@@ -226,16 +226,24 @@ function NoteEvent.new(fields)
 end
 
 function NoteEvent:print()
+   local function quote(str)
+      if not tonumber(str:sub(1,1)) then
+         return "'"..str.."'"
+      end
+      return str
+   end
    local pitch = self.pitch
    if #self.pitch > 0 then
       pitch = "{ "
       for i=1, #self.pitch-1 do
-         pitch = pitch..self.pitch[i]..", "
+         pitch = pitch..quote(self.pitch[i])
+         pitch = pitch..", "
       end
-      pitch = pitch..self.pitch[#self.pitch].." }"
+      pitch = pitch..quote(self.pitch[#self.pitch])
+      pitch = pitch.." }"
    end
    local str = string.format("Pitch:\t\t%s\nVelocity:\t%d\nChannel:\t%d\nRepetition:\t%d\nSequential:\t%s", pitch,self.velocity,self.channel,self.repetition,self.sequential)
-   print("\nType:\t\tNoteEvent")
+   print("\nClass / Type:\tNoteEvent / '"..self.type.."'")
    print(str)
 end
 

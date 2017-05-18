@@ -36,8 +36,8 @@ function MetaEvent:print()
    for j=5, #self.data do
       str = str..string.char(self.data[j])
    end
-   print("\nType:\t\tMetaEvent")
-   print("Data:\t", str)
+   print("\nClass / Type:\tMetaEvent / '"..self.type.."'")
+   print("Data:\t", '"'..str..'"')
 end
 
 return MetaEvent
