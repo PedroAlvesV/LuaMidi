@@ -3,9 +3,7 @@ local Track = LuaMidi.Track
 local NoteEvent = LuaMidi.NoteEvent
 local Writer = LuaMidi.Writer
 
-local track = Track.new()
-
-track:add_name("Intro")
+local track = Track.new("Intro")
 track:add_copyright("(C) Led Zeppelin")
 track:add_instrument_name("Acoustic Guitar")
 

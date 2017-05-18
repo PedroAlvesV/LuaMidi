@@ -3,9 +3,7 @@ local Track = LuaMidi.Track
 local NoteEvent = LuaMidi.NoteEvent
 local Writer = LuaMidi.Writer
 
-local track = Track.new()
-
-track:add_name("C Major Scale")
+local track = Track.new("C Major Scale")
 track:add_text("Major scale from C3 to C4.")
 track:add_instrument_name("Default")
 

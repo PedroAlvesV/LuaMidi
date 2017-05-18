@@ -3,9 +3,7 @@ local Track = LuaMidi.Track
 local NoteEvent = LuaMidi.NoteEvent
 local Writer = LuaMidi.Writer
 
-local track = Track.new()
-
-track:add_name("Hot Cross Buns")
+local track = Track.new("Hot Cross Buns")
 track:add_text("Popular nursery rhyme theme")
 track:add_copyright("Public domain")
 track:add_instrument_name("Default")
