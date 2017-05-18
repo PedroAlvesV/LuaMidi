@@ -18,7 +18,7 @@ local Track = {}
 --
 -- @return 	new Track object
 -------------------------------------------------
-function Track.new()
+function Track.new(name)
    local self = {
       type = Constants.TRACK_CHUNK_TYPE,
       data = {},
@@ -26,7 +26,9 @@ function Track.new()
       events = {},
       metadata = {},
    }
-   return setmetatable(self, { __index = Track })
+   local obj = setmetatable(self, { __index = Track })
+   if name then obj:add_name(name) end
+   return obj
 end
 
 -------------------------------------------------
