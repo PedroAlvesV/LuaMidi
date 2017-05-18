@@ -94,6 +94,13 @@ function LuaMidi.get_MIDI_tracks(path)
                }
                event = setmetatable(event, { __index = LuaMidi.MetaEvent })
                track.events[#track.events+1] = event
+            elseif raw_track[i] == 0x00 and raw_track[i+1] == LuaMidi.Constants.PROGRAM_CHANGE_STATUS then
+               local event = {
+                  type = 'program-change',
+                  data = { raw_track[i], raw_track[i+1], raw_track[i+2] }
+               }
+               event = setmetatable(event, { __index = LuaMidi.ProgramChangeEvent })
+               track.events[#track.events+1] = event
             elseif raw_track[i] == 0x00 and raw_track[i+1] == 0x90 then
                local raw_note = {}
                do
