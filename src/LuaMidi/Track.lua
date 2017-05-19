@@ -192,7 +192,7 @@ end
 -- @return 	Track with text
 -------------------------------------------------
 function Track:add_text(text)
-   self.metadata.text = text
+   self.metadata.Text = text
    return default_add_text(self, text, Constants.META_TEXT_ID)
 end
 
@@ -206,7 +206,7 @@ end
 -- @return 	Track with copyright
 -------------------------------------------------
 function Track:add_copyright(text)
-   self.metadata.copyright = text
+   self.metadata.Copyright = text
    return default_add_text(self, text, Constants.META_COPYRIGHT_ID)
 end
 
@@ -220,7 +220,7 @@ end
 -- @return 	Track with a name
 -------------------------------------------------
 function Track:add_name(name)
-   self.metadata.name = name
+   self.metadata.Name = name
    return default_add_text(self, name, Constants.META_TRACK_NAME_ID)
 end
 
@@ -234,7 +234,7 @@ end
 -- @return 	Track with instrument name
 -------------------------------------------------
 function Track:add_instrument_name(name)
-   self.metadata.instrument_name = name
+   self.metadata.Instrument = name
    return default_add_text(self, name, Constants.META_INSTRUMENT_NAME_ID)
 end
 
@@ -248,7 +248,7 @@ end
 -- @return 	Track with the lyric
 -------------------------------------------------
 function Track:add_lyric(lyric)
-   self.metadata.lyric = lyric
+   self.metadata.Lyric = lyric
    return default_add_text(self, lyric, Constants.META_LYRIC_ID)
 end
 
@@ -262,7 +262,7 @@ end
 -- @return 	Track with the marker text
 -------------------------------------------------
 function Track:add_marker(text)
-   self.metadata.marker = text
+   self.metadata.Marker = text
    return default_add_text(self, text, Constants.META_MARKER_ID)
 end
 
@@ -276,7 +276,7 @@ end
 -- @return 	Track with the cue point
 -------------------------------------------------
 function Track:add_cue_point(text)
-   self.metadata.cue_point = text
+   self.metadata["Cue Point"] = text
    return default_add_text(self, text, Constants.META_CUE_POINT)
 end
 
@@ -299,7 +299,7 @@ end
 -- @return 	Track's text
 -------------------------------------------------
 function Track:get_text()
-   return self.metadata.text
+   return self.metadata.Text
 end
 
 -------------------------------------------------
@@ -310,7 +310,7 @@ end
 -- @return 	Track's copyright
 -------------------------------------------------
 function Track:get_copyright()
-   return self.metadata.copyright
+   return self.metadata.Copyright
 end
 
 -------------------------------------------------
@@ -321,7 +321,7 @@ end
 -- @return 	Track's name
 -------------------------------------------------
 function Track:get_name()
-   return self.metadata.name
+   return self.metadata.Name
 end
 
 -------------------------------------------------
@@ -332,7 +332,7 @@ end
 -- @return 	Track's instrument name
 -------------------------------------------------
 function Track:get_instrument_name()
-   return self.metadata.instrument_name
+   return self.metadata.Instrument
 end
 
 -------------------------------------------------
@@ -343,7 +343,7 @@ end
 -- @return 	Track's lyric
 -------------------------------------------------
 function Track:get_lyric()
-   return self.metadata.lyric
+   return self.metadata.Lyric
 end
 
 -------------------------------------------------
@@ -354,7 +354,7 @@ end
 -- @return 	Track's marker
 -------------------------------------------------
 function Track:get_marker()
-   return self.metadata.marker
+   return self.metadata.Marker
 end
 
 -------------------------------------------------
@@ -365,7 +365,7 @@ end
 -- @return 	Track's cue point
 -------------------------------------------------
 function Track:get_cue_point()
-   return self.metadata.cue_point
+   return self.metadata["Cue Point"]
 end
 
 return Track
