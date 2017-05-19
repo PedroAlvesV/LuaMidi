@@ -1,8 +1,8 @@
 # LuaMidi ♫
 
-LuaMidi is a library to write MIDI programmatically in Lua.
- 
-This project may present a few bugs. Please, publish an [issue](https://github.com/PedroAlvesV/LuaMidi/issues) if you find any. 
+LuaMidi is a library to read and write MIDI files, in Lua.  
+
+Please, publish an [issue](https://github.com/PedroAlvesV/LuaMidi/issues), if you find any. 
 
 You can check the docs at [the wiki](https://github.com/PedroAlvesV/LuaMidi/wiki).
 
@@ -36,28 +36,22 @@ local Writer = LuaMidi.Writer
 -- Creates Track instance
 local track = Track.new()
 
+-- Table with notes as strings (must specify octave)
+local notes = {'C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4'}
+
 -- Adds notes to Track
-track:add_event({
-   NoteEvent.new({pitch = {'C3'}}),
-   NoteEvent.new({pitch = {'D3'}}),
-   NoteEvent.new({pitch = {'E3'}}),
-   NoteEvent.new({pitch = {'F3'}}),
-   NoteEvent.new({pitch = {'G3'}}),
-   NoteEvent.new({pitch = {'A3'}}),
-   NoteEvent.new({pitch = {'B3'}}),
-   NoteEvent.new({pitch = {'C4'}}),
-})
+track:add_event(NoteEvent.new({pitch = notes, sequential = true}))
 
 -- Creates Writer passing Track
-local writer = Writer.new({track})
+local writer = Writer.new(track)
 
 -- Writes MIDI file called "C Major Scale.mid"
 writer:save_MIDI('C Major Scale')
 ```
 
-To avoid this `NoteEvent.new(...)` repetition, here's an alternative: [src/c_major_scale.lua](https://github.com/PedroAlvesV/LuaMidi/tree/master/src/c_major_scale.lua)
+Even though the above example creates a working MIDI file, it's encouragable to add some metadata to MIDI files. A more complete version of this code can be found here: [src/c_major_scale.lua](https://github.com/PedroAlvesV/LuaMidi/tree/master/src/c_major_scale.lua)
 
-This short script works over the basics of LuaMidi. Initially, it creates a `Track` object. After that, it adds the C scale, starting on `C3` and closing on `C4`. It instanciates a `NoteEvent` object for every note. Once the track is ready, it creates a `Writer` object that, during its construction, receives a table containing all the tracks. Because it's just a scale, all events were added in a single track. With all tracks' data, the `Writer` can produce a working MIDI file.
+This short script works over the basics of LuaMidi. Initially, it creates a `Track` object. Then, it creates an array(`notes`) with the notes as strings. After that, it adds this array to a new `NoteEvent`, also passing `true` as `sequential` field to indicate the notes won't be played at the same time. Once the track is ready, it creates a `Writer` object passing the track as parameter. With all tracks' data, the `Writer` can produce a working MIDI file.
 
 You can check the docs at [the wiki](https://github.com/PedroAlvesV/LuaMidi/wiki).
 
@@ -70,34 +64,33 @@ local Track = LuaMidi.Track
 local NoteEvent = LuaMidi.NoteEvent
 local Writer = LuaMidi.Writer
 
-local track = Track.new()
+local track = Track.new("Intro")
+track:add_copyright("(C) Led Zeppelin")
+track:add_instrument_name("Acoustic Guitar")
 
 local function note(pitch, duration)
-   return NoteEvent.new({pitch = {pitch}, duration = tostring(duration)})
-end
-local function chord(array, duration)
-   return NoteEvent.new({pitch = array, duration = tostring(duration)})
+   return NoteEvent.new({pitch = pitch, duration = tostring(duration)})
 end
 
 local A3 = note('A3')
 local C4 = note('C4')
 local E4 = note('E4')
 local A4 = note('A4')
-local Ab3_B4 = chord({'G#3', 'B4'})
+local Ab3_B4 = note({'G#3', 'B4'})
 local B4 = note('B4')
-local G3_C5 = chord({'G3', 'C5'})
+local G3_C5 = note({'G3', 'C5'})
 local C5 = note('C5')
-local Gb3_Gb4 = chord({'F#3', 'F#4'})
+local Gb3_Gb4 = note({'F#3', 'F#4'})
 local D4 = note('D4')
 local Gb4 = note('F#4')
-local F3_E4 = chord({'F3', 'E4'})
+local F3_E4 = note({'F3', 'E4'})
 local long_C4 = note('C4', 2)
 
 local Am = {'A2', 'E3', 'A3', 'C4'}
 
-local chord_GB = chord({'B2', 'D3', 'G3', 'B3'})
-local chord_Am = chord(Am)
-local long_chord_Am = chord(Am, 1)
+local chord_GB = note({'B2', 'D3', 'G3', 'B3'})
+local chord_Am = note(Am)
+local long_chord_Am = note(Am, 1)
 
 track:add_event({
    A3, C4, E4, A4, Ab3_B4, E4, C4, B4,
@@ -106,11 +99,11 @@ track:add_event({
    chord_GB, chord_Am, long_chord_Am
 })
 
-local writer = Writer.new({track})
-writer:save_MIDI('Stairway to Heaven', 'midi files')
+local writer = Writer.new(track)
+writer:save_MIDI('stairway_to_heaven', 'midi files')
 ```
 
-The produced MIDI file can be downloaded here: [Stairway to Heaven.mid](https://github.com/PedroAlvesV/LuaMidi/tree/master/src/midi%20files/Stairway%20to%20Heaven.mid)
+The produced MIDI file can be downloaded here: [stairway_to_heaven.mid](https://github.com/PedroAlvesV/LuaMidi/tree/master/src/midi%20files/stairway_to_heaven.mid)
 
 ## Contributing
 
@@ -125,4 +118,4 @@ The produced MIDI file can be downloaded here: [Stairway to Heaven.mid](https://
 ## Credits
 
 * Lua library written by [Pedro Alves](https://github.com/PedroAlvesV)
-* Based on [♬ MidiWriterJS](https://github.com/grimmdude/MidiWriterJS) by [Garret Grimm](http://grimmdude.com)
+* Inspired by [♬ MidiWriterJS](https://github.com/grimmdude/MidiWriterJS), by [Garret Grimm](http://grimmdude.com)
