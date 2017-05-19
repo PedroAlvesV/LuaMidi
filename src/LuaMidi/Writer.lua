@@ -69,7 +69,7 @@ end
 -------------------------------------------------
 -- Adds one or more tracks to Writer
 --
--- @param tracks a track object or a table of tracks
+-- @param new_tracks a track object or a table of tracks
 -- to be added
 --
 -- @see Track
