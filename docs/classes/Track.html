@@ -3,7 +3,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>LuaMidi</title>
+    <title>LuaMidi ♫ – A library to read and write MIDI files, in Lua.</title>
     <link rel="stylesheet" href="../ldoc.css" type="text/css" />
 </head>
 <body>
@@ -24,7 +24,7 @@
 
 <div id="navigation">
 <br/>
-<h1>LuaMidi</h1>
+<h1>LuaMidi ♫</h1>
 
 <ul>
   <li><a href="../index.html">Index</a></li>
@@ -74,12 +74,16 @@
 <h2><a href="#Methods">Methods</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#Track:new">Track:new ()</a></td>
+	<td class="name" nowrap><a href="#Track:new">Track:new ([name])</a></td>
 	<td class="summary">Creates a new Track</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Track:add_event">Track:add_event (event, map_function)</a></td>
-	<td class="summary">Adds an event (or event-list) to the track.</td>
+	<td class="name" nowrap><a href="#Track:add_event">Track:add_event (events, map_function)</a></td>
+	<td class="summary">Adds an event-list (or single event) to the track.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:get_events">Track:get_events (filter)</a></td>
+	<td class="summary">Gets events from Track</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Track:set_tempo">Track:set_tempo (bpm)</a></td>
@@ -102,8 +106,16 @@
 	<td class="summary">Adds copyright to Track</td>
 	</tr>
 	<tr>
+	<td class="name" nowrap><a href="#Track:add_name">Track:add_name (name)</a></td>
+	<td class="summary">Adds a name to Track</td>
+	</tr>
+	<tr>
 	<td class="name" nowrap><a href="#Track:add_instrument_name">Track:add_instrument_name (name)</a></td>
 	<td class="summary">Adds instrument name to Track</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:add_lyric">Track:add_lyric (lyric)</a></td>
+	<td class="summary">Adds lyric to Track</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Track:add_marker">Track:add_marker (text)</a></td>
@@ -114,12 +126,36 @@
 	<td class="summary">Adds cue point to Track</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Track:add_lyric">Track:add_lyric (lyric)</a></td>
-	<td class="summary">Adds lyric to Track</td>
-	</tr>
-	<tr>
 	<td class="name" nowrap><a href="#Track:poly_mode_on">Track:poly_mode_on ()</a></td>
 	<td class="summary">Activates poly mode</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:get_text">Track:get_text ()</a></td>
+	<td class="summary">Gets text from Track</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:get_copyright">Track:get_copyright ()</a></td>
+	<td class="summary">Gets copyright from Track</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:get_name">Track:get_name ()</a></td>
+	<td class="summary">Gets name from Track</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:get_instrument_name">Track:get_instrument_name ()</a></td>
+	<td class="summary">Gets instrument name from Track</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:get_lyric">Track:get_lyric ()</a></td>
+	<td class="summary">Gets lyric from Track</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:get_marker">Track:get_marker ()</a></td>
+	<td class="summary">Gets marker from Track</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#Track:get_cue_point">Track:get_cue_point ()</a></td>
+	<td class="summary">Gets cue point from Track</td>
 	</tr>
 </table>
 
@@ -132,12 +168,20 @@
     <dl class="function">
     <dt>
     <a name = "Track:new"></a>
-    <strong>Track:new ()</strong>
+    <strong>Track:new ([name])</strong>
     </dt>
     <dd>
     Creates a new Track
 
 
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+         a name metadata to the Track
+         (<em>optional</em>)
+        </li>
+    </ul>
 
     <h3>Returns:</h3>
     <ol>
@@ -151,20 +195,20 @@
 </dd>
     <dt>
     <a name = "Track:add_event"></a>
-    <strong>Track:add_event (event, map_function)</strong>
+    <strong>Track:add_event (events, map_function)</strong>
     </dt>
     <dd>
-    Adds an event (or event-list) to the track.  These events can be
+    Adds an event-list (or single event) to the track.  These events can be
  <code>MetaEvents</code>, <code>NoteEvents</code> or <code>ProgramChangeEvents</code>.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">event</span>
+        <li><span class="parameter">events</span>
          a single event or event-list (array of events).
         </li>
         <li><span class="parameter">map_function</span>
-         function to be applied to <code>event</code> (being it an array or not).
+         function to be applied to <code>events</code> (being it an array or not).
         </li>
     </ul>
 
@@ -172,6 +216,38 @@
     <ol>
 
         new Track object
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <li><a href="../classes/MetaEvent.html#">MetaEvent</a></li>
+         <li><a href="../classes/NoteEvent.html#">NoteEvent</a></li>
+         <li><a href="../classes/ProgramChangeEvent.html#">ProgramChangeEvent</a></li>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:get_events"></a>
+    <strong>Track:get_events (filter)</strong>
+    </dt>
+    <dd>
+    Gets events from Track
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">filter</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+         a string to filter events by type. The valid values are <code>meta</code>, <code>note</code> and <code>program-change</code>.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        events table
     </ol>
 
 
@@ -345,6 +421,36 @@
 
 </dd>
     <dt>
+    <a name = "Track:add_name"></a>
+    <strong>Track:add_name (name)</strong>
+    </dt>
+    <dd>
+    Adds a name to Track
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+         the name to be added
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track with a name
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
     <a name = "Track:add_instrument_name"></a>
     <strong>Track:add_instrument_name (name)</strong>
     </dt>
@@ -364,6 +470,36 @@
     <ol>
 
         Track with instrument name
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:add_lyric"></a>
+    <strong>Track:add_lyric (lyric)</strong>
+    </dt>
+    <dd>
+    Adds lyric to Track
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">lyric</span>
+            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
+         the lyric text to be added
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track with the lyric
     </ol>
 
 
@@ -435,36 +571,6 @@
 
 </dd>
     <dt>
-    <a name = "Track:add_lyric"></a>
-    <strong>Track:add_lyric (lyric)</strong>
-    </dt>
-    <dd>
-    Adds lyric to Track
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">lyric</span>
-            <span class="types"><a class="type" href="https://www.lua.org/manual/5.3/manual.html#6.4">string</a></span>
-         the lyric text to be added
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-        Track with the lyric
-    </ol>
-
-
-    <h3>See also:</h3>
-    <ul>
-         <a href="../classes/MetaEvent.html#">MetaEvent</a>
-    </ul>
-
-
-</dd>
-    <dt>
     <a name = "Track:poly_mode_on"></a>
     <strong>Track:poly_mode_on ()</strong>
     </dt>
@@ -483,6 +589,167 @@
 
 
 </dd>
+    <dt>
+    <a name = "Track:get_text"></a>
+    <strong>Track:get_text ()</strong>
+    </dt>
+    <dd>
+    Gets text from Track
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track's text
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:get_copyright"></a>
+    <strong>Track:get_copyright ()</strong>
+    </dt>
+    <dd>
+    Gets copyright from Track
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track's copyright
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:get_name"></a>
+    <strong>Track:get_name ()</strong>
+    </dt>
+    <dd>
+    Gets name from Track
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track's name
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:get_instrument_name"></a>
+    <strong>Track:get_instrument_name ()</strong>
+    </dt>
+    <dd>
+    Gets instrument name from Track
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track's instrument name
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:get_lyric"></a>
+    <strong>Track:get_lyric ()</strong>
+    </dt>
+    <dd>
+    Gets lyric from Track
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track's lyric
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:get_marker"></a>
+    <strong>Track:get_marker ()</strong>
+    </dt>
+    <dd>
+    Gets marker from Track
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track's marker
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Track:get_cue_point"></a>
+    <strong>Track:get_cue_point ()</strong>
+    </dt>
+    <dd>
+    Gets cue point from Track
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        Track's cue point
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul>
+         <a href="../classes/MetaEvent.html#">MetaEvent</a>
+    </ul>
+
+
+</dd>
 </dl>
 
 
@@ -490,7 +757,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2017-04-27 00:08:48 </i>
+<i style="float:right;">Last updated 2017-05-19 02:02:32 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
