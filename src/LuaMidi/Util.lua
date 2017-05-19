@@ -127,9 +127,9 @@ end
 
 function Util.table_index_of(table, object)
    if type(table) == 'table' then
-      for i=1, #table do
-         if object == table[i] then
-            return i
+      for key, value in pairs(table) do
+         if object == value then
+            return key
          end
       end
       return false
