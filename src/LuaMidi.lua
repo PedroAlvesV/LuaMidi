@@ -74,8 +74,7 @@ function LuaMidi.get_MIDI_tracks(path)
             size = {},
          }
          for i=1, 8 do table.remove(raw_track,1) end
-         local metadata_types = {"text", "copyright", "name",
-            "instrument_name", "lyric", "marker", "cue_point"}
+         local metadata_types = LuaMidi.Constants.METADATA_TYPES
          for i=1, #raw_track do
             if raw_track[i] == 0x00 and raw_track[i+1] == 0xFF then
                local raw_metadata = {}
@@ -83,13 +82,33 @@ function LuaMidi.get_MIDI_tracks(path)
                for j=i, k+raw_track[k] do
                   raw_metadata[#raw_metadata+1] = raw_track[j]
                end
-               local string_metadata = ""
-               for j=5, #raw_metadata do
-                  string_metadata = string_metadata..string.char(raw_metadata[j])
+               local converted_data
+               if raw_track[i+2] < 0x08 then
+                  converted_data = ""
+                  for j=5, #raw_metadata do
+                     converted_data = converted_data..string.char(raw_metadata[j])
+                  end
+               elseif raw_track[i+2] == LuaMidi.Constants.META_TEMPO_ID then
+                  local data_bytes = {raw_track[i+4], raw_track[i+5], raw_track[i+6]}
+                  local ms = LuaMidi.Util.number_from_bytes(data_bytes)
+                  local bpm = LuaMidi.Util.round(60000000/ms)
+                  converted_data = tostring(ms).." ms ("..bpm.."bpm)"
+               elseif raw_track[i+2] == LuaMidi.Constants.META_TIME_SIGNATURE_ID then
+                  converted_data = raw_track[i+4]
+                  converted_data = converted_data.."/"..math.ceil(2^raw_track[i+5])
+               elseif raw_track[i+2] == LuaMidi.Constants.META_KEY_SIGNATURE_ID then
+                  local majmin = {'major', 'minor'}
+                  local keys = {{'C','A'},{'G','E'},{'D','B'},{'A','F#'},
+                     {'E','C#'},{'B','G#'},{'F#','D#'},{'C#','A#'}}
+                  local sharps_num = tostring(raw_track[i+4])
+                  converted_data = sharps_num.."#"
+                  converted_data = converted_data.." ("..keys[sharps_num+1][raw_track[i+5]+1].." "..majmin[raw_track[i+5]+1]..")"
                end
-               track.metadata[metadata_types[raw_track[i+2]]] = string_metadata
+               local subtype = metadata_types[raw_track[i+2]]
+               track.metadata[subtype] = converted_data
                local event = {
                   type = 'meta',
+                  subtype = subtype,
                   data = raw_metadata,
                }
                event = setmetatable(event, { __index = LuaMidi.MetaEvent })
