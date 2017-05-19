@@ -31,6 +31,9 @@ function MetaEvent.new(fields)
    return setmetatable(self, { __index = MetaEvent })
 end
 
+-------------------------------------------------
+-- Prints event's data in a human-friendly style
+-------------------------------------------------
 function MetaEvent:print()
    local str = ""
    for j=5, #self.data do

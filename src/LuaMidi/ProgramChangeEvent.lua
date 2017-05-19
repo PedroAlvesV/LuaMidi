@@ -27,6 +27,9 @@ function ProgramChangeEvent.new(pcnumber)
    return setmetatable(self, { __index = ProgramChangeEvent })
 end
 
+-------------------------------------------------
+-- Prints event's data in a human-friendly style
+-------------------------------------------------
 function ProgramChangeEvent:print()
    print("\nClass / Type:\tProgramChangeEvent / '"..self.type.."'")
    print("Data:\t", self.data[3])

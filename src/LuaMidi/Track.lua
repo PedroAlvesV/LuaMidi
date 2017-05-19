@@ -16,6 +16,8 @@ local Track = {}
 -------------------------------------------------
 -- Creates a new Track
 --
+-- @string[opt] name a name metadata to the Track
+--
 -- @return 	new Track object
 -------------------------------------------------
 function Track.new(name)
@@ -63,13 +65,13 @@ end
 -------------------------------------------------
 -- Gets events from Track
 --
--- @string filter a string to filter events by type
+-- @string filter a string to filter events by type. The valid values are `meta`, `note` and `program-change`.
 --
 -- @see MetaEvent
 -- @see NoteEvent
 -- @see ProgramChangeEvent
 --
--- @return 	Track's event list
+-- @return 	events table
 -------------------------------------------------
 function Track:get_events(filter)
    if filter then

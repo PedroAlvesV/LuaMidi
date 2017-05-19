@@ -225,6 +225,9 @@ function NoteEvent.new(fields)
    return setmetatable(self, { __index = NoteEvent })
 end
 
+-------------------------------------------------
+-- Prints event's data in a human-friendly style
+-------------------------------------------------
 function NoteEvent:print()
    local function quote(str)
       if not tonumber(str:sub(1,1)) then
