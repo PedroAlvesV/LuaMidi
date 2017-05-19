@@ -94,10 +94,12 @@ end
 -- @return 	Track with tempo
 -------------------------------------------------
 function Track:set_tempo(bpm)
-   local event = MetaEvent.new({data = {Constants.META_TEMPO_ID}})
+   local constant = Constants.META_TEMPO_ID
+   local event = MetaEvent.new({data = {constant}})
    event.data[#event.data+1] = 0x03
    local tempo = Util.round(60000000/bpm)
    event.data = Util.table_concat(event.data, Util.number_to_bytes(tempo, 3))
+   event.subtype = Constants.METADATA_TYPES[constant]
    return self:add_event(event)
 end
 
@@ -114,32 +116,36 @@ end
 -- @return 	Track with time signature
 -------------------------------------------------
 function Track:set_time_signature(num, den, midi_clocks_tick, notes_midi_clock)
-   midi_clocks_per_tick = midi_clocks_per_tick or 24
-   notes_per_midi_clock = notes_per_midi_clock or 8
-   local event = MetaEvent.new({data = {Constants.META_TIME_SIGNATURE_ID}})
+   midi_clocks_tick = midi_clocks_tick or 24
+   notes_midi_clock = notes_midi_clock or 8
+   den = math.log(den, 2)
+   local constant = Constants.META_TIME_SIGNATURE_ID
+   local event = MetaEvent.new({data = {constant}})
    event.data[#event.data+1] = 0x04
-   event.data = Util.table_concat(event.data, Util.number_to_bytes(numerator, 1))
-   denominator = math.log(denominator, 2)
-   event.data = Util.table_concat(event.data, Util.number_to_bytes(denominator, 1))
-   event.data = Util.table_concat(event.data, Util.number_to_bytes(midi_clocks_per_tick, 1))
-   event.data = Util.table_concat(event.data, Util.number_to_bytes(notes_per_midi_clock, 1))
+   event.data = Util.table_concat(event.data, Util.number_to_bytes(num, 1))
+   event.data = Util.table_concat(event.data, Util.number_to_bytes(den, 1))
+   event.data = Util.table_concat(event.data, Util.number_to_bytes(midi_clocks_tick, 1))
+   event.data = Util.table_concat(event.data, Util.number_to_bytes(notes_midi_clock, 1))
+   event.subtype = Constants.METADATA_TYPES[constant]
    return self:add_event(event)
 end
 
 -------------------------------------------------
 -- Sets Track's key signature
 --
--- @param sf signature's top number
--- @param mi signature's bottom number
+-- @param sf number of sharps or flats
+-- @param mi[opt=0] major or minor (0 or 1)
 --
 -- @see MetaEvent
 --
 -- @return 	Track with key signature
 -------------------------------------------------
 function Track:set_key_signature(sf, mi)
-   -- must test
-   local event = MetaEvent.new({data = {Constants.META_KEY_SIGNATURE_ID}})
+   local constant = Constants.META_KEY_SIGNATURE_ID
+   local event = MetaEvent.new({data = {constant}})
    event.data[#event.data+1] = 0x02
+   sf = sf%8
+   mi = mi%2
    local mode = mi or 0
    sf = sf or 0
    if not mi then
@@ -171,6 +177,7 @@ function Track:set_key_signature(sf, mi)
    end
    event.data = Util.table_concat(event.data, Util.number_to_bytes(sf,1))
    event.data = Util.table_concat(event.data, Util.number_to_bytes(mode,1))
+   event.subtype = Constants.METADATA_TYPES[constant]
    return self:add_event(event)
 end
 
@@ -179,6 +186,7 @@ local function default_add_text(self, text, constant)
    local string_bytes = Util.string_to_bytes(text)
    event.data = Util.table_concat(event.data, Util.num_to_var_length(#string_bytes))
    event.data = Util.table_concat(event.data, string_bytes)
+   event.subtype = Constants.METADATA_TYPES[constant]
    return self:add_event(event)
 end
 
