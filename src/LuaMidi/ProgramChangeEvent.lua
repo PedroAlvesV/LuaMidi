@@ -35,4 +35,26 @@ function ProgramChangeEvent:print()
    print("Data:\t", self.data[3])
 end
 
+-------------------------------------------------
+-- Sets ProgramChangeEvent's value
+--
+-- @number value event's new value
+--
+-- @return 	event with new value
+-------------------------------------------------
+function ProgramChangeEvent:set_value(value)
+   if type(value) ~= 'number' then return false end
+   self.data[3] = value
+   return self
+end
+
+-------------------------------------------------
+-- Gets ProgramChangeEvent's value
+--
+-- @return 	event's value
+-------------------------------------------------
+function ProgramChangeEvent:get_value()
+   return self.data[3]
+end
+
 return ProgramChangeEvent
