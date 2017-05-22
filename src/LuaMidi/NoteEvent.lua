@@ -250,4 +250,93 @@ function NoteEvent:print()
    print(str)
 end
 
+function NoteEvent:set_pitch(pitch)
+   if type(pitch) == 'string' or type(pitch) == 'number' then
+      pitch = {pitch}
+   elseif type(pitch) ~= 'table' then
+      return false
+   end
+   self.pitch = pitch
+   self.build_data()
+   return self
+end
+
+function NoteEvent:set_duration(duration)
+   if type(duration) == 'number' then
+      duration = tostring(duration)
+   elseif type(duration) ~= 'string' then
+      return false
+   end
+   self.duration = duration
+   self.build_data()
+   return self
+end
+
+function NoteEvent:set_wait(wait)
+   if type(wait) == 'number' then
+      wait = tostring(wait)
+   elseif type(wait) ~= 'string' then
+      return false
+   end
+   self.wait = wait
+   self.build_data()
+   return self
+end
+
+function NoteEvent:set_velocity(velocity)
+   if type(velocity) ~= 'number' then return false end
+   self.velocity = self.convert_velocity(velocity)
+   self.build_data()
+   return self
+end
+
+function NoteEvent:set_channel(channel)
+   if type(channel) ~= 'number' then return false end
+   self.channel = channel
+   self.build_data()
+   return self
+end
+
+function NoteEvent:set_repetition(repetition)
+   if type(repetition) ~= 'number' then return false end
+   self.repetition = repetition
+   self.build_data()
+   return self
+end
+
+function NoteEvent:set_sequential(sequential)
+   if type(sequential) ~= 'boolean' then return false end
+   self.sequential = sequential
+   self.build_data()
+   return self
+end
+
+function NoteEvent:get_pitch()
+   return self.pitch
+end
+
+function NoteEvent:get_duration()
+   return self.duration
+end
+
+function NoteEvent:get_wait()
+   return self.wait
+end
+
+function NoteEvent:get_velocity()
+   return self.velocity
+end
+
+function NoteEvent:get_channel()
+   return self.channel
+end
+
+function NoteEvent:get_repetition()
+   return self.repetition
+end
+
+function NoteEvent:get_sequential()
+   return self.sequential
+end
+
 return NoteEvent
