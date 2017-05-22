@@ -245,7 +245,7 @@ function NoteEvent:print()
       pitch = pitch..quote(self.pitch[#self.pitch])
       pitch = pitch.." }"
    end
-   local str = string.format("Pitch:\t\t%s\nVelocity:\t%d\nChannel:\t%d\nRepetition:\t%d\nSequential:\t%s", pitch,self.velocity,self.channel,self.repetition,self.sequential)
+   local str = string.format("Pitch:\t\t%s\nDuration:\t%s\nRest:\t\t%s\nVelocity:\t%d\nChannel:\t%d\nRepetition:\t%d\nSequential:\t%s",pitch,self.duration,self.wait,self.velocity,self.channel,self.repetition,self.sequential)
    print("\nClass / Type:\tNoteEvent / '"..self.type.."'")
    print(str)
 end
