@@ -213,7 +213,7 @@ function LuaMidi.add_tracks_to_MIDI(input, tracks, output)
       buffer[12] = bytes_n_tracks[2]
       local tracks_bytes = {}
       for _, track in ipairs(tracks) do
-         track:add_event(LuaMidi.MetaEvent.new({data = LuaMidi.Constants.META_END_OF_TRACK_ID}))
+         track:add_events(LuaMidi.MetaEvent.new({data = LuaMidi.Constants.META_END_OF_TRACK_ID}))
          local raw_track = LuaMidi.Util.table_concat(track.type, track.size)
          raw_track = LuaMidi.Util.table_concat(raw_track, track.data)
          tracks_bytes[#tracks_bytes+1] = raw_track

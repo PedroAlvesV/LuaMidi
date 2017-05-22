@@ -41,7 +41,7 @@ local track = Track.new()
 local notes = {'C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4'}
 
 -- Adds notes to Track
-track:add_event(NoteEvent.new({pitch = notes, sequential = true}))
+track:add_events(NoteEvent.new({pitch = notes, sequential = true}))
 
 -- Creates Writer passing Track
 local writer = Writer.new(track)
@@ -54,7 +54,7 @@ Even though the above example creates a working MIDI file, it's encouragable to 
 
 This short script works over the basics of LuaMidi. Initially, it creates a `Track` object. Then, it creates an array(`notes`) with the notes as strings. After that, it adds this array to a new `NoteEvent`, also passing `true` as `sequential` field to indicate the notes won't be played at the same time. Once the track is ready, it creates a `Writer` object passing the track as parameter. With all tracks' data, the `Writer` can produce a working MIDI file.
 
-You can check the docs at [the wiki](https://github.com/PedroAlvesV/LuaMidi/wiki).
+You can check the complete documentation at [the wiki](https://github.com/PedroAlvesV/LuaMidi/wiki).
 
 ### Example
 
@@ -93,7 +93,7 @@ local chord_GB = note({'B2', 'D3', 'G3', 'B3'})
 local chord_Am = note(Am)
 local long_chord_Am = note(Am, 1)
 
-track:add_event({
+track:add_events({
    A3, C4, E4, A4, Ab3_B4, E4, C4, B4,
    G3_C5, E4, C4, C5, Gb3_Gb4, D4, A3,
    Gb4, F3_E4, C4, A3, long_C4, E4, C4, A3,

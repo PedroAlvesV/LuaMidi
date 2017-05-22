@@ -46,7 +46,7 @@ end
 --
 -- @return 	new Track object
 -------------------------------------------------
-function Track:add_event(events, map_function)
+function Track:add_events(events, map_function)
    if events.type then events = {events} end
    for i, event in ipairs(events) do
       if (type(map_function) == 'function') and (event.type == 'note') then
@@ -100,7 +100,7 @@ function Track:set_tempo(bpm)
    local tempo = Util.round(60000000/bpm)
    event.data = Util.table_concat(event.data, Util.number_to_bytes(tempo, 3))
    event.subtype = Constants.METADATA_TYPES[constant]
-   return self:add_event(event)
+   return self:add_events(event)
 end
 
 -------------------------------------------------
@@ -127,7 +127,7 @@ function Track:set_time_signature(num, den, midi_clocks_tick, notes_midi_clock)
    event.data = Util.table_concat(event.data, Util.number_to_bytes(midi_clocks_tick, 1))
    event.data = Util.table_concat(event.data, Util.number_to_bytes(notes_midi_clock, 1))
    event.subtype = Constants.METADATA_TYPES[constant]
-   return self:add_event(event)
+   return self:add_events(event)
 end
 
 -------------------------------------------------
@@ -178,7 +178,7 @@ function Track:set_key_signature(sf, mi)
    event.data = Util.table_concat(event.data, Util.number_to_bytes(sf,1))
    event.data = Util.table_concat(event.data, Util.number_to_bytes(mode,1))
    event.subtype = Constants.METADATA_TYPES[constant]
-   return self:add_event(event)
+   return self:add_events(event)
 end
 
 local function default_add_text(self, text, constant)
@@ -187,7 +187,7 @@ local function default_add_text(self, text, constant)
    event.data = Util.table_concat(event.data, Util.num_to_var_length(#string_bytes))
    event.data = Util.table_concat(event.data, string_bytes)
    event.subtype = Constants.METADATA_TYPES[constant]
-   return self:add_event(event)
+   return self:add_events(event)
 end
 
 -------------------------------------------------
@@ -296,7 +296,7 @@ end
 function Track:poly_mode_on()
    -- must test
    local event = NoteOnEvent.new({data = {0x00, 0xB0, 0x7E, 0x00}})
-   return self:add_event(event)
+   return self:add_events(event)
 end
 
 -------------------------------------------------
