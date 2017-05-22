@@ -3,7 +3,7 @@
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
-    <title>LuaMidi ♫ – A library to read and write MIDI files, in Lua.</title>
+    <title>LuaMidi ♫ – The Lua library to read and write MIDI files</title>
     <link rel="stylesheet" href="../ldoc.css" type="text/css" />
 </head>
 <body>
@@ -78,7 +78,7 @@
 	<td class="summary">Creates a new Track</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Track:add_event">Track:add_event (events, map_function)</a></td>
+	<td class="name" nowrap><a href="#Track:add_events">Track:add_events (events, map_function)</a></td>
 	<td class="summary">Adds an event-list (or single event) to the track.</td>
 	</tr>
 	<tr>
@@ -98,32 +98,32 @@
 	<td class="summary">Sets Track's key signature</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Track:add_text">Track:add_text (text)</a></td>
-	<td class="summary">Adds text to Track</td>
+	<td class="name" nowrap><a href="#Track:set_text">Track:set_text (text)</a></td>
+	<td class="summary">Sets text to Track</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Track:add_copyright">Track:add_copyright (text)</a></td>
-	<td class="summary">Adds copyright to Track</td>
+	<td class="name" nowrap><a href="#Track:set_copyright">Track:set_copyright (text)</a></td>
+	<td class="summary">Sets copyright to Track</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Track:add_name">Track:add_name (name)</a></td>
-	<td class="summary">Adds a name to Track</td>
+	<td class="name" nowrap><a href="#Track:set_name">Track:set_name (name)</a></td>
+	<td class="summary">Sets a name to Track</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Track:add_instrument_name">Track:add_instrument_name (name)</a></td>
-	<td class="summary">Adds instrument name to Track</td>
+	<td class="name" nowrap><a href="#Track:set_instrument_name">Track:set_instrument_name (name)</a></td>
+	<td class="summary">Sets instrument name to Track</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Track:add_lyric">Track:add_lyric (lyric)</a></td>
-	<td class="summary">Adds lyric to Track</td>
+	<td class="name" nowrap><a href="#Track:set_lyric">Track:set_lyric (lyric)</a></td>
+	<td class="summary">Sets lyric to Track</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Track:add_marker">Track:add_marker (text)</a></td>
-	<td class="summary">Adds marker text to Track</td>
+	<td class="name" nowrap><a href="#Track:set_marker">Track:set_marker (text)</a></td>
+	<td class="summary">Sets marker text to Track</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Track:add_cue_point">Track:add_cue_point (text)</a></td>
-	<td class="summary">Adds cue point to Track</td>
+	<td class="name" nowrap><a href="#Track:set_cue_point">Track:set_cue_point (text)</a></td>
+	<td class="summary">Sets cue point to Track</td>
 	</tr>
 	<tr>
 	<td class="name" nowrap><a href="#Track:poly_mode_on">Track:poly_mode_on ()</a></td>
@@ -194,8 +194,8 @@
 
 </dd>
     <dt>
-    <a name = "Track:add_event"></a>
-    <strong>Track:add_event (events, map_function)</strong>
+    <a name = "Track:add_events"></a>
+    <strong>Track:add_events (events, map_function)</strong>
     </dt>
     <dd>
     Adds an event-list (or single event) to the track.  These events can be
@@ -361,11 +361,11 @@
 
 </dd>
     <dt>
-    <a name = "Track:add_text"></a>
-    <strong>Track:add_text (text)</strong>
+    <a name = "Track:set_text"></a>
+    <strong>Track:set_text (text)</strong>
     </dt>
     <dd>
-    Adds text to Track
+    Sets text to Track
 
 
     <h3>Parameters:</h3>
@@ -391,11 +391,11 @@
 
 </dd>
     <dt>
-    <a name = "Track:add_copyright"></a>
-    <strong>Track:add_copyright (text)</strong>
+    <a name = "Track:set_copyright"></a>
+    <strong>Track:set_copyright (text)</strong>
     </dt>
     <dd>
-    Adds copyright to Track
+    Sets copyright to Track
 
 
     <h3>Parameters:</h3>
@@ -421,11 +421,11 @@
 
 </dd>
     <dt>
-    <a name = "Track:add_name"></a>
-    <strong>Track:add_name (name)</strong>
+    <a name = "Track:set_name"></a>
+    <strong>Track:set_name (name)</strong>
     </dt>
     <dd>
-    Adds a name to Track
+    Sets a name to Track
 
 
     <h3>Parameters:</h3>
@@ -451,11 +451,11 @@
 
 </dd>
     <dt>
-    <a name = "Track:add_instrument_name"></a>
-    <strong>Track:add_instrument_name (name)</strong>
+    <a name = "Track:set_instrument_name"></a>
+    <strong>Track:set_instrument_name (name)</strong>
     </dt>
     <dd>
-    Adds instrument name to Track
+    Sets instrument name to Track
 
 
     <h3>Parameters:</h3>
@@ -481,11 +481,11 @@
 
 </dd>
     <dt>
-    <a name = "Track:add_lyric"></a>
-    <strong>Track:add_lyric (lyric)</strong>
+    <a name = "Track:set_lyric"></a>
+    <strong>Track:set_lyric (lyric)</strong>
     </dt>
     <dd>
-    Adds lyric to Track
+    Sets lyric to Track
 
 
     <h3>Parameters:</h3>
@@ -511,11 +511,11 @@
 
 </dd>
     <dt>
-    <a name = "Track:add_marker"></a>
-    <strong>Track:add_marker (text)</strong>
+    <a name = "Track:set_marker"></a>
+    <strong>Track:set_marker (text)</strong>
     </dt>
     <dd>
-    Adds marker text to Track
+    Sets marker text to Track
 
 
     <h3>Parameters:</h3>
@@ -541,11 +541,11 @@
 
 </dd>
     <dt>
-    <a name = "Track:add_cue_point"></a>
-    <strong>Track:add_cue_point (text)</strong>
+    <a name = "Track:set_cue_point"></a>
+    <strong>Track:set_cue_point (text)</strong>
     </dt>
     <dd>
-    Adds cue point to Track
+    Sets cue point to Track
 
 
     <h3>Parameters:</h3>
@@ -757,7 +757,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2017-05-19 04:41:43 </i>
+<i style="float:right;">Last updated 2017-05-22 04:13:10 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

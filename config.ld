@@ -1,7 +1,7 @@
 format = "markdown"
 file = "src"
 dir = "docs"
-title = "LuaMidi ♫ – A library to read and write MIDI files, in Lua."
+title = "LuaMidi ♫ – The Lua library to read and write MIDI files"
 description = title
 project = "LuaMidi ♫"
 readme = "README.md"
