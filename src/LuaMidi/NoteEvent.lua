@@ -103,6 +103,9 @@ function NoteEvent.new(fields)
       end
       return Util.round(velocity / 100 * 127)
    end
+   if self.repetition < 1 then self.repetition = 1 end
+   if self.channel < 1 then self.channel = 1
+   elseif self.channel > 16 then self.channel = 16 end
    self.velocity = self.convert_velocity(self.velocity)
    self.get_tick_duration = function(duration, type)
       if tostring(duration):lower():sub(1,1) == 't' then
@@ -347,6 +350,7 @@ end
 -------------------------------------------------
 function NoteEvent:set_repetition(repetition)
    if type(repetition) ~= 'number' then return false end
+   if repetition < 1 then repetition = 1 end
    self.repetition = repetition
    self.build_data()
    return self
@@ -361,6 +365,8 @@ end
 -------------------------------------------------
 function NoteEvent:set_channel(channel)
    if type(channel) ~= 'number' then return false end
+   if channel < 1 then channel = 1
+   elseif channel > 16 then channel = 16 end
    self.channel = channel
    self.build_data()
    return self
