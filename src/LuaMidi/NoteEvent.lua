@@ -85,27 +85,51 @@ local NoteEvent = {}
 -- @return 	new NoteEvent object
 -------------------------------------------------
 function NoteEvent.new(fields)
+   assert(type(fields.pitch) == 'string' or type(fields.pitch) == 'number' or type(fields.pitch) == 'table', "'pitch' must be a string, a number or an array")
    if type(fields.pitch) == 'string' or type(fields.pitch) == 'number' then fields.pitch = {fields.pitch} end
    local self = {
       type = 'note',
       pitch = fields.pitch,
-      rest = fields.rest or 0,
+      rest = fields.rest,
       duration = fields.duration,
-      sequential = fields.sequential or false,
-      velocity = fields.velocity or 50,
-      channel = fields.channel or 1,
-      repetition = fields.repetition or 1,
+      sequential = fields.sequential,
+      velocity = fields.velocity,
+      channel = fields.channel,
+      repetition = fields.repetition,
    }
+   if self.duration ~= nil then
+      assert(type(self.duration) == 'string' or type(self.duration) == 'number', "'duration' must be a string or a number")
+   else
+      self.duration = '4'
+   end
+   if self.rest ~= nil then
+      assert(type(self.rest) == 'string' or type(self.rest) == 'number', "'rest' must be a string or a number")
+   else
+      self.rest = 0
+   end
+   if self.velocity ~= nil then
+      assert(type(self.velocity) == 'number' and self.velocity >= 1 and self.velocity <= 100, "'velocity' must be an integer from 1 to 100")
+   else
+      self.velocity = 50
+   end
+   if self.sequential ~= nil then
+      assert(type(self.sequential) == 'boolean', "'sequential' must be a boolean")
+   else
+      self.sequential = false
+   end
+   if self.repetition ~= nil then
+      assert(type(self.repetition) == 'number' and self.repetition >= 1, "'repetition' must be a positive integer")
+   else
+      self.repetition = 1
+   end
+   if self.channel ~= nil then
+      assert(type(self.channel) == 'number' and self.channel >= 1 and self.channel <= 16, "'channel' must be an integer from 1 to 16")
+   else
+      self.channel = 1
+   end
    self.convert_velocity = function(velocity)
-		velocity = velocity or 50
-		if velocity > 100 then
-         velocity = 100
-      end
       return Util.round(velocity / 100 * 127)
    end
-   if self.repetition < 1 then self.repetition = 1 end
-   if self.channel < 1 then self.channel = 1
-   elseif self.channel > 16 then self.channel = 16 end
    self.velocity = self.convert_velocity(self.velocity)
    self.get_tick_duration = function(duration, type)
       if tostring(duration):lower():sub(1,1) == 't' then
@@ -154,74 +178,70 @@ function NoteEvent.new(fields)
       local tick_duration = self.get_tick_duration(self.duration, 'note')
       local rest_duration = self.get_tick_duration(self.rest, 'rest')
       local note_on, note_off
-      if type(self.pitch) == 'table' then
-         if not self.sequential then
-            for j=1, self.repetition do
-               for i, p in ipairs(self.pitch) do
-                  local fields = {}
-                  local data
-                  if i == 1 then
-                     data = Util.num_to_var_length(rest_duration)
-                     data[#data+1] = self.get_note_on_status()
-                     data[#data+1] = Util.get_pitch(p)
-                     data[#data+1] = self.velocity
-                  else
-                     data = {0, Util.get_pitch(p), self.velocity}
-                  end
-                  fields.data = data
-                  note_on = NoteOnEvent.new(fields)
-                  self.data = Util.table_concat(self.data, note_on.data)
+      if not self.sequential then
+         for j=1, self.repetition do
+            for i, p in ipairs(self.pitch) do
+               local fields = {}
+               local data
+               if i == 1 then
+                  data = Util.num_to_var_length(rest_duration)
+                  data[#data+1] = self.get_note_on_status()
+                  data[#data+1] = Util.get_pitch(p)
+                  data[#data+1] = self.velocity
+               else
+                  data = {0, Util.get_pitch(p), self.velocity}
                end
-               for i, p in ipairs(self.pitch) do
-                  local fields = {}
-                  local data
-                  if i == 1 then
-                     data = Util.num_to_var_length(tick_duration)
-                     data[#data+1] = self.get_note_off_status()
-                     data[#data+1] = Util.get_pitch(p)
-                     data[#data+1] = self.velocity
-                  else
-                     data = {0, Util.get_pitch(p), self.velocity}
-                  end
-                  fields.data = data
-                  note_off = NoteOffEvent.new(fields)
-                  self.data = Util.table_concat(self.data, note_off.data)
-               end
+               fields.data = data
+               note_on = NoteOnEvent.new(fields)
+               self.data = Util.table_concat(self.data, note_on.data)
             end
-         else
-            for j=1, self.repetition do
-               for i, p in ipairs(self.pitch) do
-                  local fields = {}
-                  if i > 1 then
-                     rest_duration = 0
-                  end
-                  if (self.duration == '8t') and i == #self.pitch then
-                     local quarter_ticks = Util.number_from_bytes(Constants.HEADER_CHUNK_DIVISION)
-                     tick_duration = quarter_ticks - (tick_duration * 2)
-                  end
-                  local fieldsOn, fieldsOff = {}, {}
-                  
-                  local dataOn = Util.num_to_var_length(rest_duration)
-                  dataOn[#dataOn+1] = self.get_note_on_status()
-                  dataOn[#dataOn+1] = Util.get_pitch(p)
-                  dataOn[#dataOn+1] = self.velocity
-                  fieldsOn.data = dataOn
-                  note_on = NoteOnEvent.new(fieldsOn)
-                  
-                  local dataOff = Util.num_to_var_length(tick_duration)
-                  dataOff[#dataOff+1] = self.get_note_off_status()
-                  dataOff[#dataOff+1] = Util.get_pitch(p)
-                  dataOff[#dataOff+1] = self.velocity
-                  fieldsOff.data = dataOff
-                  note_off = NoteOffEvent.new(fieldsOff)
-                  
-                  self.data = Util.table_concat(self.data, dataOn)
-                  self.data = Util.table_concat(self.data, dataOff)
+            for i, p in ipairs(self.pitch) do
+               local fields = {}
+               local data
+               if i == 1 then
+                  data = Util.num_to_var_length(tick_duration)
+                  data[#data+1] = self.get_note_off_status()
+                  data[#data+1] = Util.get_pitch(p)
+                  data[#data+1] = self.velocity
+               else
+                  data = {0, Util.get_pitch(p), self.velocity}
                end
+               fields.data = data
+               note_off = NoteOffEvent.new(fields)
+               self.data = Util.table_concat(self.data, note_off.data)
             end
          end
       else
-         print("Pitch must be an array.")
+         for j=1, self.repetition do
+            for i, p in ipairs(self.pitch) do
+               local fields = {}
+               if i > 1 then
+                  rest_duration = 0
+               end
+               if (self.duration == '8t') and i == #self.pitch then
+                  local quarter_ticks = Util.number_from_bytes(Constants.HEADER_CHUNK_DIVISION)
+                  tick_duration = quarter_ticks - (tick_duration * 2)
+               end
+               local fieldsOn, fieldsOff = {}, {}
+               
+               local dataOn = Util.num_to_var_length(rest_duration)
+               dataOn[#dataOn+1] = self.get_note_on_status()
+               dataOn[#dataOn+1] = Util.get_pitch(p)
+               dataOn[#dataOn+1] = self.velocity
+               fieldsOn.data = dataOn
+               note_on = NoteOnEvent.new(fieldsOn)
+               
+               local dataOff = Util.num_to_var_length(tick_duration)
+               dataOff[#dataOff+1] = self.get_note_off_status()
+               dataOff[#dataOff+1] = Util.get_pitch(p)
+               dataOff[#dataOff+1] = self.velocity
+               fieldsOff.data = dataOff
+               note_off = NoteOffEvent.new(fieldsOff)
+               
+               self.data = Util.table_concat(self.data, dataOn)
+               self.data = Util.table_concat(self.data, dataOff)
+            end
+         end
       end
    end
    self.build_data()
@@ -262,11 +282,8 @@ end
 -- @return 	NoteEvent with new pitch
 -------------------------------------------------
 function NoteEvent:set_pitch(pitch)
-   if type(pitch) == 'string' or type(pitch) == 'number' then
-      pitch = {pitch}
-   elseif type(pitch) ~= 'table' then
-      return false
-   end
+   assert(type(pitch) == 'string' or type(pitch) == 'number' or type(pitch) == 'table', "'pitch' must be a string, a number or an array")
+   if type(pitch) == 'string' or type(pitch) == 'number' then pitch = {pitch} end
    self.pitch = pitch
    self.build_data()
    return self
@@ -281,11 +298,8 @@ end
 -- @return 	NoteEvent with new duration
 -------------------------------------------------
 function NoteEvent:set_duration(duration)
-   if type(duration) == 'number' then
-      duration = tostring(duration)
-   elseif type(duration) ~= 'string' then
-      return false
-   end
+   assert(type(duration) == 'string' or type(duration) == 'number', "'duration' must be a string or a number")
+   if type(duration) == 'number' then duration = tostring(duration) end
    self.duration = duration
    self.build_data()
    return self
@@ -300,11 +314,8 @@ end
 -- @return 	NoteEvent with new rest
 -------------------------------------------------
 function NoteEvent:set_rest(rest)
-   if type(rest) == 'number' then
-      rest = tostring(rest)
-   elseif type(rest) ~= 'string' then
-      return false
-   end
+   assert(type(rest) == 'string' or type(rest) == 'number', "'rest' must be a string or a number")
+   if type(rest) == 'number' then rest = tostring(rest) end
    self.rest = rest
    self.build_data()
    return self
@@ -319,7 +330,7 @@ end
 -- @return 	NoteEvent with new velocity
 -------------------------------------------------
 function NoteEvent:set_velocity(velocity)
-   if type(velocity) ~= 'number' then return false end
+   assert(type(velocity) == 'number' and velocity >= 1 and velocity <= 100, "'velocity' must be an integer from 1 to 100")
    self.velocity = self.convert_velocity(velocity)
    self.build_data()
    return self
@@ -334,7 +345,7 @@ end
 -- @return 	NoteEvent with new sequential property
 -------------------------------------------------
 function NoteEvent:set_sequential(sequential)
-   if type(sequential) ~= 'boolean' then return false end
+   assert(type(sequential) == 'boolean', "'sequential' must be a boolean")
    self.sequential = sequential
    self.build_data()
    return self
@@ -349,8 +360,7 @@ end
 -- @return 	NoteEvent with new repetition
 -------------------------------------------------
 function NoteEvent:set_repetition(repetition)
-   if type(repetition) ~= 'number' then return false end
-   if repetition < 1 then repetition = 1 end
+   assert(type(repetition) == 'number' and repetition >= 1, "'repetition' must be a positive integer")
    self.repetition = repetition
    self.build_data()
    return self
@@ -364,9 +374,7 @@ end
 -- @return 	NoteEvent with new channel
 -------------------------------------------------
 function NoteEvent:set_channel(channel)
-   if type(channel) ~= 'number' then return false end
-   if channel < 1 then channel = 1
-   elseif channel > 16 then channel = 16 end
+   assert(type(channel) == 'number' and channel >= 1 and channel <= 16, "'channel' must be an integer from 1 to 16")
    self.channel = channel
    self.build_data()
    return self
