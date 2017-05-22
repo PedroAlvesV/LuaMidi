@@ -79,6 +79,62 @@
 	<td class="name" nowrap><a href="#NoteEvent:print">NoteEvent:print ()</a></td>
 	<td class="summary">Prints event's data in a human-friendly style</td>
 	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:set_pitch">NoteEvent:set_pitch (pitch)</a></td>
+	<td class="summary">Sets NoteEvent's pitch</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:set_duration">NoteEvent:set_duration (duration)</a></td>
+	<td class="summary">Sets NoteEvent's duration</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:set_rest">NoteEvent:set_rest (rest)</a></td>
+	<td class="summary">Sets NoteEvent's rest</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:set_velocity">NoteEvent:set_velocity (velocity)</a></td>
+	<td class="summary">Sets NoteEvent's velocity</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:set_sequential">NoteEvent:set_sequential (sequential)</a></td>
+	<td class="summary">Sets NoteEvent's sequential property</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:set_repetition">NoteEvent:set_repetition (repetition)</a></td>
+	<td class="summary">Sets NoteEvent's repetition</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:set_channel">NoteEvent:set_channel (channel)</a></td>
+	<td class="summary">Sets NoteEvent's channel</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:get_pitch">NoteEvent:get_pitch ()</a></td>
+	<td class="summary">Gets pitch(es) of NoteEvent</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:get_duration">NoteEvent:get_duration ()</a></td>
+	<td class="summary">Gets duration of NoteEvent</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:get_rest">NoteEvent:get_rest ()</a></td>
+	<td class="summary">Gets rest duration of NoteEvent</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:get_velocity">NoteEvent:get_velocity ()</a></td>
+	<td class="summary">Gets velocity of NoteEvent</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:get_sequential">NoteEvent:get_sequential ()</a></td>
+	<td class="summary">Gets sequentiallity of NoteEvent</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:get_repetition">NoteEvent:get_repetition ()</a></td>
+	<td class="summary">Gets repetition value of NoteEvent</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#NoteEvent:get_channel">NoteEvent:get_channel ()</a></td>
+	<td class="summary">Gets channel # of NoteEvent</td>
+	</tr>
 </table>
 
 <br/>
@@ -139,17 +195,17 @@
             <td>Rest before sounding note.  Takes same values as <b>duration</b>.</td>
         </tr>
         <tr bgcolor="#dddddd">
+          <td><b>velocity</b></td>
+            <td>number</td>
+            <td>How loud the note should sound, values 1-100.  Default: <code>50</code></td>
+        </tr>
+        <tr>
             <td><b>sequential</b></td>
             <td>boolean</td>
             <td>If true then array of pitches will be played sequentially as opposed to simulatanously.  Default: <code>false</code></td>
         </tr>
-        <tr>
-            <td><b>velocity</b></td>
-            <td>number</td>
-            <td>How loud the note should sound, values 1-100.  Default: <code>50</code></td>
-        </tr>
         <tr bgcolor="#dddddd">
-            <td><b>repeat</b></td>
+            <td><b>repetition</b></td>
             <td>number</td>
             <td>How many times this event should be repeated. Default: <code>1</code></td>
         </tr>
@@ -196,6 +252,324 @@
 
 
 </dd>
+    <dt>
+    <a name = "NoteEvent:set_pitch"></a>
+    <strong>NoteEvent:set_pitch (pitch)</strong>
+    </dt>
+    <dd>
+    Sets NoteEvent's pitch
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">pitch</span>
+         takes the same values as the pitch
+ field passed to the constructor.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        NoteEvent with new pitch
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "NoteEvent:set_duration"></a>
+    <strong>NoteEvent:set_duration (duration)</strong>
+    </dt>
+    <dd>
+    Sets NoteEvent's duration
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">duration</span>
+         takes the same values as the
+ duration field passed to the constructor.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        NoteEvent with new duration
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "NoteEvent:set_rest"></a>
+    <strong>NoteEvent:set_rest (rest)</strong>
+    </dt>
+    <dd>
+    Sets NoteEvent's rest
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">rest</span>
+         takes the same values as the
+ rest field passed to the constructor.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        NoteEvent with new rest
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "NoteEvent:set_velocity"></a>
+    <strong>NoteEvent:set_velocity (velocity)</strong>
+    </dt>
+    <dd>
+    Sets NoteEvent's velocity
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">velocity</span>
+            <span class="types"><span class="type">number</span></span>
+         loudness of the note sound.
+ Values from 1-100.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        NoteEvent with new velocity
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "NoteEvent:set_sequential"></a>
+    <strong>NoteEvent:set_sequential (sequential)</strong>
+    </dt>
+    <dd>
+    Sets NoteEvent's sequential property
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">sequential</span>
+            <span class="types"><span class="type">bool</span></span>
+         <code>true</code> to play the pitches
+ (if <code>pitch</code> is an array) sequentially.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        NoteEvent with new sequential property
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "NoteEvent:set_repetition"></a>
+    <strong>NoteEvent:set_repetition (repetition)</strong>
+    </dt>
+    <dd>
+    Sets NoteEvent's repetition
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">repetition</span>
+            <span class="types"><span class="type">number</span></span>
+         number of times this NoteEvent
+ will be repeated.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        NoteEvent with new repetition
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "NoteEvent:set_channel"></a>
+    <strong>NoteEvent:set_channel (channel)</strong>
+    </dt>
+    <dd>
+    Sets NoteEvent's channel
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">channel</span>
+            <span class="types"><span class="type">number</span></span>
+         MIDI channel # (1-16).
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        NoteEvent with new channel
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "NoteEvent:get_pitch"></a>
+    <strong>NoteEvent:get_pitch ()</strong>
+    </dt>
+    <dd>
+    Gets pitch(es) of NoteEvent
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        NoteEvent's pitch field
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "NoteEvent:get_duration"></a>
+    <strong>NoteEvent:get_duration ()</strong>
+    </dt>
+    <dd>
+    Gets duration of NoteEvent
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        NoteEvent's duration field
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "NoteEvent:get_rest"></a>
+    <strong>NoteEvent:get_rest ()</strong>
+    </dt>
+    <dd>
+    Gets rest duration of NoteEvent
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        NoteEvent's rest field
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "NoteEvent:get_velocity"></a>
+    <strong>NoteEvent:get_velocity ()</strong>
+    </dt>
+    <dd>
+    Gets velocity of NoteEvent
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        NoteEvent's velocity field
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "NoteEvent:get_sequential"></a>
+    <strong>NoteEvent:get_sequential ()</strong>
+    </dt>
+    <dd>
+    Gets sequentiallity of NoteEvent
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        NoteEvent's sequential field
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "NoteEvent:get_repetition"></a>
+    <strong>NoteEvent:get_repetition ()</strong>
+    </dt>
+    <dd>
+    Gets repetition value of NoteEvent
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        NoteEvent's repetition field
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "NoteEvent:get_channel"></a>
+    <strong>NoteEvent:get_channel ()</strong>
+    </dt>
+    <dd>
+    Gets channel # of NoteEvent
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+        NoteEvent's channel field
+    </ol>
+
+
+
+
+</dd>
 </dl>
 
 
@@ -203,7 +577,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2017-05-22 04:13:10 </i>
+<i style="float:right;">Last updated 2017-05-22 17:50:10 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
