@@ -9,7 +9,7 @@ track:add_instrument_name("Default")
 
 local notes = {'C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4'}
 
-track:add_event(NoteEvent.new({pitch = notes, sequential = true}))
+track:add_events(NoteEvent.new({pitch = notes, sequential = true}))
 
 local writer = Writer.new(track)
 writer:save_MIDI('c_major_scale', 'midi files')

@@ -9,11 +9,11 @@ if n == 1 then
 
    local track = Track.new()
    track:add_name("i-juca")
-   track:add_event(NoteEvent.new({pitch = 'C4'}))
+   track:add_events(NoteEvent.new({pitch = 'C4'}))
 
    local track2 = Track.new()
    track2:add_name("pirama")
-   track2:add_event(NoteEvent.new({pitch = 'G4'}))
+   track2:add_events(NoteEvent.new({pitch = 'G4'}))
 
    require 'mm'(track)
    io.write('------------------------------------------\n')
@@ -26,7 +26,7 @@ elseif n == 2 then
    
    local track = Track.new()
    track:add_name("i-juca")
-   track:add_event(NoteEvent.new({pitch = 'C4'}))
+   track:add_events(NoteEvent.new({pitch = 'C4'}))
 
    require 'mm'(track)
 

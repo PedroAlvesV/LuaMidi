@@ -29,7 +29,7 @@ local long_C5 = chord(C5, 2)
 
 local short_Db5 = chord(Db5, 8)
 
-track:add_event({
+track:add_events({
    std_G5, std_Bb5, dotted_C5,
    std_G5, std_Bb5, short_Db5, long_C5,
    std_G5, std_Bb5, dotted_C5,

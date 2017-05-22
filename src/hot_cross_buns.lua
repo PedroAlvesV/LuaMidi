@@ -9,7 +9,7 @@ track:add_copyright("Public domain")
 track:add_instrument_name("Default")
 track:add_lyric("'Hot Cross Buns!(2x)/One a penny, Two a penny/Hot Cross Buns!'")
 
-track:add_event(
+track:add_events(
    {
       NoteEvent.new({pitch = {'E4', 'D4'}, duration = '4'}),
       NoteEvent.new({pitch = 'C4', duration = '2'}),

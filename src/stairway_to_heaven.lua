@@ -31,7 +31,7 @@ local chord_GB = note({'B2', 'D3', 'G3', 'B3'})
 local chord_Am = note(Am)
 local long_chord_Am = note(Am, 1)
 
-track:add_event({
+track:add_events({
    A3, C4, E4, A4, Ab3_B4, E4, C4, B4,
    G3_C5, E4, C4, C5, Gb3_Gb4, D4, A3,
    Gb4, F3_E4, C4, A3, long_C4, E4, C4, A3,
