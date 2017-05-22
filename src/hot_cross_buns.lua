@@ -4,10 +4,10 @@ local NoteEvent = LuaMidi.NoteEvent
 local Writer = LuaMidi.Writer
 
 local track = Track.new("Hot Cross Buns")
-track:add_text("Popular nursery rhyme theme")
-track:add_copyright("Public domain")
-track:add_instrument_name("Default")
-track:add_lyric("'Hot Cross Buns!(2x)/One a penny, Two a penny/Hot Cross Buns!'")
+track:set_text("Popular nursery rhyme theme")
+track:set_copyright("Public domain")
+track:set_instrument_name("Default")
+track:set_lyric("'Hot Cross Buns!(2x)/One a penny, Two a penny/Hot Cross Buns!'")
 
 track:add_events(
    {

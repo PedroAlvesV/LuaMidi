@@ -4,8 +4,8 @@ local NoteEvent = LuaMidi.NoteEvent
 local Writer = LuaMidi.Writer
 
 local track = Track.new("Main riff")
-track:add_copyright("(C) Deep Purple")
-track:add_instrument_name("Guitar")
+track:set_copyright("(C) Deep Purple")
+track:set_instrument_name("Guitar")
 
 local function chord(array, duration)
    duration = tostring(duration)

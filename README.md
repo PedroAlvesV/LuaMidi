@@ -66,8 +66,8 @@ local NoteEvent = LuaMidi.NoteEvent
 local Writer = LuaMidi.Writer
 
 local track = Track.new("Intro")
-track:add_copyright("(C) Led Zeppelin")
-track:add_instrument_name("Acoustic Guitar")
+track:set_copyright("(C) Led Zeppelin")
+track:set_instrument_name("Acoustic Guitar")
 
 local function note(pitch, duration)
    return NoteEvent.new({pitch = pitch, duration = tostring(duration)})
