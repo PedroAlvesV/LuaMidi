@@ -1,10 +1,11 @@
-# LuaMidi ♫
+# LuaMidi ♫ – The Lua library to read and write MIDI files
 
-LuaMidi is a library to read and write MIDI files, in Lua.  
+<p align="justify"><strong>LuaMidi ♫</strong> is the pure Lua library to reading and writing MIDI files, with friendly API. As it provides MIDI data's total abstraction, it doesn't require the user to concern about technical stuff, such as delta time and NoteOn/NoteOff signals. Its methods are intuitive and its objects' data are completely human-readable.</p>
 
-Please, publish an [issue](https://github.com/PedroAlvesV/LuaMidi/issues), if you find any. 
+You can check the docs at [the wiki](https://github.com/PedroAlvesV/LuaMidi/wiki).  
+Please, publish an [issue](https://github.com/PedroAlvesV/LuaMidi/issues), if you find any.  
+This library doesn't have **any** dependencies.  
 
-You can check the docs at [the wiki](https://github.com/PedroAlvesV/LuaMidi/wiki).
 
 ## Getting Started
 
