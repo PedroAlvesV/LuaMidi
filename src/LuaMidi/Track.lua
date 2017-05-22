@@ -29,8 +29,10 @@ function Track.new(name)
       metadata = {},
    }
    local obj = setmetatable(self, { __index = Track })
-   if name then obj:set_name(name) end
-   return obj
+   if name ~= nil then
+      assert(type(name) == 'string', "'name' must be a string")
+      obj:set_name(name)
+   end   return obj
 end
 
 -------------------------------------------------
@@ -74,7 +76,8 @@ end
 -- @return 	events table
 -------------------------------------------------
 function Track:get_events(filter)
-   if filter then
+   if filter ~= nil then
+      assert(filter == 'note' or filter == 'meta' or filter == 'program-change', "Invalid filter")
       local events = {}
       for _, event in ipairs(self.events) do
          if event.type == filter then
@@ -94,6 +97,7 @@ end
 -- @return 	Track with tempo
 -------------------------------------------------
 function Track:set_tempo(bpm)
+   assert(bpm > 0, "Invalid 'bpm' value")
    local constant = Constants.META_TEMPO_ID
    local event = MetaEvent.new({data = {constant}})
    event.data[#event.data+1] = 0x03
@@ -200,6 +204,7 @@ end
 -- @return 	Track with text
 -------------------------------------------------
 function Track:set_text(text)
+   assert(type(text) == 'string', "'text' must be a string")
    self.metadata.Text = text
    return default_set_text(self, text, Constants.META_TEXT_ID)
 end
@@ -207,15 +212,16 @@ end
 -------------------------------------------------
 -- Sets copyright to Track
 --
--- @string text the copyright to be added
+-- @string copyright the copyright to be added
 --
 -- @see MetaEvent
 --
 -- @return 	Track with copyright
 -------------------------------------------------
-function Track:set_copyright(text)
-   self.metadata.Copyright = text
-   return default_set_text(self, text, Constants.META_COPYRIGHT_ID)
+function Track:set_copyright(copyright)
+   assert(type(copyright) == 'string', "'copyright' must be a string")
+   self.metadata.Copyright = copyright
+   return default_set_text(self, copyright, Constants.META_COPYRIGHT_ID)
 end
 
 -------------------------------------------------
@@ -228,6 +234,7 @@ end
 -- @return 	Track with a name
 -------------------------------------------------
 function Track:set_name(name)
+   assert(type(name) == 'string', "'name' must be a string")
    self.metadata.Name = name
    return default_set_text(self, name, Constants.META_TRACK_NAME_ID)
 end
@@ -235,15 +242,16 @@ end
 -------------------------------------------------
 -- Sets instrument name to Track
 --
--- @string name the instrument name to be added
+-- @string instrument_name the instrument name to be added
 --
 -- @see MetaEvent
 --
 -- @return 	Track with instrument name
 -------------------------------------------------
-function Track:set_instrument_name(name)
-   self.metadata.Instrument = name
-   return default_set_text(self, name, Constants.META_INSTRUMENT_NAME_ID)
+function Track:set_instrument_name(instrument_name)
+   assert(type(instrument_name) == 'string', "'instrument_name' must be a string")
+   self.metadata.Instrument = instrument_name
+   return default_set_text(self, instrument_name, Constants.META_INSTRUMENT_NAME_ID)
 end
 
 -------------------------------------------------
@@ -256,6 +264,7 @@ end
 -- @return 	Track with the lyric
 -------------------------------------------------
 function Track:set_lyric(lyric)
+   assert(type(lyric) == 'string', "'lyric' must be a string")
    self.metadata.Lyric = lyric
    return default_set_text(self, lyric, Constants.META_LYRIC_ID)
 end
@@ -263,29 +272,31 @@ end
 -------------------------------------------------
 -- Sets marker text to Track
 --
--- @string text the marker text to be added
+-- @string marker the marker text to be added
 --
 -- @see MetaEvent
 --
 -- @return 	Track with the marker text
 -------------------------------------------------
-function Track:set_marker(text)
-   self.metadata.Marker = text
-   return default_set_text(self, text, Constants.META_MARKER_ID)
+function Track:set_marker(marker)
+   assert(type(marker) == 'string', "'marker' must be a string")
+   self.metadata.Marker = marker
+   return default_set_text(self, marker, Constants.META_MARKER_ID)
 end
 
 -------------------------------------------------
 -- Sets cue point to Track
 --
--- @string text the cue point text to be added
+-- @string cue_point the cue point text to be added
 --
 -- @see MetaEvent
 --
 -- @return 	Track with the cue point
 -------------------------------------------------
-function Track:set_cue_point(text)
-   self.metadata["Cue Point"] = text
-   return default_set_text(self, text, Constants.META_CUE_POINT)
+function Track:set_cue_point(cue_point)
+   assert(type(cue_point) == 'string', "'cue_point' must be a string")
+   self.metadata["Cue Point"] = cue_point
+   return default_set_text(self, cue_point, Constants.META_CUE_POINT)
 end
 
 -------------------------------------------------
