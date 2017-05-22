@@ -58,17 +58,17 @@ local NoteEvent = {}
 --			<td>Rest before sounding note.  Takes same values as <b>duration</b>.</td>
 --		</tr>
 --		<tr bgcolor="#dddddd">
+--          <td><b>velocity</b></td>
+--			<td>number</td>
+--			<td>How loud the note should sound, values 1-100.  Default: <code>50</code></td>
+--		</tr>
+--		<tr>
 --			<td><b>sequential</b></td>
 --			<td>boolean</td>
 --			<td>If true then array of pitches will be played sequentially as opposed to simulatanously.  Default: <code>false</code></td>
 --		</tr>
---		<tr>
---			<td><b>velocity</b></td>
---			<td>number</td>
---			<td>How loud the note should sound, values 1-100.  Default: <code>50</code></td>
---		</tr>
 --		<tr bgcolor="#dddddd">
---			<td><b>repeat</b></td>
+--			<td><b>repetition</b></td>
 --			<td>number</td>
 --			<td>How many times this event should be repeated. Default: <code>1</code></td>
 --		</tr>
@@ -245,11 +245,19 @@ function NoteEvent:print()
       pitch = pitch..quote(self.pitch[#self.pitch])
       pitch = pitch.." }"
    end
-   local str = string.format("Pitch:\t\t%s\nDuration:\t%s\nRest:\t\t%s\nVelocity:\t%d\nChannel:\t%d\nRepetition:\t%d\nSequential:\t%s",pitch,self.duration,self.rest,self.velocity,self.channel,self.repetition,self.sequential)
+   local str = string.format("Pitch:\t\t%s\nDuration:\t%s\nRest:\t\t%s\nVelocity:\t%d\nSequential:\t%s\nRepetition:\t%d\nChannel:\t%d",pitch,self.duration,self.rest,self.velocity,self.sequential,self.repetition,self.channel)
    print("\nClass / Type:\tNoteEvent / '"..self.type.."'")
    print(str)
 end
 
+-------------------------------------------------
+-- Sets NoteEvent's pitch
+--
+-- @param pitch takes the same values as the pitch
+-- field passed to the constructor.
+--
+-- @return 	NoteEvent with new pitch
+-------------------------------------------------
 function NoteEvent:set_pitch(pitch)
    if type(pitch) == 'string' or type(pitch) == 'number' then
       pitch = {pitch}
@@ -261,6 +269,14 @@ function NoteEvent:set_pitch(pitch)
    return self
 end
 
+-------------------------------------------------
+-- Sets NoteEvent's duration
+--
+-- @param duration takes the same values as the
+-- duration field passed to the constructor.
+--
+-- @return 	NoteEvent with new duration
+-------------------------------------------------
 function NoteEvent:set_duration(duration)
    if type(duration) == 'number' then
       duration = tostring(duration)
@@ -272,6 +288,14 @@ function NoteEvent:set_duration(duration)
    return self
 end
 
+-------------------------------------------------
+-- Sets NoteEvent's rest
+--
+-- @param rest takes the same values as the
+-- rest field passed to the constructor.
+--
+-- @return 	NoteEvent with new rest
+-------------------------------------------------
 function NoteEvent:set_rest(rest)
    if type(rest) == 'number' then
       rest = tostring(rest)
@@ -283,6 +307,14 @@ function NoteEvent:set_rest(rest)
    return self
 end
 
+-------------------------------------------------
+-- Sets NoteEvent's velocity
+--
+-- @number velocity loudness of the note sound.
+-- Values from 1-100.
+--
+-- @return 	NoteEvent with new velocity
+-------------------------------------------------
 function NoteEvent:set_velocity(velocity)
    if type(velocity) ~= 'number' then return false end
    self.velocity = self.convert_velocity(velocity)
@@ -290,20 +322,14 @@ function NoteEvent:set_velocity(velocity)
    return self
 end
 
-function NoteEvent:set_channel(channel)
-   if type(channel) ~= 'number' then return false end
-   self.channel = channel
-   self.build_data()
-   return self
-end
-
-function NoteEvent:set_repetition(repetition)
-   if type(repetition) ~= 'number' then return false end
-   self.repetition = repetition
-   self.build_data()
-   return self
-end
-
+-------------------------------------------------
+-- Sets NoteEvent's sequential property
+--
+-- @bool sequential `true` to play the pitches
+-- (if `pitch` is an array) sequentially.
+--
+-- @return 	NoteEvent with new sequential property
+-------------------------------------------------
 function NoteEvent:set_sequential(sequential)
    if type(sequential) ~= 'boolean' then return false end
    self.sequential = sequential
@@ -311,32 +337,96 @@ function NoteEvent:set_sequential(sequential)
    return self
 end
 
+-------------------------------------------------
+-- Sets NoteEvent's repetition
+--
+-- @number repetition number of times this NoteEvent
+-- will be repeated.
+--
+-- @return 	NoteEvent with new repetition
+-------------------------------------------------
+function NoteEvent:set_repetition(repetition)
+   if type(repetition) ~= 'number' then return false end
+   self.repetition = repetition
+   self.build_data()
+   return self
+end
+
+-------------------------------------------------
+-- Sets NoteEvent's channel
+--
+-- @number channel MIDI channel # (1-16).
+--
+-- @return 	NoteEvent with new channel
+-------------------------------------------------
+function NoteEvent:set_channel(channel)
+   if type(channel) ~= 'number' then return false end
+   self.channel = channel
+   self.build_data()
+   return self
+end
+
+-------------------------------------------------
+-- Gets pitch(es) of NoteEvent
+--
+-- @return 	NoteEvent's pitch field
+-------------------------------------------------
 function NoteEvent:get_pitch()
    return self.pitch
 end
 
+-------------------------------------------------
+-- Gets duration of NoteEvent
+--
+-- @return 	NoteEvent's duration field
+-------------------------------------------------
 function NoteEvent:get_duration()
    return self.duration
 end
 
+-------------------------------------------------
+-- Gets rest duration of NoteEvent
+--
+-- @return 	NoteEvent's rest field
+-------------------------------------------------
 function NoteEvent:get_rest()
    return self.rest
 end
 
+-------------------------------------------------
+-- Gets velocity of NoteEvent
+--
+-- @return 	NoteEvent's velocity field
+-------------------------------------------------
 function NoteEvent:get_velocity()
    return self.velocity
 end
 
-function NoteEvent:get_channel()
-   return self.channel
+-------------------------------------------------
+-- Gets sequentiallity of NoteEvent
+--
+-- @return 	NoteEvent's sequential field
+-------------------------------------------------
+function NoteEvent:get_sequential()
+   return self.sequential
 end
 
+-------------------------------------------------
+-- Gets repetition value of NoteEvent
+--
+-- @return 	NoteEvent's repetition field
+-------------------------------------------------
 function NoteEvent:get_repetition()
    return self.repetition
 end
 
-function NoteEvent:get_sequential()
-   return self.sequential
+-------------------------------------------------
+-- Gets channel # of NoteEvent
+--
+-- @return 	NoteEvent's channel field
+-------------------------------------------------
+function NoteEvent:get_channel()
+   return self.channel
 end
 
 return NoteEvent
