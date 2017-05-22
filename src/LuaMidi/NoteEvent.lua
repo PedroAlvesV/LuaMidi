@@ -53,9 +53,9 @@ local NoteEvent = {}
 --			</td>
 --		</tr>
 --		<tr>
---			<td><b>wait</b></td>
+--			<td><b>rest</b></td>
 --			<td>string</td>
---			<td>How long to wait before sounding note (rest).  Takes same values as <b>duration</b>.</td>
+--			<td>Rest before sounding note.  Takes same values as <b>duration</b>.</td>
 --		</tr>
 --		<tr bgcolor="#dddddd">
 --			<td><b>sequential</b></td>
@@ -89,7 +89,7 @@ function NoteEvent.new(fields)
    local self = {
       type = 'note',
       pitch = fields.pitch,
-      wait = fields.wait or 0,
+      rest = fields.rest or 0,
       duration = fields.duration,
       sequential = fields.sequential or false,
       velocity = fields.velocity or 50,
@@ -149,7 +149,7 @@ function NoteEvent.new(fields)
    self.build_data = function()
       self.data = {}
       local tick_duration = self.get_tick_duration(self.duration, 'note')
-      local rest_duration = self.get_tick_duration(self.wait, 'rest')
+      local rest_duration = self.get_tick_duration(self.rest, 'rest')
       local note_on, note_off
       if type(self.pitch) == 'table' then
          if not self.sequential then
@@ -245,7 +245,7 @@ function NoteEvent:print()
       pitch = pitch..quote(self.pitch[#self.pitch])
       pitch = pitch.." }"
    end
-   local str = string.format("Pitch:\t\t%s\nDuration:\t%s\nRest:\t\t%s\nVelocity:\t%d\nChannel:\t%d\nRepetition:\t%d\nSequential:\t%s",pitch,self.duration,self.wait,self.velocity,self.channel,self.repetition,self.sequential)
+   local str = string.format("Pitch:\t\t%s\nDuration:\t%s\nRest:\t\t%s\nVelocity:\t%d\nChannel:\t%d\nRepetition:\t%d\nSequential:\t%s",pitch,self.duration,self.rest,self.velocity,self.channel,self.repetition,self.sequential)
    print("\nClass / Type:\tNoteEvent / '"..self.type.."'")
    print(str)
 end
@@ -272,13 +272,13 @@ function NoteEvent:set_duration(duration)
    return self
 end
 
-function NoteEvent:set_wait(wait)
-   if type(wait) == 'number' then
-      wait = tostring(wait)
-   elseif type(wait) ~= 'string' then
+function NoteEvent:set_rest(rest)
+   if type(rest) == 'number' then
+      rest = tostring(rest)
+   elseif type(rest) ~= 'string' then
       return false
    end
-   self.wait = wait
+   self.rest = rest
    self.build_data()
    return self
 end
@@ -319,8 +319,8 @@ function NoteEvent:get_duration()
    return self.duration
 end
 
-function NoteEvent:get_wait()
-   return self.wait
+function NoteEvent:get_rest()
+   return self.rest
 end
 
 function NoteEvent:get_velocity()
