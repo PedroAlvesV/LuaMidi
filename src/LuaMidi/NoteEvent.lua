@@ -29,8 +29,8 @@ local NoteEvent = {}
 --	<tbody>
 --		<tr>
 --			<td><b>pitch</b></td>
---			<td>array</td>
---			<td>An array of notes to be triggered.  Can be a string or valid MIDI note code.  Format for string is <code>C#4</code>.</td>
+--			<td>string, number or array</td>
+--			<td>Note (or array of notes) to be triggered. Can be a string or valid MIDI note code.  Format for string is <code>C#4</code>.</td>
 --		</tr>
 --		<tr bgcolor="#dddddd">
 --			<td><b>duration</b></td>
