@@ -29,7 +29,7 @@ function Track.new(name)
       metadata = {},
    }
    local obj = setmetatable(self, { __index = Track })
-   if name then obj:add_name(name) end
+   if name then obj:set_name(name) end
    return obj
 end
 
@@ -181,7 +181,7 @@ function Track:set_key_signature(sf, mi)
    return self:add_events(event)
 end
 
-local function default_add_text(self, text, constant)
+local function default_set_text(self, text, constant)
    local event = MetaEvent.new({data = {constant}})
    local string_bytes = Util.string_to_bytes(text)
    event.data = Util.table_concat(event.data, Util.num_to_var_length(#string_bytes))
@@ -191,7 +191,7 @@ local function default_add_text(self, text, constant)
 end
 
 -------------------------------------------------
--- Adds text to Track
+-- Sets text to Track
 --
 -- @string text the text to be added
 --
@@ -199,13 +199,13 @@ end
 --
 -- @return 	Track with text
 -------------------------------------------------
-function Track:add_text(text)
+function Track:set_text(text)
    self.metadata.Text = text
-   return default_add_text(self, text, Constants.META_TEXT_ID)
+   return default_set_text(self, text, Constants.META_TEXT_ID)
 end
 
 -------------------------------------------------
--- Adds copyright to Track
+-- Sets copyright to Track
 --
 -- @string text the copyright to be added
 --
@@ -213,13 +213,13 @@ end
 --
 -- @return 	Track with copyright
 -------------------------------------------------
-function Track:add_copyright(text)
+function Track:set_copyright(text)
    self.metadata.Copyright = text
-   return default_add_text(self, text, Constants.META_COPYRIGHT_ID)
+   return default_set_text(self, text, Constants.META_COPYRIGHT_ID)
 end
 
 -------------------------------------------------
--- Adds a name to Track
+-- Sets a name to Track
 --
 -- @string name the name to be added
 --
@@ -227,13 +227,13 @@ end
 --
 -- @return 	Track with a name
 -------------------------------------------------
-function Track:add_name(name)
+function Track:set_name(name)
    self.metadata.Name = name
-   return default_add_text(self, name, Constants.META_TRACK_NAME_ID)
+   return default_set_text(self, name, Constants.META_TRACK_NAME_ID)
 end
 
 -------------------------------------------------
--- Adds instrument name to Track
+-- Sets instrument name to Track
 --
 -- @string name the instrument name to be added
 --
@@ -241,13 +241,13 @@ end
 --
 -- @return 	Track with instrument name
 -------------------------------------------------
-function Track:add_instrument_name(name)
+function Track:set_instrument_name(name)
    self.metadata.Instrument = name
-   return default_add_text(self, name, Constants.META_INSTRUMENT_NAME_ID)
+   return default_set_text(self, name, Constants.META_INSTRUMENT_NAME_ID)
 end
 
 -------------------------------------------------
--- Adds lyric to Track
+-- Sets lyric to Track
 --
 -- @string lyric the lyric text to be added
 --
@@ -255,13 +255,13 @@ end
 --
 -- @return 	Track with the lyric
 -------------------------------------------------
-function Track:add_lyric(lyric)
+function Track:set_lyric(lyric)
    self.metadata.Lyric = lyric
-   return default_add_text(self, lyric, Constants.META_LYRIC_ID)
+   return default_set_text(self, lyric, Constants.META_LYRIC_ID)
 end
 
 -------------------------------------------------
--- Adds marker text to Track
+-- Sets marker text to Track
 --
 -- @string text the marker text to be added
 --
@@ -269,13 +269,13 @@ end
 --
 -- @return 	Track with the marker text
 -------------------------------------------------
-function Track:add_marker(text)
+function Track:set_marker(text)
    self.metadata.Marker = text
-   return default_add_text(self, text, Constants.META_MARKER_ID)
+   return default_set_text(self, text, Constants.META_MARKER_ID)
 end
 
 -------------------------------------------------
--- Adds cue point to Track
+-- Sets cue point to Track
 --
 -- @string text the cue point text to be added
 --
@@ -283,9 +283,9 @@ end
 --
 -- @return 	Track with the cue point
 -------------------------------------------------
-function Track:add_cue_point(text)
+function Track:set_cue_point(text)
    self.metadata["Cue Point"] = text
-   return default_add_text(self, text, Constants.META_CUE_POINT)
+   return default_set_text(self, text, Constants.META_CUE_POINT)
 end
 
 -------------------------------------------------
