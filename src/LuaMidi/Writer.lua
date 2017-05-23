@@ -91,7 +91,7 @@ end
 -- This array is must be unpacked and translated
 -- to binary to produce a MIDI file.
 -- <p>**Note:** This function should not be invoked
--- by the user. It's purpose is debugging LuaMidi.
+-- by the user. It's accessible for debugging purposes.
 --
 -- @return 	builded array
 --
