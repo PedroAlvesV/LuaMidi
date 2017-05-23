@@ -26,6 +26,7 @@ local Writer = {}
 -- @see Track
 -------------------------------------------------
 function Writer.new(tracks)
+   assert(type(tracks) == 'table' and (tracks.type or tracks[1].type), "'tracks' must be a Track object or array of Track objects")
    if #tracks == 0 and tracks.type then
       if Util.is_track_header(tracks.type) then
          tracks = {tracks}
@@ -75,6 +76,7 @@ end
 -- @see Track
 -------------------------------------------------
 function Writer:add_tracks(new_tracks)
+   assert(type(new_tracks) == 'table' and (new_tracks.type or new_tracks[1].type), "'new_tracks' must be a Track object or array of Track objects")
    if #new_tracks == 0 and new_tracks.type then
       if Util.is_track_header(new_tracks.type) then
          new_tracks = {new_tracks}
