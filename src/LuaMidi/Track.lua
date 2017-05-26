@@ -104,6 +104,7 @@ function Track:set_tempo(bpm)
    local tempo = Util.round(60000000/bpm)
    event.data = Util.table_concat(event.data, Util.number_to_bytes(tempo, 3))
    event.subtype = Constants.METADATA_TYPES[constant]
+   self.metadata.Tempo = bpm
    return self:add_events(event)
 end
 
@@ -131,6 +132,7 @@ function Track:set_time_signature(num, den, midi_clocks_tick, notes_midi_clock)
    event.data = Util.table_concat(event.data, Util.number_to_bytes(midi_clocks_tick, 1))
    event.data = Util.table_concat(event.data, Util.number_to_bytes(notes_midi_clock, 1))
    event.subtype = Constants.METADATA_TYPES[constant]
+   self.metadata['Time Signature'] = num..'/'..math.ceil(2^den)
    return self:add_events(event)
 end
 
@@ -182,6 +184,16 @@ function Track:set_key_signature(sf, mi)
    event.data = Util.table_concat(event.data, Util.number_to_bytes(sf,1))
    event.data = Util.table_concat(event.data, Util.number_to_bytes(mode,1))
    event.subtype = Constants.METADATA_TYPES[constant]
+   local key_sig
+   do
+      local majmin = {'major', 'minor'}
+      local keys = {{'C','A'},{'G','E'},{'D','B'},{'A','F#'},
+         {'E','C#'},{'B','G#'},{'F#','D#'},{'C#','A#'}}
+      local sharps_num = tostring(Util.number_from_bytes({sf}))
+      key_sig = sharps_num.."#"
+      key_sig = key_sig.." ("..keys[sharps_num+1][Util.number_from_bytes({mode})+1].." "..majmin[Util.number_from_bytes({mode})+1]..")"
+   end
+   self.metadata['Key Signature'] = key_sig
    return self:add_events(event)
 end
 
@@ -308,6 +320,39 @@ function Track:poly_mode_on()
    -- must test
    local event = NoteOnEvent.new({data = {0x00, 0xB0, 0x7E, 0x00}})
    return self:add_events(event)
+end
+
+-------------------------------------------------
+-- Gets tempo from Track
+--
+-- @see MetaEvent
+--
+-- @return 	Track's tempo
+-------------------------------------------------
+function Track:get_tempo()
+   return self.metadata.Tempo
+end
+
+-------------------------------------------------
+-- Gets time signature from Track
+--
+-- @see MetaEvent
+--
+-- @return 	Track's time signature
+-------------------------------------------------
+function Track:get_time_signature()
+   return self.metadata['Time Signature']
+end
+
+-------------------------------------------------
+-- Gets key signature from Track
+--
+-- @see MetaEvent
+--
+-- @return 	Track's key signature
+-------------------------------------------------
+function Track:get_key_signature()
+   return self.metadata['Key Signature']
 end
 
 -------------------------------------------------
