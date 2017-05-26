@@ -45,7 +45,7 @@ function MetaEvent:print()
       local data_bytes = {self.data[5], self.data[6], self.data[7]}
       local ms = Util.number_from_bytes(data_bytes)
       local bpm = Util.round(60000000/ms)
-      printable_data = tostring(ms).."ms ("..bpm.."bpm)"
+      printable_data = "\t"..bpm.." bpm"
    elseif self.subtype == "Time Signature" then
       printable_data = self.data[5]
       printable_data = printable_data.."/"..math.ceil(2^self.data[6])
