@@ -137,9 +137,10 @@ function LuaMidi.get_MIDI_tracks(path)
                local pitch = {}
                do
                   local j=3
+                  local kv_NOTES = LuaMidi.Util.table_invert(LuaMidi.Constants.NOTES)
                   while raw_note[j] and raw_note[j] < 0x81 do
                      if j%3 == 0 then
-                        pitch[#pitch+1] = "0x"..LuaMidi.Util.convert_base(raw_note[j],16)
+                        pitch[#pitch+1] = kv_NOTES[raw_note[j]]
                      end
                      j=j+1
                   end
