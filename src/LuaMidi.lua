@@ -120,7 +120,7 @@ function LuaMidi.get_MIDI_tracks(path)
                }
                event = setmetatable(event, { __index = LuaMidi.ProgramChangeEvent })
                track.events[#track.events+1] = event
-            elseif raw_track[i] == 0x00 and raw_track[i+1] == 0x90 then
+            elseif raw_track[i] and raw_track[i+1] == 0x90 then
                local raw_note = {}
                do
                   local j=i
