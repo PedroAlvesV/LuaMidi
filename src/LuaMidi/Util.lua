@@ -136,6 +136,17 @@ function Util.table_index_of(table, object)
    end
 end
 
+function Util.table_invert(table)
+   if type(table) == 'table' then
+      local new_table = {}
+      for key, value in pairs(table) do
+        new_table[value] = key
+      end
+      return new_table
+   end
+   return false
+end
+
 function Util.round(num)
    if num >= 0 then
       return math.floor(num+.5) 
