@@ -29,10 +29,8 @@ function Track.new(name)
       metadata = {},
    }
    local obj = setmetatable(self, { __index = Track })
-   if name ~= nil then
-      assert(type(name) == 'string', "'name' must be a string")
-      obj:set_name(name)
-   end   return obj
+   if name ~= nil then obj:set_name(name) end
+   return obj
 end
 
 -------------------------------------------------
@@ -89,6 +87,18 @@ function Track:get_events(filter)
    return self.events
 end
 
+local function avoid_duplicate(track, constant)
+   if track.metadata[Constants.METADATA_TYPES[constant]] then
+      for i, elem in ipairs(track.events) do
+         if elem.subtype == Constants.METADATA_TYPES[constant] then
+            track.events[i] = MetaEvent.new({data = {constant}})
+            return track.events[i]
+         end
+      end
+   end
+   return MetaEvent.new({data = {constant}})
+end
+
 -------------------------------------------------
 -- Sets Track's tempo
 --
@@ -99,11 +109,15 @@ end
 function Track:set_tempo(bpm)
    assert(bpm > 0, "Invalid 'bpm' value")
    local constant = Constants.META_TEMPO_ID
-   local event = MetaEvent.new({data = {constant}})
+   local event = avoid_duplicate(self, constant)
    event.data[#event.data+1] = 0x03
    local tempo = Util.round(60000000/bpm)
    event.data = Util.table_concat(event.data, Util.number_to_bytes(tempo, 3))
    event.subtype = Constants.METADATA_TYPES[constant]
+   if self.metadata.Tempo then
+      self.metadata.Tempo = bpm
+      return self
+   end
    self.metadata.Tempo = bpm
    return self:add_events(event)
 end
@@ -125,13 +139,17 @@ function Track:set_time_signature(num, den, midi_clocks_tick, notes_midi_clock)
    notes_midi_clock = notes_midi_clock or 8
    den = math.log(den, 2)
    local constant = Constants.META_TIME_SIGNATURE_ID
-   local event = MetaEvent.new({data = {constant}})
+   local event = avoid_duplicate(self, constant)
    event.data[#event.data+1] = 0x04
    event.data = Util.table_concat(event.data, Util.number_to_bytes(num, 1))
    event.data = Util.table_concat(event.data, Util.number_to_bytes(den, 1))
    event.data = Util.table_concat(event.data, Util.number_to_bytes(midi_clocks_tick, 1))
    event.data = Util.table_concat(event.data, Util.number_to_bytes(notes_midi_clock, 1))
    event.subtype = Constants.METADATA_TYPES[constant]
+   if self.metadata['Time Signature'] then
+      self.metadata['Time Signature'] = num..'/'..math.ceil(2^den)
+      return self
+   end
    self.metadata['Time Signature'] = num..'/'..math.ceil(2^den)
    return self:add_events(event)
 end
@@ -148,7 +166,7 @@ end
 -------------------------------------------------
 function Track:set_key_signature(sf, mi)
    local constant = Constants.META_KEY_SIGNATURE_ID
-   local event = MetaEvent.new({data = {constant}})
+   local event = avoid_duplicate(self, constant)
    event.data[#event.data+1] = 0x02
    sf = sf%8
    mi = mi%2
@@ -193,16 +211,24 @@ function Track:set_key_signature(sf, mi)
       key_sig = sharps_num.."#"
       key_sig = key_sig.." ("..keys[sharps_num+1][Util.number_from_bytes({mode})+1].." "..majmin[Util.number_from_bytes({mode})+1]..")"
    end
+   if self.metadata['Key Signature'] then
+      self.metadata['Key Signature'] = key_sig
+      return self
+   end
    self.metadata['Key Signature'] = key_sig
    return self:add_events(event)
 end
 
-local function default_set_text(self, text, constant)
-   local event = MetaEvent.new({data = {constant}})
-   local string_bytes = Util.string_to_bytes(text)
+local function default_set_text(self, content, constant)
+   local event = avoid_duplicate(self, constant)
+   local string_bytes = Util.string_to_bytes(content)
    event.data = Util.table_concat(event.data, Util.num_to_var_length(#string_bytes))
    event.data = Util.table_concat(event.data, string_bytes)
    event.subtype = Constants.METADATA_TYPES[constant]
+   if self.metadata[Constants.METADATA_TYPES[constant]] then
+      return self
+   end
+   self.metadata[Constants.METADATA_TYPES[constant]] = content
    return self:add_events(event)
 end
 
@@ -217,7 +243,6 @@ end
 -------------------------------------------------
 function Track:set_text(text)
    assert(type(text) == 'string', "'text' must be a string")
-   self.metadata.Text = text
    return default_set_text(self, text, Constants.META_TEXT_ID)
 end
 
@@ -232,7 +257,6 @@ end
 -------------------------------------------------
 function Track:set_copyright(copyright)
    assert(type(copyright) == 'string', "'copyright' must be a string")
-   self.metadata.Copyright = copyright
    return default_set_text(self, copyright, Constants.META_COPYRIGHT_ID)
 end
 
@@ -247,7 +271,6 @@ end
 -------------------------------------------------
 function Track:set_name(name)
    assert(type(name) == 'string', "'name' must be a string")
-   self.metadata.Name = name
    return default_set_text(self, name, Constants.META_TRACK_NAME_ID)
 end
 
@@ -262,7 +285,6 @@ end
 -------------------------------------------------
 function Track:set_instrument_name(instrument_name)
    assert(type(instrument_name) == 'string', "'instrument_name' must be a string")
-   self.metadata.Instrument = instrument_name
    return default_set_text(self, instrument_name, Constants.META_INSTRUMENT_NAME_ID)
 end
 
@@ -277,7 +299,6 @@ end
 -------------------------------------------------
 function Track:set_lyric(lyric)
    assert(type(lyric) == 'string', "'lyric' must be a string")
-   self.metadata.Lyric = lyric
    return default_set_text(self, lyric, Constants.META_LYRIC_ID)
 end
 
@@ -292,7 +313,6 @@ end
 -------------------------------------------------
 function Track:set_marker(marker)
    assert(type(marker) == 'string', "'marker' must be a string")
-   self.metadata.Marker = marker
    return default_set_text(self, marker, Constants.META_MARKER_ID)
 end
 
@@ -307,7 +327,6 @@ end
 -------------------------------------------------
 function Track:set_cue_point(cue_point)
    assert(type(cue_point) == 'string', "'cue_point' must be a string")
-   self.metadata["Cue Point"] = cue_point
    return default_set_text(self, cue_point, Constants.META_CUE_POINT)
 end
 
