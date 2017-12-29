@@ -223,7 +223,8 @@ function LuaMidi.add_tracks_to_MIDI(input, tracks, output)
          buffer = LuaMidi.Util.table_concat(buffer, track)
       end
       MIDI = io.open(output, 'wb')
-      buffer = string.char(table.unpack(buffer))
+      local unpack = unpack or table.unpack
+      buffer = string.char(unpack(buffer))
       MIDI:write(buffer)
       MIDI:close()
       return true

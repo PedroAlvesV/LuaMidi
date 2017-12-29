@@ -14,6 +14,8 @@ local Constants = require('LuaMidi.Constants')
 local Chunk = require('LuaMidi.Chunk')
 local MetaEvent = require('LuaMidi.MetaEvent')
 
+local unpack = unpack or table.unpack
+
 local Writer = {}
 
 -------------------------------------------------
@@ -148,7 +150,7 @@ function Writer:save_MIDI(title, directory)
       end
    end
    local file = io.open(title, 'wb')
-   local buffer = string.char(table.unpack(self:build_file()))
+   local buffer = string.char(unpack(self:build_file()))
    file:write(buffer)
    file:close()
 end

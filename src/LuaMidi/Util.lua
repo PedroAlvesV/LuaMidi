@@ -11,6 +11,23 @@
 
 local Constants = require('LuaMidi.Constants')
 
+local utf8 = utf8 or {}
+local bitwise = bit32 or nil
+
+if _VERSION <= "Lua 5.2" then
+   utf8.len = require('LuaMidi.utf8').len
+   if _VERSION == "Lua 5.1" then
+      bitwise = require('LuaMidi.bit.numberlua')
+   end
+else
+   bitwise = require('LuaMidi.bit.native_bitwise')
+end
+
+local band = bitwise.band
+local bor = bitwise.bor
+local lshift = bitwise.lshift
+local rshift = bitwise.rshift
+
 local Util = {}
 
 function Util.string_to_bytes(string)
@@ -37,26 +54,22 @@ function Util.get_pitch(pitch)
 end
 
 function Util.num_to_var_length(ticks)
-   local buffer = ticks & 0x7F
-   while (ticks >> 7) > 0 do
-      ticks = ticks >> 7
-      buffer = buffer << 8
-      buffer = buffer | ((ticks & 0x7F) | 0x80)
+   local buffer = band(ticks, 0x7F)
+   while rshift(ticks, 7) > 0 do
+      ticks = rshift(ticks, 7)
+      buffer = lshift(buffer, 8)
+      buffer = bor(buffer, bor(band(ticks, 0x7F), 0x80))
    end
    local buffer_list = {}
    while true do
-      buffer_list[#buffer_list+1] = buffer & 0xFF
-      if (buffer & 0x80) > 0 then
-         buffer = buffer >> 8
+      buffer_list[#buffer_list+1] = band(buffer, 0xFF)
+      if band(buffer, 0x80) > 0 then
+         buffer = rshift(buffer, 8)
       else
          break
       end
    end
    return buffer_list
-end
-
-function Util.string_byte_count(string)
-   -- TODO
 end
 
 function Util.convert_base(number, base)
@@ -97,7 +110,7 @@ end
 function Util.number_to_bytes(number, bytes_needed)
    bytes_needed = bytes_needed or 1
    local hex_string = tostring(Util.convert_base(number, 16))
-   if (#hex_string & 1) > 0 then
+   if band(#hex_string, 1) > 0 then
       hex_string = "0"..hex_string
    end
    local hex_array = {}
