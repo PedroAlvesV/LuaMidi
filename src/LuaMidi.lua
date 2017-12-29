@@ -41,10 +41,9 @@ function LuaMidi.get_MIDI_tracks(path)
    local MIDI = io.open(path, 'rb')
    if MIDI then
       local buffer = {}
-      for line in MIDI:lines() do
-         for i=1, #line do
-            buffer[#buffer+1] = string.byte(line:sub(i,i))
-         end
+      local bytes = MIDI:read("*a")
+      for i=1, #bytes do
+         buffer[#buffer+1] = string.byte(bytes:sub(i,i))
       end
       MIDI:close()
       local append = false
