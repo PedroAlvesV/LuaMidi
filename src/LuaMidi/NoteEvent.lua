@@ -180,7 +180,8 @@ function NoteEvent.new(fields)
       local note_on, note_off
       if not self.sequential then
          for j=1, self.repetition do
-            for i, p in ipairs(self.pitch) do
+            for i=1, #self.pitch do
+               local p = self.pitch[i]
                local fields = {}
                local data
                if i == 1 then
@@ -195,7 +196,8 @@ function NoteEvent.new(fields)
                note_on = NoteOnEvent.new(fields)
                self.data = Util.table_concat(self.data, note_on.data)
             end
-            for i, p in ipairs(self.pitch) do
+            for i=1, #self.pitch do
+               local p = self.pitch[i]
                local fields = {}
                local data
                if i == 1 then
@@ -213,7 +215,8 @@ function NoteEvent.new(fields)
          end
       else
          for j=1, self.repetition do
-            for i, p in ipairs(self.pitch) do
+            for i=1, #self.pitch do
+               local p = self.pitch[i]
                local fields = {}
                if i > 1 then
                   rest_duration = 0

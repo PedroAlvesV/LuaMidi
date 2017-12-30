@@ -14,8 +14,6 @@ local Constants = require('LuaMidi.Constants')
 local Chunk = require('LuaMidi.Chunk')
 local MetaEvent = require('LuaMidi.MetaEvent')
 
-local unpack = unpack or table.unpack
-
 local Writer = {}
 
 -------------------------------------------------
@@ -39,7 +37,8 @@ function Writer.new(tracks)
       tracks = tracks,
    }
    self.build_track = function(track)
-      for _, event in ipairs(track.events) do
+      for i=1, #track.events do
+         local event = track.events[i]
          if event.type == 'note' then
             event.build_data()
          end
@@ -59,7 +58,8 @@ function Writer.new(tracks)
          type = Constants.HEADER_CHUNK_TYPE,
          data = chunk_data,
       })
-      for _, track in ipairs(new_tracks) do
+      for i=1, #new_tracks do
+         local track = new_tracks[i]
          track:add_events(MetaEvent.new({data = Constants.META_END_OF_TRACK_ID}))
          track = self.build_track(track)
          self.data[#self.data+1] = track
@@ -101,7 +101,8 @@ end
 -------------------------------------------------
 function Writer:build_file()
    local build = {}
-   for _, elem in ipairs(self.data) do
+   for i=1, #self.data do
+      local elem = self.data[i]
       build = Util.table_concat(build, elem.type)
       build = Util.table_concat(build, elem.size)
       build = Util.table_concat(build, elem.data)
@@ -121,7 +122,8 @@ end
 function Writer:stdout(show_index)
    local buffer = self:build_file()
    print('{')
-   for i, byte in ipairs(buffer) do
+   for i=1, #buffer do
+      local byte = buffer[i]
       io.write('  ')
       if show_index then io.write(i..' - ') end
       io.write(byte)
@@ -150,7 +152,12 @@ function Writer:save_MIDI(title, directory)
       end
    end
    local file = io.open(title, 'wb')
-   local buffer = string.char(unpack(self:build_file()))
+   local bytes = self:build_file()
+   local buffer = ""
+   for i=1, #bytes do
+      local byte = bytes[i]
+      buffer = buffer..string.char(byte)
+   end
    file:write(buffer)
    file:close()
 end
