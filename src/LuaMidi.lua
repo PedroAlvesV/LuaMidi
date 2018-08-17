@@ -71,92 +71,205 @@ function LuaMidi.get_MIDI_tracks(path)
             events = {},
             metadata = {},
             size = {},
+            data = {},
          }
          for i=1, 8 do table.remove(raw_track,1) end
+         
          local metadata_types = LuaMidi.Constants.METADATA_TYPES
-         for i=1, #raw_track do
-            if raw_track[i] == 0x00 and raw_track[i+1] == 0xFF then
+         
+         local current_time_stamp = {}
+         local is_time_stamp = true
+         
+         local function next_time_stamp(i, bytes_to_skip)
+            current_time_stamp = {}
+            is_time_stamp = true
+--            print("skip "..bytes_to_skip)
+            return i + bytes_to_skip
+         end
+         
+         local function sum_time_stamp(time_stamp)
+            local total = 0
+            for i=1, #time_stamp do
+               total = total + time_stamp[i]
+            end
+            return total
+         end
+         
+         local notes_off = {}
+         
+         local i=1
+         while i <= #raw_track do
+         
+            while is_time_stamp do
+               current_time_stamp[#current_time_stamp+1] = raw_track[i]
+               if raw_track[i] < 0x80 then
+                  is_time_stamp = false
+               end
+               i = i + 1
+            end
+            
+            if raw_track[i] == 0xFF then -- METADATA
+            
                local raw_metadata = {}
-               local k = i+3
-               for j=i, k+raw_track[k] do
-                  raw_metadata[#raw_metadata+1] = raw_track[j]
+               local length_byte = i+2
+               local data_length = raw_track[length_byte] + 1
+               for j=i, length_byte + data_length do
+                  raw_metadata[#raw_metadata+1] = raw_track[j-1]
                end
                local converted_data
-               if raw_track[i+2] < 0x08 then
+               if raw_track[i+1] < 0x08 then
                   converted_data = ""
                   for j=5, #raw_metadata do
                      converted_data = converted_data..string.char(raw_metadata[j])
                   end
-               elseif raw_track[i+2] == LuaMidi.Constants.META_TEMPO_ID then
-                  local data_bytes = {raw_track[i+4], raw_track[i+5], raw_track[i+6]}
+               elseif raw_track[i+1] == LuaMidi.Constants.META_TEMPO_ID then
+                  local data_bytes = {raw_track[i+3], raw_track[i+4], raw_track[i+5]}
                   local ms = LuaMidi.Util.number_from_bytes(data_bytes)
                   local bpm = LuaMidi.Util.round(60000000/ms)
                   converted_data = tostring(ms).." ms ("..bpm.."bpm)"
-               elseif raw_track[i+2] == LuaMidi.Constants.META_TIME_SIGNATURE_ID then
-                  converted_data = raw_track[i+4]
-                  converted_data = converted_data.."/"..math.ceil(2^raw_track[i+5])
-               elseif raw_track[i+2] == LuaMidi.Constants.META_KEY_SIGNATURE_ID then
+               elseif raw_track[i+1] == LuaMidi.Constants.META_TIME_SIGNATURE_ID then
+                  converted_data = raw_track[i+3]
+                  converted_data = converted_data.."/"..math.ceil(2^raw_track[i+4])
+               elseif raw_track[i+1] == LuaMidi.Constants.META_KEY_SIGNATURE_ID then
                   local majmin = {'major', 'minor'}
                   local keys = {{'C','A'},{'G','E'},{'D','B'},{'A','F#'},
                      {'E','C#'},{'B','G#'},{'F#','D#'},{'C#','A#'}}
-                  local sharps_num = tostring(raw_track[i+4])
+                  local sharps_num = tostring(raw_track[i+3])
                   converted_data = sharps_num.."#"
-                  converted_data = converted_data.." ("..keys[sharps_num+1][raw_track[i+5]+1].." "..majmin[raw_track[i+5]+1]..")"
+                  converted_data = converted_data.." ("..keys[sharps_num+1][raw_track[i+4]+1].." "..majmin[raw_track[i+4]+1]..")"
                end
-               local subtype = metadata_types[raw_track[i+2]]
+               local subtype = metadata_types[raw_track[i+1]]
                track.metadata[subtype] = converted_data
                local event = {
                   type = 'meta',
                   subtype = subtype,
                   data = raw_metadata,
+                  time_stamp = sum_time_stamp(current_time_stamp),
                }
                event = setmetatable(event, { __index = LuaMidi.MetaEvent })
                track.events[#track.events+1] = event
-            elseif raw_track[i] == 0x00 and raw_track[i+1] == LuaMidi.Constants.PROGRAM_CHANGE_STATUS then
+               i = next_time_stamp(i, data_length+1)
+               
+            elseif raw_track[i] < 0x80 and raw_track[i+1] == LuaMidi.Constants.PROGRAM_CHANGE_STATUS then
+            
                local event = {
                   type = 'program-change',
-                  data = { raw_track[i], raw_track[i+1], raw_track[i+2] }
+                  data = { raw_track[i], raw_track[i+1], raw_track[i+2] },
+                  time_stamp = sum_time_stamp(current_time_stamp),
                }
                event = setmetatable(event, { __index = LuaMidi.ProgramChangeEvent })
                track.events[#track.events+1] = event
-            elseif raw_track[i] and raw_track[i+1] == 0x90 then
+               current_time_stamp = {}
+               is_time_stamp = true
+               
+            elseif raw_track[i] >= 0x90 and raw_track[i] <= 0x9F then -- NOTE ON
+            
+               local channel = raw_track[i]-0x8F
+               local pitch = { raw_track[i+1] }
+               local pitch_code = raw_track[i+1]
+               local velocity = raw_track[i+2]
+               
+               do
+                  local notes = LuaMidi.Util.table_invert(LuaMidi.Constants.NOTES)
+                  pitch[1] = notes[pitch_code]
+               end
+              
                local raw_note = {}
                do
-                  local j=i
-                  while raw_track[j] do
-                     raw_note[#raw_note+1] = raw_track[j]
-                     if raw_track[j+1] == 0x00 and raw_track[j+2] > 0x80 then
-                        break
-                     end
-                     j=j+1
+               
+                  for i=1, #current_time_stamp do
+                     raw_note[i] = current_time_stamp[i]
                   end
+                  
+                  raw_note[#raw_note+1] = channel+0x8F
+                  raw_note[#raw_note+1] = pitch_code
+                  raw_note[#raw_note+1] = velocity
+
                end
-               local channel = raw_note[2]-0x8F
-               local velocity = raw_note[4]
-               local pitch = {}
-               do
-                  local j=3
-                  local kv_NOTES = LuaMidi.Util.table_invert(LuaMidi.Constants.NOTES)
-                  while raw_note[j] and raw_note[j] < 0x81 do
-                     if j%3 == 0 then
-                        pitch[#pitch+1] = kv_NOTES[raw_note[j]]
-                     end
-                     j=j+1
-                  end
-               end
+               
                local event = {
-                  type = "note",
+                  type = 'note',
                   data = raw_note,
-                  pitch = pitch,
-                  velocity = velocity,
                   channel = channel,
+                  pitch = pitch,
+                  pitch_code = pitch_code,
+                  is_incomplete = true,
+                  rest = sum_time_stamp(current_time_stamp),
+                  velocity = LuaMidi.Util.round(velocity / 127 * 100),
                   sequential = false,
                   repetition = 1,
+                  time_stamp = sum_time_stamp(current_time_stamp),
                }
                event = setmetatable(event, { __index = LuaMidi.NoteEvent })
                track.events[#track.events+1] = event
+               i = next_time_stamp(i, 2)
+            
+            elseif raw_track[i] >= 0x80 and raw_track[i] <= 0x8F then -- NOTE OFF
+               
+               local event = {
+                  type = 'note_off',
+                  channel = raw_track[i]-0x7F,
+                  pitch_code = raw_track[i+1],
+                  velocity = raw_track[i+2],
+                  time_stamp = sum_time_stamp(current_time_stamp),
+               }
+               
+               track.events[#track.events+1] = event
+               i = next_time_stamp(i, 2)
+               
+            end
+            
+            i = i + 1
+         
+            do -- matches note signals (on with off)
+            
+               for i=1, #track.events do
+                  if track.events[i].type == 'note' then
+                     local note_on = track.events[i]
+                     local delta_time = 0
+                     for j=i, #track.events do
+                        delta_time = track.events[j].time_stamp
+                        if track.events[j].type == 'note_off' then
+                           local note_off = track.events[j]
+                           if note_off.channel == note_on.channel and
+                              note_off.pitch_code == note_on.pitch_code and
+                              note_on.is_incomplete then
+                              
+                              note_on.duration = 'T'..tostring(delta_time-1)
+                              note_on.is_incomplete = nil
+                              break
+                           end
+                        end
+                     end
+                  end
+               end
             end
          end
+         
+         do
+         
+            local events = {}
+            for i=1, #track.events do
+               events[i] = track.events[i]
+            end
+            track.events = {}
+            
+            for i=1, #events do
+               if events[i].type ~= 'note_off' then
+                  events[i].time_stamp = nil
+                  events[i].pitch_code = nil
+                  track.events[#track.events+1] = events[i]
+               end
+            end
+            
+            for i=1, #track.events do
+               if track.events[i].type == 'note' then
+                  track.events[i] = LuaMidi.NoteEvent.new(track.events[i])
+               end
+            end
+                     
+         end
+         
          track = setmetatable(track, { __index = LuaMidi.Track })
          track_list[track_number] = track
       end
