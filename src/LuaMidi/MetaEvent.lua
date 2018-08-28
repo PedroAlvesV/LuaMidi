@@ -40,7 +40,10 @@ function MetaEvent:print()
       for j=5, #self.data do
          printable_data = printable_data..string.char(self.data[j])
       end
-      printable_data = '\t"'..printable_data..'"'
+      printable_data = '"'..printable_data..'"'
+      if self.subtype ~= "Instrument" then
+         printable_data =  '\t'..printable_data
+      end
    elseif self.subtype == "Tempo" then
       local data_bytes = {self.data[5], self.data[6], self.data[7]}
       local ms = Util.number_from_bytes(data_bytes)
