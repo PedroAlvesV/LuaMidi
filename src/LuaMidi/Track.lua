@@ -9,7 +9,7 @@
 local Constants = require('LuaMidi.Constants')
 local Util = require('LuaMidi.Util')
 local MetaEvent = require('LuaMidi.MetaEvent')
-local NoteOnEvent = require('LuaMidi.NoteOnEvent')
+local ArbitraryEvent = require('LuaMidi.ArbitraryEvent')
 
 local Track = {}
 
@@ -337,7 +337,7 @@ end
 -------------------------------------------------
 function Track:poly_mode_on()
    -- must test
-   local event = NoteOnEvent.new({data = {0x00, 0xB0, 0x7E, 0x00}})
+   local event = ArbitraryEvent.new({data = {0x00, 0xB0, 0x7E, 0x00}})
    return self:add_events(event)
 end
 
