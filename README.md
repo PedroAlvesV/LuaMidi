@@ -50,7 +50,7 @@ local writer = Writer.new(track)
 writer:save_MIDI('C Major Scale')
 ```
 
-Even though the above example creates a working MIDI file, it's encouragable to add some metadata to MIDI files. A more complete version of this code can be found here: [src/c_major_scale.lua](https://github.com/PedroAlvesV/LuaMidi/tree/master/src/c_major_scale.lua)
+Even though the above example creates a working MIDI file, it's encouragable to add some metadata to MIDI files. A more complete version of this code can be found here: [examples/c_major_scale.lua](https://github.com/PedroAlvesV/LuaMidi/tree/master/examples/c_major_scale.lua)
 
 This short script works over the basics of LuaMidi. Initially, it creates a `Track` object. Then, it creates an array(`notes`) with the notes as strings. After that, it adds this array to a new `NoteEvent`, also passing `true` as `sequential` field to indicate the notes won't be played at the same time. Once the track is ready, it creates a `Writer` object passing the track as parameter. With all tracks' data, the `Writer` can produce a working MIDI file.
 
@@ -104,7 +104,7 @@ local writer = Writer.new(track)
 writer:save_MIDI('stairway_to_heaven', 'midi files')
 ```
 
-The produced MIDI file can be downloaded here: [stairway_to_heaven.mid](https://github.com/PedroAlvesV/LuaMidi/tree/master/src/midi%20files/stairway_to_heaven.mid)
+The produced MIDI file can be downloaded here: [stairway_to_heaven.mid](https://github.com/PedroAlvesV/LuaMidi/tree/master/examples/midi%20files/stairway_to_heaven.mid)
 
 ## Contributing
 
@@ -119,4 +119,4 @@ The produced MIDI file can be downloaded here: [stairway_to_heaven.mid](https://
 ## Credits
 
 * Lua library written by [Pedro Alves](https://github.com/PedroAlvesV)
-* Inspired by [♬ MidiWriterJS](https://github.com/grimmdude/MidiWriterJS), by [Garret Grimm](http://grimmdude.com)
+* Inspired by [♬ MidiWriterJS](https://github.com/grimmdude/MidiWriterJS), by [Garrett Grimm](http://grimmdude.com)
