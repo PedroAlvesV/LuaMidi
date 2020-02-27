@@ -8,8 +8,7 @@
 
 local Constants = require('LuaMidi.Constants')
 local Util = require('LuaMidi.Util')
-local NoteOnEvent = require('LuaMidi.NoteOnEvent')
-local NoteOffEvent = require('LuaMidi.NoteOffEvent')
+local ArbitraryEvent = require('LuaMidi.ArbitraryEvent')
 
 local NoteEvent = {}
 
@@ -193,7 +192,7 @@ function NoteEvent.new(fields)
                   data = {0, Util.get_pitch(p), self.velocity}
                end
                fields.data = data
-               note_on = NoteOnEvent.new(fields)
+               note_on = ArbitraryEvent.new(fields)
                self.data = Util.table_concat(self.data, note_on.data)
             end
             for i=1, #self.pitch do
@@ -209,7 +208,7 @@ function NoteEvent.new(fields)
                   data = {0, Util.get_pitch(p), self.velocity}
                end
                fields.data = data
-               note_off = NoteOffEvent.new(fields)
+               note_off = ArbitraryEvent.new(fields)
                self.data = Util.table_concat(self.data, note_off.data)
             end
          end
@@ -232,14 +231,14 @@ function NoteEvent.new(fields)
                dataOn[#dataOn+1] = Util.get_pitch(p)
                dataOn[#dataOn+1] = self.velocity
                fieldsOn.data = dataOn
-               note_on = NoteOnEvent.new(fieldsOn)
+               note_on = ArbitraryEvent.new(fieldsOn)
                
                local dataOff = Util.num_to_var_length(tick_duration)
                dataOff[#dataOff+1] = self.get_note_off_status()
                dataOff[#dataOff+1] = Util.get_pitch(p)
                dataOff[#dataOff+1] = self.velocity
                fieldsOff.data = dataOff
-               note_off = NoteOffEvent.new(fieldsOff)
+               note_off = ArbitraryEvent.new(fieldsOff)
                
                self.data = Util.table_concat(self.data, dataOn)
                self.data = Util.table_concat(self.data, dataOff)

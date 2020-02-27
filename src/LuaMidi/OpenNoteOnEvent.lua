@@ -1,6 +1,6 @@
 local Constants = require('LuaMidi.Constants')
 local Util = require('LuaMidi.Util')
-local NoteOnEvent = require('LuaMidi.NoteOnEvent')
+local ArbitraryEvent = require('LuaMidi.ArbitraryEvent')
 
 local OpenNoteOnEvent = {}
 
@@ -45,7 +45,7 @@ function OpenNoteOnEvent.new(fields)
       data[#data+1] = Util.get_pitch(self.pitch)
       data[#data+1] = self.velocity
       
-      local note_on = NoteOnEvent.new({data = data})
+      local note_on = ArbitraryEvent.new({data = data})
       self.data = Util.table_concat(self.data, note_on.data)
       
    end
