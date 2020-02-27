@@ -18,9 +18,9 @@ LuaMidi.Writer = require 'LuaMidi.Writer'
 LuaMidi.Constants = require 'LuaMidi.Constants'
 LuaMidi.MetaEvent = require 'LuaMidi.MetaEvent'
 LuaMidi.NoteEvent = require 'LuaMidi.NoteEvent'
+LuaMidi.NoteOnEvent = require 'LuaMidi.NoteOnEvent'
+LuaMidi.NoteOffEvent = require 'LuaMidi.NoteOffEvent'
 LuaMidi.ArbitraryEvent = require 'LuaMidi.ArbitraryEvent'
-LuaMidi.OpenNoteOnEvent = require 'LuaMidi.OpenNoteOnEvent'
-LuaMidi.OpenNoteOffEvent = require 'LuaMidi.OpenNoteOffEvent'
 LuaMidi.ProgramChangeEvent = require 'LuaMidi.ProgramChangeEvent'
 
 -------------------------------------------------
@@ -80,7 +80,7 @@ function LuaMidi.get_MIDI_tracks(path)
       
       local EVENTS = {}
       EVENTS[0x80] = function(bytes, current_timestamp)
-         local event = LuaMidi.OpenNoteOffEvent.new({
+         local event = LuaMidi.NoteOffEvent.new({
             channel = band(bytes[1], 0x0F) + 1,
             pitch = bytes[2],
             velocity = LuaMidi.Util.round(bytes[3] / 127 * 100),
@@ -89,7 +89,7 @@ function LuaMidi.get_MIDI_tracks(path)
          return event
       end
       EVENTS[0x90] = function(bytes, current_timestamp)
-         local event = LuaMidi.OpenNoteOnEvent.new({
+         local event = LuaMidi.NoteOnEvent.new({
             channel = band(bytes[1], 0x0F) + 1,
             pitch = bytes[2],
             velocity = LuaMidi.Util.round(bytes[3] / 127 * 100),
@@ -204,7 +204,7 @@ function LuaMidi.get_MIDI_tracks(path)
                local pitch_code = raw_track[i+1]
                local velocity = raw_track[i+2]
                
-               local event = LuaMidi.OpenNoteOnEvent.new({
+               local event = LuaMidi.NoteOnEvent.new({
                   channel = channel,
                   pitch = pitch_code,
                   velocity = LuaMidi.Util.round(velocity / 127 * 100),
@@ -218,7 +218,7 @@ function LuaMidi.get_MIDI_tracks(path)
                                              
                last_control_byte = 0x80
                                              
-               local event = LuaMidi.OpenNoteOffEvent.new({
+               local event = LuaMidi.NoteOffEvent.new({
                   channel = band(raw_track[i], 0x0F) + 1,
                   pitch = raw_track[i+1],
                   velocity = LuaMidi.Util.round(raw_track[i+2] / 127 * 100),
