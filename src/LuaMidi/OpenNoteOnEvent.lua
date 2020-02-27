@@ -10,13 +10,13 @@ function OpenNoteOnEvent.new(fields)
       type = 'open_note_on',
       pitch = fields.pitch,
       velocity = fields.velocity,
-      delta = fields.delta_time,
+      timestamp = fields.timestamp,
       channel = fields.channel,
    }
-   if self.delta ~= nil then
-      assert( (type(self.delta) == 'string' and self.delta:sub(1,1):lower() == "t") or type(self.delta) == 'number' and self.delta >= 0, "'delta_time' must be an positive integer or a string representing the explicit number of ticks")
+   if self.timestamp ~= nil then
+      assert(type(self.timestamp) == 'number' and self.timestamp >= 0, "'timestamp' must be an positive integer representing the explicit number of ticks")
    else
-      self.delta = 0
+      self.timestamp = 0
    end
    if self.velocity ~= nil then
       assert(type(self.velocity) == 'number' and self.velocity >= 1 and self.velocity <= 100, "'velocity' must be an integer from 1 to 100")
@@ -32,50 +32,15 @@ function OpenNoteOnEvent.new(fields)
       return Util.round(velocity / 100 * 127)
    end
    self.velocity = self.convert_velocity(self.velocity)
-   self.get_duration_multiplier = function(duration, type)
-	   duration = tostring(duration)
-		if duration == '0' then
-		   return 0
-		elseif duration == '1' then
-		   return 4
-		elseif duration == '2' then
-		   return 2
-		elseif duration == 'd2' then
-		   return 3
-		elseif duration == '4' then
-		   return 1
-		elseif duration == 'd4' then
-		   return 1.5
-		elseif duration == '8' then
-		   return 0.5
-		elseif duration == '8t' then
-		   return 0.33
-		elseif duration == 'd8' then
-		   return 0.75
-		elseif duration == '16' then
-		   return 0.25
-		else
-		   if type == 'note' then
-		      return 1
-		   end
-		   return 0
-		end
-	end
-	self.get_note_on_status = function()
-		return 144 + self.channel - 1
-	end
-	self.get_tick_duration = function(duration, type)
-      if tostring(duration):sub(1,1):lower() == 't' then
-         return string.match(tostring(duration),"%d+")
-      end
-      local quarter_ticks = Util.number_from_bytes(Constants.HEADER_CHUNK_DIVISION)
-      return Util.round(quarter_ticks * self.get_duration_multiplier(duration, type))
+   self.get_note_on_status = function()
+      return 144 + self.channel - 1
    end
+   
    self.build_data = function()
       
       self.data = {}
       
-      local data = Util.num_to_var_length(self.get_tick_duration(self.delta, 'rest'))
+      local data = Util.num_to_var_length(self.timestamp)
       data[#data+1] = self.get_note_on_status()
       data[#data+1] = Util.get_pitch(self.pitch)
       data[#data+1] = self.velocity
@@ -120,6 +85,13 @@ function OpenNoteOnEvent:set_channel(channel)
    return self
 end
 
+function OpenNoteOnEvent:set_timestamp(timestamp)
+   assert(type(self.timestamp) == 'number' and self.timestamp >= 0, "'timestamp' must be an positive integer representing the explicit number of ticks")
+   self.timestamp = timestamp
+   self.build_data()
+   return self
+end
+
 function OpenNoteOnEvent:get_pitch()
    return self.pitch
 end
@@ -130,6 +102,10 @@ end
 
 function OpenNoteOnEvent:get_channel()
    return self.channel
+end
+
+function OpenNoteOnEvent:get_timestamp()
+   return self.timestamp
 end
 
 return OpenNoteOnEvent

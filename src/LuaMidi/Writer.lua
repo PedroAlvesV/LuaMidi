@@ -126,7 +126,11 @@ function Writer:stdout(show_index)
       local byte = buffer[i]
       io.write('  ')
       if show_index then io.write(i..' - ') end
-      io.write(byte)
+      local byteStr = Util.convert_base(byte, 16)
+      if #byteStr < 2 then
+         byteStr = "0"..byteStr
+      end
+      io.write(byteStr)
       if i < #buffer then io.write(',') end
       io.write('\n')
    end
