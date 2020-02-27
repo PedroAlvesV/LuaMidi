@@ -29,6 +29,7 @@ local lshift = bitwise.lshift
 local rshift = bitwise.rshift
 
 local Util = {}
+Util.bitwise = bitwise
 
 function Util.string_to_bytes(string)
    local bytes = {}
