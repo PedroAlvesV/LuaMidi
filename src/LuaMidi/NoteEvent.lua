@@ -138,41 +138,41 @@ function NoteEvent.new(fields)
       local quarter_ticks = Util.number_from_bytes(Constants.HEADER_CHUNK_DIVISION)
       return Util.round(quarter_ticks * self.get_duration_multiplier(duration, type))
    end
-	self.get_duration_multiplier = function(duration, type)
-	   duration = tostring(duration)
-		if duration == '0' then
-		   return 0
-		elseif duration == '1' then
-		   return 4
-		elseif duration == '2' then
-		   return 2
-		elseif duration == 'd2' then
-		   return 3
-		elseif duration == '4' then
-		   return 1
-		elseif duration == 'd4' then
-		   return 1.5
-		elseif duration == '8' then
-		   return 0.5
-		elseif duration == '8t' then
-		   return 0.33
-		elseif duration == 'd8' then
-		   return 0.75
-		elseif duration == '16' then
-		   return 0.25
-		else
-		   if type == 'note' then
-		      return 1
-		   end
-		   return 0
-		end
-	end
-	self.get_note_on_status = function()
-		return 144 + self.channel - 1
-	end
-	self.get_note_off_status = function()
-		return 128 + self.channel - 1
-	end
+   self.get_duration_multiplier = function(duration, type)
+      duration = tostring(duration)
+      if duration == '0' then
+         return 0
+      elseif duration == '1' then
+         return 4
+      elseif duration == '2' then
+         return 2
+      elseif duration == 'd2' then
+         return 3
+      elseif duration == '4' then
+         return 1
+      elseif duration == 'd4' then
+         return 1.5
+      elseif duration == '8' then
+         return 0.5
+      elseif duration == '8t' then
+         return 0.33
+      elseif duration == 'd8' then
+         return 0.75
+      elseif duration == '16' then
+         return 0.25
+      else
+         if type == 'note' then
+            return 1
+         end
+         return 0
+      end
+   end
+   self.get_note_on_status = function()
+      return 144 + self.channel - 1
+   end
+   self.get_note_off_status = function()
+      return 128 + self.channel - 1
+   end
    self.build_data = function()
       self.data = {}
       local tick_duration = self.get_tick_duration(self.duration, 'note')
