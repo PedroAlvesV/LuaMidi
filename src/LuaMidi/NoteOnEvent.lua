@@ -1,9 +1,65 @@
+-------------------------------------------------
+-- Abstraction of MIDI Note On event.
+-- <p> Useful for arrangements `NoteEvent` can't
+-- be produce.
+--
+-- @classmod NoteOnEvent
+-- @author Pedro Alves Valentim
+-- @license MIT
+-- @see Limitations_of_NoteEvent.md
+-------------------------------------------------
+
 local Constants = require('LuaMidi.Constants')
 local Util = require('LuaMidi.Util')
 local ArbitraryEvent = require('LuaMidi.ArbitraryEvent')
 
 local NoteOnEvent = {}
 
+-------------------------------------------------
+-- Creates a new NoteOnEvent. Receives a `fields` table as
+-- parameter. This table is expected to have some (or
+-- all) of these fields:
+-- <p>
+--<table border="1">
+--	<thead>
+--		<tr align="center">
+--			<th>Name</th>
+--			<th>Type</th>
+--			<th>Description</th>
+--		</tr>
+--	</thead>
+--	<tbody>
+--		<tr>
+--			<td><b>pitch</b></td>
+--			<td>string or number</td>
+--			<td>Note to be set on. Can be a string or valid MIDI note code.  Format for string is <code>C#4</code>.</td>
+--		</tr>
+--		<tr bgcolor="#dddddd">
+--			<td><b>timestamp</b></td>
+--			<td>number</td>
+--			<td>
+--				Number of ticks between previous event and the execution of this event.  Default: <code>0</code>
+--			</td>
+--		</tr>
+--		<tr>
+--       <td><b>velocity</b></td>
+--			<td>number</td>
+--			<td>How loud the note should sound, values 1-100.  Default: <code>50</code></td>
+--		</tr>
+--		<tr bgcolor="#dddddd">
+--			<td><b>channel</b></td>
+--			<td>number</td>
+--			<td>MIDI channel to use.  Default: <code>1</code></td>
+--		</tr>
+--	</tbody>
+--</table>
+--
+-- **Note:** `pitch` is the only required field
+--
+-- @param fields a table containing NoteOnEvent's properties
+--
+-- @return 	new NoteOnEvent object
+-------------------------------------------------
 function NoteOnEvent.new(fields)
    assert(type(fields.pitch) == 'string' or type(fields.pitch) == 'number', "'pitch' must be a string or a number")
    local self = {
@@ -59,11 +115,20 @@ end
 function NoteOnEvent:print()
    local str = string.format("Pitch:\t\t%s\n", tostring(self.pitch))
    str = str..string.format("Velocity:\t%d\n", tostring(self.velocity))
-   str = str..string.format("Channel:\t%d", tostring(self.channel))
+   str = str..string.format("Channel:\t%d\n", tostring(self.channel))
+   str = str..string.format("Timestamp:\t%d", tostring(self.timestamp))
    print("\nClass / Type:\tNoteOnEvent / '"..self.type.."'")
    print(str)
 end
 
+-------------------------------------------------
+-- Sets NoteOnEvent's pitch
+--
+-- @param pitch takes the same values as the pitch
+-- field passed to the constructor.
+--
+-- @return 	NoteOnEvent with new pitch
+-------------------------------------------------
 function NoteOnEvent:set_pitch(pitch)
    assert(type(pitch) == 'string' or type(pitch) == 'number', "'pitch' must be a string or a number")
    self.pitch = pitch
@@ -71,6 +136,14 @@ function NoteOnEvent:set_pitch(pitch)
    return self
 end
 
+-------------------------------------------------
+-- Sets NoteOnEvent's velocity
+--
+-- @number velocity loudness of the note sound.
+-- Values from 1-100.
+--
+-- @return 	NoteOnEvent with new velocity
+-------------------------------------------------
 function NoteOnEvent:set_velocity(velocity)
    assert(type(velocity) == 'number' and velocity >= 1 and velocity <= 100, "'velocity' must be an integer from 1 to 100")
    self.velocity = self.convert_velocity(velocity)
@@ -78,6 +151,13 @@ function NoteOnEvent:set_velocity(velocity)
    return self
 end
 
+-------------------------------------------------
+-- Sets NoteOnEvent's channel
+--
+-- @number channel MIDI channel # (1-16).
+--
+-- @return 	NoteOnEvent with new channel
+-------------------------------------------------
 function NoteOnEvent:set_channel(channel)
    assert(type(channel) == 'number' and channel >= 1 and channel <= 16, "'channel' must be an integer from 1 to 16")
    self.channel = channel
@@ -85,6 +165,13 @@ function NoteOnEvent:set_channel(channel)
    return self
 end
 
+-------------------------------------------------
+-- Sets NoteOnEvent's timestamp
+--
+-- @number timestamp value.
+--
+-- @return 	NoteOnEvent with new timestamp
+-------------------------------------------------
 function NoteOnEvent:set_timestamp(timestamp)
    assert(type(self.timestamp) == 'number' and self.timestamp >= 0, "'timestamp' must be an positive integer representing the explicit number of ticks")
    self.timestamp = timestamp
@@ -92,18 +179,38 @@ function NoteOnEvent:set_timestamp(timestamp)
    return self
 end
 
+-------------------------------------------------
+-- Gets pitch of NoteOnEvent
+--
+-- @return 	NoteOnEvent's pitch value
+-------------------------------------------------
 function NoteOnEvent:get_pitch()
    return self.pitch
 end
 
+-------------------------------------------------
+-- Gets velocity of NoteOnEvent
+--
+-- @return 	NoteOnEvent's velocity value
+-------------------------------------------------
 function NoteOnEvent:get_velocity()
    return self.velocity
 end
 
+-------------------------------------------------
+-- Gets channel # of NoteOnEvent
+--
+-- @return 	NoteOnEvent's channel value
+-------------------------------------------------
 function NoteOnEvent:get_channel()
    return self.channel
 end
 
+-------------------------------------------------
+-- Gets timestamp of NoteOnEvent
+--
+-- @return  NoteOnEvent's timestamp value
+-------------------------------------------------
 function NoteOnEvent:get_timestamp()
    return self.timestamp
 end
