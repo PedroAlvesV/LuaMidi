@@ -172,12 +172,6 @@ function NoteEvent.new(fields)
          return 0
       end
    end
-   self.get_note_on_status = function()
-      return 144 + self.channel - 1
-   end
-   self.get_note_off_status = function()
-      return 128 + self.channel - 1
-   end
    self.build_data = function()
       self.data = {}
       local tick_duration = self.get_tick_duration(self.duration, 'note')
@@ -191,7 +185,7 @@ function NoteEvent.new(fields)
                local data
                if i == 1 then
                   data = Util.num_to_var_length(rest_duration)
-                  data[#data+1] = self.get_note_on_status()
+                  data[#data+1] = Util.get_note_on_status(self.channel)
                   data[#data+1] = Util.get_pitch(p)
                   data[#data+1] = self.velocity
                else
@@ -207,7 +201,7 @@ function NoteEvent.new(fields)
                local data
                if i == 1 then
                   data = Util.num_to_var_length(tick_duration)
-                  data[#data+1] = self.get_note_off_status()
+                  data[#data+1] = Util.get_note_off_status(self.channel)
                   data[#data+1] = Util.get_pitch(p)
                   data[#data+1] = self.velocity
                else
@@ -233,14 +227,14 @@ function NoteEvent.new(fields)
                local fieldsOn, fieldsOff = {}, {}
                
                local dataOn = Util.num_to_var_length(rest_duration)
-               dataOn[#dataOn+1] = self.get_note_on_status()
+               dataOn[#dataOn+1] = Util.get_note_on_status(self.channel)
                dataOn[#dataOn+1] = Util.get_pitch(p)
                dataOn[#dataOn+1] = self.velocity
                fieldsOn.data = dataOn
                note_on = ArbitraryEvent.new(fieldsOn)
                
                local dataOff = Util.num_to_var_length(tick_duration)
-               dataOff[#dataOff+1] = self.get_note_off_status()
+               dataOff[#dataOff+1] = Util.get_note_off_status(self.channel)
                dataOff[#dataOff+1] = Util.get_pitch(p)
                dataOff[#dataOff+1] = self.velocity
                fieldsOff.data = dataOff
@@ -318,7 +312,6 @@ end
 -------------------------------------------------
 function NoteEvent:set_duration(duration)
    assert(type(duration) == 'string' or type(duration) == 'number', "'duration' must be a string or a number")
-   if type(duration) == 'number' then duration = tostring(duration) end
    self.duration = duration
    self.build_data()
    return self
@@ -334,7 +327,6 @@ end
 -------------------------------------------------
 function NoteEvent:set_rest(rest)
    assert(type(rest) == 'string' or type(rest) == 'number', "'rest' must be a string or a number")
-   if type(rest) == 'number' then rest = tostring(rest) end
    self.rest = rest
    self.build_data()
    return self
@@ -350,7 +342,7 @@ end
 -------------------------------------------------
 function NoteEvent:set_velocity(velocity)
    assert(type(velocity) == 'number' and velocity >= 1 and velocity <= 100, "'velocity' must be an integer from 1 to 100")
-   self.velocity = self.convert_velocity(velocity)
+   self.velocity = Util.convert_velocity(velocity)
    self.build_data()
    return self
 end
@@ -432,7 +424,7 @@ end
 -- @return 	NoteEvent's velocity value
 -------------------------------------------------
 function NoteEvent:get_velocity()
-   return self.velocity
+   return Util.revert_velocity(self.velocity)
 end
 
 -------------------------------------------------

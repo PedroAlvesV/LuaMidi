@@ -174,6 +174,14 @@ function Util.revert_velocity(v)
    return round(v / 127 * 100)
 end
 
+function Util.get_note_off_status(ch)
+   return 0x80 + ch - 1
+end
+
+function Util.get_note_on_status(ch)
+   return 0x90 + ch - 1
+end
+
 function Util.is_track_header(bytes)
    return #bytes == 4 and bytes[1] == 0x4D and bytes[2] == 0x54 and bytes[3] == 0x72 and bytes[4] == 0x6B
 end

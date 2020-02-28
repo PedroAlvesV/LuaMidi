@@ -90,16 +90,13 @@ function NoteOnEvent.new(fields)
       self.channel = 1
    end
    self.velocity = Util.convert_velocity(self.velocity)
-   self.get_note_on_status = function()
-      return 144 + self.channel - 1
-   end
    
    self.build_data = function()
       
       self.data = {}
       
       local data = Util.num_to_var_length(self.timestamp)
-      data[#data+1] = self.get_note_on_status()
+      data[#data+1] = Util.get_note_on_status(self.channel)
       data[#data+1] = Util.get_pitch(self.pitch)
       data[#data+1] = self.velocity
       
@@ -107,6 +104,7 @@ function NoteOnEvent.new(fields)
       self.data = Util.table_concat(self.data, note_on.data)
       
    end
+   
    self.build_data()
    return setmetatable(self, { __index = NoteOnEvent })
 end
@@ -153,7 +151,7 @@ end
 -------------------------------------------------
 function NoteOnEvent:set_velocity(velocity)
    assert(type(velocity) == 'number' and velocity >= 1 and velocity <= 100, "'velocity' must be an integer from 1 to 100")
-   self.velocity = self.convert_velocity(velocity)
+   self.velocity = Util.convert_velocity(velocity)
    self.build_data()
    return self
 end
@@ -201,7 +199,7 @@ end
 -- @return 	NoteOnEvent's velocity value
 -------------------------------------------------
 function NoteOnEvent:get_velocity()
-   return self.velocity
+   return Util.revert_velocity(self.velocity)
 end
 
 -------------------------------------------------

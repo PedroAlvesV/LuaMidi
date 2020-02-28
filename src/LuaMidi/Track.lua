@@ -64,7 +64,7 @@ function Track:add_events(events, map_function)
          if type(properties) == 'table' then
             event.duration = properties.duration or event.duration
             event.sequential = properties.sequential or event.sequential
-            event.velocity = event.convert_velocity(properties.velocity or event.velocity)
+            event.velocity = Util.convert_velocity(properties.velocity or event.velocity)
          end
       end
       self.events[#self.events+1] = event
