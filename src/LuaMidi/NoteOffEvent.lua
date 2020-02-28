@@ -16,6 +16,11 @@ local ArbitraryEvent = require('LuaMidi.ArbitraryEvent')
 local NoteOffEvent = {}
 
 -------------------------------------------------
+--- Functions
+-- @section functions
+-------------------------------------------------
+
+-------------------------------------------------
 -- Creates a new NoteOffEvent. Receives a `fields` table as
 -- parameter. This table is expected to have some (or
 -- all) of these fields:
@@ -108,6 +113,11 @@ function NoteOffEvent.new(fields)
    self.build_data()
    return setmetatable(self, { __index = NoteOffEvent })
 end
+
+-------------------------------------------------
+--- Methods
+-- @section methods
+-------------------------------------------------
 
 -------------------------------------------------
 -- Prints event's data in a human-friendly style

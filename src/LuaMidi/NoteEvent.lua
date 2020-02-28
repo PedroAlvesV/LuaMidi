@@ -2,8 +2,9 @@
 -- Abstraction of MIDI Note On and Note Off events. Handles both.
 --
 -- @classmod NoteEvent
--- @author Pedro Alves
+-- @author Pedro Alves Valentim
 -- @license MIT
+-- @see Limitations_of_NoteEvent.md
 -------------------------------------------------
 
 local Constants = require('LuaMidi.Constants')
@@ -13,9 +14,14 @@ local ArbitraryEvent = require('LuaMidi.ArbitraryEvent')
 local NoteEvent = {}
 
 -------------------------------------------------
+--- Functions
+-- @section functions
+-------------------------------------------------
+
+-------------------------------------------------
 -- Creates a new NoteEvent. Receives a `fields` table as
--- parameter. This table is expected with some (or all)
--- of these fields:
+-- parameter. This table is expected to have some (or
+-- all) of these fields:
 -- <p>
 --<table border="1">
 --	<thead>
@@ -49,12 +55,13 @@ local NoteEvent = {}
 --					<li><code>Tn</code> : where n is an explicit number of ticks</li>
 --				</ul>
 --				If an array of durations is passed then the sum of the durations will be used.
+--          Default: <code>4</code>
 --			</td>
 --		</tr>
 --		<tr>
 --			<td><b>rest</b></td>
 --			<td>string</td>
---			<td>Rest before sounding note.  Takes same values as <b>duration</b>.</td>
+--			<td>Rest before sounding note.  Takes same values as <b>duration</b>. Default: <code>0</code></td>
 --		</tr>
 --		<tr bgcolor="#dddddd">
 --          <td><b>velocity</b></td>
@@ -79,9 +86,11 @@ local NoteEvent = {}
 --	</tbody>
 --</table>
 --
+-- **Note:** `pitch` is the only required field
+--
 -- @param fields a table containing NoteEvent's proprieties
 --
--- @return 	new NoteEvent object
+-- @return 	new NoteEvent object 
 -------------------------------------------------
 function NoteEvent.new(fields)
    assert(type(fields.pitch) == 'string' or type(fields.pitch) == 'number' or type(fields.pitch) == 'table', "'pitch' must be a string, a number or an array")
@@ -251,6 +260,11 @@ function NoteEvent.new(fields)
 end
 
 -------------------------------------------------
+--- Methods
+-- @section methods
+-------------------------------------------------
+
+-------------------------------------------------
 -- Prints event's data in a human-friendly style
 -------------------------------------------------
 function NoteEvent:print()
@@ -391,7 +405,7 @@ end
 -------------------------------------------------
 -- Gets pitch(es) of NoteEvent
 --
--- @return 	NoteEvent's pitch field
+-- @return 	NoteEvent's pitch value
 -------------------------------------------------
 function NoteEvent:get_pitch()
    return self.pitch
@@ -400,7 +414,7 @@ end
 -------------------------------------------------
 -- Gets duration of NoteEvent
 --
--- @return 	NoteEvent's duration field
+-- @return 	NoteEvent's duration value
 -------------------------------------------------
 function NoteEvent:get_duration()
    return self.duration
@@ -409,7 +423,7 @@ end
 -------------------------------------------------
 -- Gets rest duration of NoteEvent
 --
--- @return 	NoteEvent's rest field
+-- @return 	NoteEvent's rest value
 -------------------------------------------------
 function NoteEvent:get_rest()
    return self.rest
@@ -418,7 +432,7 @@ end
 -------------------------------------------------
 -- Gets velocity of NoteEvent
 --
--- @return 	NoteEvent's velocity field
+-- @return 	NoteEvent's velocity value
 -------------------------------------------------
 function NoteEvent:get_velocity()
    return self.velocity
@@ -427,7 +441,7 @@ end
 -------------------------------------------------
 -- Gets sequentiallity of NoteEvent
 --
--- @return 	NoteEvent's sequential field
+-- @return 	NoteEvent's sequential value
 -------------------------------------------------
 function NoteEvent:get_sequential()
    return self.sequential
@@ -436,7 +450,7 @@ end
 -------------------------------------------------
 -- Gets repetition value of NoteEvent
 --
--- @return 	NoteEvent's repetition field
+-- @return 	NoteEvent's repetition value
 -------------------------------------------------
 function NoteEvent:get_repetition()
    return self.repetition
@@ -445,7 +459,7 @@ end
 -------------------------------------------------
 -- Gets channel # of NoteEvent
 --
--- @return 	NoteEvent's channel field
+-- @return 	NoteEvent's channel value
 -------------------------------------------------
 function NoteEvent:get_channel()
    return self.channel

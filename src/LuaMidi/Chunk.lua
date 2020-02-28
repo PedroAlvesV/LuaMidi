@@ -4,10 +4,15 @@
 -- by the user.
 --
 -- @classmod Chunk
--- @author Pedro Alves
+-- @author Pedro Alves Valentim
 -- @license MIT
 -------------------------------------------------
 local Chunk = {}
+
+-------------------------------------------------
+--- Functions
+-- @section functions
+-------------------------------------------------
 
 -------------------------------------------------
 -- Creates a new Chunk

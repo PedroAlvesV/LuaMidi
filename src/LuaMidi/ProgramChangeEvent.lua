@@ -2,7 +2,7 @@
 -- Abstraction of MIDI Program Change Event
 --
 -- @classmod ProgramChangeEvent
--- @author Pedro Alves
+-- @author Pedro Alves Valentim
 -- @license MIT
 -------------------------------------------------
 
@@ -10,6 +10,11 @@ local Constants = require('LuaMidi.Constants')
 local Util = require('LuaMidi.Util')
 
 local ProgramChangeEvent = {}
+
+-------------------------------------------------
+--- Functions
+-- @section functions
+-------------------------------------------------
 
 -------------------------------------------------
 -- Creates a new ProgramChangeEvent to change the
@@ -26,6 +31,11 @@ function ProgramChangeEvent.new(pcnumber)
    }
    return setmetatable(self, { __index = ProgramChangeEvent })
 end
+
+-------------------------------------------------
+--- Methods
+-- @section methods
+-------------------------------------------------
 
 -------------------------------------------------
 -- Prints event's data in a human-friendly style

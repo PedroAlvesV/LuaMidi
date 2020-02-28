@@ -1,0 +1,3 @@
+# Limitations of NoteEvent
+
+TODO

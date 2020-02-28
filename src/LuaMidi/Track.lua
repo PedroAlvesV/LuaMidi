@@ -2,7 +2,7 @@
 -- Contains all Track's data
 --
 -- @classmod Track
--- @author Pedro Alves
+-- @author Pedro Alves Valentim
 -- @license MIT
 -------------------------------------------------
 
@@ -12,6 +12,11 @@ local MetaEvent = require('LuaMidi.MetaEvent')
 local ArbitraryEvent = require('LuaMidi.ArbitraryEvent')
 
 local Track = {}
+
+-------------------------------------------------
+--- Functions
+-- @section functions
+-------------------------------------------------
 
 -------------------------------------------------
 -- Creates a new Track
@@ -32,6 +37,11 @@ function Track.new(name)
    if name ~= nil then obj:set_name(name) end
    return obj
 end
+
+-------------------------------------------------
+--- Methods
+-- @section methods
+-------------------------------------------------
 
 -------------------------------------------------
 -- Adds an event-list (or single event) to the track. These events can be

@@ -1,8 +1,8 @@
 -------------------------------------------------
 -- LuaMidi Constants
 -- 
--- @classmod Constants
--- @author Pedro Alves
+-- @module Constants
+-- @author Pedro Alves Valentim
 -- @license MIT
 -- @see LuaMidi
 -------------------------------------------------

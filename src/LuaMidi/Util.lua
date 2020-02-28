@@ -1,10 +1,8 @@
 -------------------------------------------------
--- Util functions to LuaMidi classes
--- <p>**Note:** The user doesn't need to invoke
--- any of its functions.
+-- Util functions for LuaMidi classes
 -- 
--- @classmod Util
--- @author Pedro Alves
+-- @module Util
+-- @author Pedro Alves Valentim
 -- @license MIT
 -- @see LuaMidi
 -------------------------------------------------
@@ -40,7 +38,6 @@ function Util.string_to_bytes(string)
 end
 
 function Util.is_number(n)
-   -- return not not tonumber(n)
    return tonumber(n) ~= nil
 end
 

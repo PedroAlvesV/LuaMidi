@@ -33,15 +33,14 @@
 <h2>Contents</h2>
 <ul>
 <li><a href="#Functions">Functions </a></li>
-<li><a href="#Methods">Methods </a></li>
 </ul>
 
 
 <h2>Classes</h2>
 <ul class="nowrap">
-  <li><a href="../classes/ArbitraryEvent.html">ArbitraryEvent</a></li>
+  <li><strong>ArbitraryEvent</strong></li>
   <li><a href="../classes/Chunk.html">Chunk</a></li>
-  <li><strong>MetaEvent</strong></li>
+  <li><a href="../classes/MetaEvent.html">MetaEvent</a></li>
   <li><a href="../classes/NoteEvent.html">NoteEvent</a></li>
   <li><a href="../classes/NoteOffEvent.html">NoteOffEvent</a></li>
   <li><a href="../classes/NoteOnEvent.html">NoteOnEvent</a></li>
@@ -66,8 +65,8 @@
 
 <div id="content">
 
-<h1>Class <code>MetaEvent</code></h1>
-<p>Abstraction of MIDI Meta Event representation
+<h1>Class <code>ArbitraryEvent</code></h1>
+<p>Abstraction of an arbitrary MIDI event
  <p><strong>Note:</strong> This object should not be created
  by the user.</p>
 <p>
@@ -83,15 +82,8 @@
 <h2><a href="#Functions">Functions </a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#MetaEvent:new">MetaEvent:new (fields)</a></td>
-	<td class="summary">Creates a new MetaEvent</td>
-	</tr>
-</table>
-<h2><a href="#Methods">Methods </a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" nowrap><a href="#MetaEvent:print">MetaEvent:print ()</a></td>
-	<td class="summary">Prints event's data in a human-friendly style</td>
+	<td class="name" nowrap><a href="#ArbitraryEvent:new">ArbitraryEvent:new (fields)</a></td>
+	<td class="summary">Creates a new ArbitraryEvent</td>
 	</tr>
 </table>
 
@@ -103,43 +95,25 @@
 
     <dl class="function">
     <dt>
-    <a name = "MetaEvent:new"></a>
-    <strong>MetaEvent:new (fields)</strong>
+    <a name = "ArbitraryEvent:new"></a>
+    <strong>ArbitraryEvent:new (fields)</strong>
     </dt>
     <dd>
-    Creates a new MetaEvent
+    Creates a new ArbitraryEvent
 
 
     <h3>Parameters:</h3>
     <ul>
         <li><span class="parameter">fields</span>
-         a table containing the MetaEvent's data in a data field
+         a table containing the a data field
         </li>
     </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-        new MetaEvent object
+        new ArbitraryEvent object
     </ol>
-
-
-
-
-</dd>
-</dl>
-    <h2 class="section-header "><a name="Methods"></a>Methods </h2>
-
-    <dl class="function">
-    <dt>
-    <a name = "MetaEvent:print"></a>
-    <strong>MetaEvent:print ()</strong>
-    </dt>
-    <dd>
-    Prints event's data in a human-friendly style
-
-
-
 
 
 

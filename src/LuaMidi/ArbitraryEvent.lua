@@ -4,10 +4,15 @@
 -- by the user.
 --
 -- @classmod ArbitraryEvent
--- @author Pedro Alves
+-- @author Pedro Alves Valentim
 -- @license MIT
 -------------------------------------------------
 local ArbitraryEvent = {}
+
+-------------------------------------------------
+--- Functions
+-- @section functions
+-------------------------------------------------
 
 -------------------------------------------------
 -- Creates a new ArbitraryEvent

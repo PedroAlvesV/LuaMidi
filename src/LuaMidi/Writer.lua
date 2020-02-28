@@ -3,7 +3,7 @@
 -- methods.
 --
 -- @classmod Writer
--- @author Pedro Alves
+-- @author Pedro Alves Valentim
 -- @license MIT
 --
 -- @see Track
@@ -15,6 +15,11 @@ local Chunk = require('LuaMidi.Chunk')
 local MetaEvent = require('LuaMidi.MetaEvent')
 
 local Writer = {}
+
+-------------------------------------------------
+--- Functions
+-- @section functions
+-------------------------------------------------
 
 -------------------------------------------------
 -- Creates a new Writer
@@ -70,6 +75,11 @@ function Writer.new(tracks)
 end
 
 -------------------------------------------------
+--- Methods
+-- @section methods
+-------------------------------------------------
+
+-------------------------------------------------
 -- Adds one or more tracks to Writer
 --
 -- @param new_tracks a track object or a table of tracks
@@ -92,7 +102,7 @@ end
 -- Concatenates everything to an array.
 -- This array is must be unpacked and translated
 -- to binary to produce a MIDI file.
--- <p>**Note:** This function should not be invoked
+-- <p>**Note:** This method should not be called
 -- by the user. It's accessible for debugging purposes.
 --
 -- @return 	builded array
@@ -112,8 +122,8 @@ end
 
 -------------------------------------------------
 -- Prints the array produced by `Writer:build_file()`.
--- <p>**Note:** The user doesn't need to invoke
--- this function. It's purpose is debugging LuaMidi.
+-- <p>**Note:** The user doesn't need to call
+-- this method. It's purpose is debugging LuaMidi.
 --
 -- @bool show_index if `true`, shows elements index
 --

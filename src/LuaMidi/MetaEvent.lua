@@ -4,7 +4,7 @@
 -- by the user.
 --
 -- @classmod MetaEvent
--- @author Pedro Alves
+-- @author Pedro Alves Valentim
 -- @license MIT
 -------------------------------------------------
 
@@ -12,6 +12,11 @@ local Constants = require('LuaMidi.Constants')
 local Util = require('LuaMidi.Util')
 
 local MetaEvent = {}
+
+-------------------------------------------------
+--- Functions
+-- @section functions
+-------------------------------------------------
 
 -------------------------------------------------
 -- Creates a new MetaEvent
@@ -30,6 +35,11 @@ function MetaEvent.new(fields)
    }
    return setmetatable(self, { __index = MetaEvent })
 end
+
+-------------------------------------------------
+--- Methods
+-- @section methods
+-------------------------------------------------
 
 -------------------------------------------------
 -- Prints event's data in a human-friendly style

@@ -1,11 +1,11 @@
 -------------------------------------------------
--- LuaMidi Library Class
--- <p>All modules are available through it.
+-- LuaMidi library main module
+-- <p>All other modules are available through it.
 -- It also presents useful functions to handle
 -- MIDI files.
 -- 
--- @classmod LuaMidi
--- @author Pedro Alves
+-- @module LuaMidi
+-- @author Pedro Alves Valentim
 -- @license MIT
 -------------------------------------------------
 
@@ -24,8 +24,8 @@ LuaMidi.ArbitraryEvent = require 'LuaMidi.ArbitraryEvent'
 LuaMidi.ProgramChangeEvent = require 'LuaMidi.ProgramChangeEvent'
 
 -------------------------------------------------
--- Functions
--- @section Functions
+--- Functions
+-- @section functions
 -------------------------------------------------
 
 -------------------------------------------------
@@ -264,7 +264,7 @@ end
 -- @see Track
 -------------------------------------------------
 function LuaMidi.add_tracks_to_MIDI(input, tracks, output)
-   if not output then output = input end
+   output = output or input
    if input:sub(#input-3) ~= ".mid" and input:sub(#input-4) ~= ".midi" then
       return false
    end

@@ -32,27 +32,34 @@
 
 <h2>Contents</h2>
 <ul>
-<li><a href="#Methods">Methods</a></li>
+<li><a href="#Functions">Functions </a></li>
+<li><a href="#Methods">Methods </a></li>
 </ul>
 
 
 <h2>Classes</h2>
 <ul class="nowrap">
-  <li><a href="../classes/LuaMidi.html">LuaMidi</a></li>
+  <li><a href="../classes/ArbitraryEvent.html">ArbitraryEvent</a></li>
   <li><a href="../classes/Chunk.html">Chunk</a></li>
-  <li><a href="../classes/Constants.html">Constants</a></li>
   <li><a href="../classes/MetaEvent.html">MetaEvent</a></li>
   <li><strong>NoteEvent</strong></li>
   <li><a href="../classes/NoteOffEvent.html">NoteOffEvent</a></li>
   <li><a href="../classes/NoteOnEvent.html">NoteOnEvent</a></li>
   <li><a href="../classes/ProgramChangeEvent.html">ProgramChangeEvent</a></li>
   <li><a href="../classes/Track.html">Track</a></li>
-  <li><a href="../classes/Util.html">Util</a></li>
   <li><a href="../classes/Writer.html">Writer</a></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../modules/LuaMidi.html">LuaMidi</a></li>
+  <li><a href="../modules/Constants.html">Constants</a></li>
+  <li><a href="../modules/Util.html">Util</a></li>
 </ul>
 <h2>Topics</h2>
 <ul class="">
   <li><a href="../topics/README.md.html">README</a></li>
+  <li><a href="../topics/Limitations_of_NoteEvent.md.html">Limitations_of_NoteEvent</a></li>
+  <li><a href="../topics/Timestamp.md.html">Timestamp</a></li>
 </ul>
 
 </div>
@@ -62,19 +69,26 @@
 <h1>Class <code>NoteEvent</code></h1>
 <p>Abstraction of MIDI Note On and Note Off events.</p>
 <p> Handles both.</p>
+    <h3>See also:</h3>
+    <ul>
+         <a href="../topics/Limitations_of_NoteEvent.md.html#">Limitations_of_NoteEvent.md</a>
+    </ul>
     <h3>Info:</h3>
     <ul>
         <li><strong>License</strong>: MIT</li>
-        <li><strong>Author</strong>: Pedro Alves</li>
+        <li><strong>Author</strong>: Pedro Alves Valentim</li>
     </ul>
 
 
-<h2><a href="#Methods">Methods</a></h2>
+<h2><a href="#Functions">Functions </a></h2>
 <table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#NoteEvent:new">NoteEvent:new (fields)</a></td>
 	<td class="summary">Creates a new NoteEvent.</td>
 	</tr>
+</table>
+<h2><a href="#Methods">Methods </a></h2>
+<table class="function_list">
 	<tr>
 	<td class="name" nowrap><a href="#NoteEvent:print">NoteEvent:print ()</a></td>
 	<td class="summary">Prints event's data in a human-friendly style</td>
@@ -141,7 +155,7 @@
 <br/>
 
 
-    <h2 class="section-header "><a name="Methods"></a>Methods</h2>
+    <h2 class="section-header "><a name="Functions"></a>Functions </h2>
 
     <dl class="function">
     <dt>
@@ -149,10 +163,9 @@
     <strong>NoteEvent:new (fields)</strong>
     </dt>
     <dd>
-
-<p>Creates a new NoteEvent.  Receives a <code>fields</code> table as
- parameter. This table is expected with some (or all)
- of these fields:
+    Creates a new NoteEvent.  Receives a <code>fields</code> table as
+ parameter. This table is expected to have some (or
+ all) of these fields:
  <p></p>
 
 <table border="1">
@@ -187,12 +200,13 @@
                     <li><code>Tn</code> : where n is an explicit number of ticks</li>
                 </ul>
                 If an array of durations is passed then the sum of the durations will be used.
+          Default: <code>4</code>
             </td>
         </tr>
         <tr>
             <td><b>rest</b></td>
             <td>string</td>
-            <td>Rest before sounding note.  Takes same values as <b>duration</b>.</td>
+            <td>Rest before sounding note.  Takes same values as <b>duration</b>. Default: <code>0</code></td>
         </tr>
         <tr bgcolor="#dddddd">
           <td><b>velocity</b></td>
@@ -218,7 +232,7 @@
 </table>
 
 
-
+<p> <strong>Note:</strong> <code>pitch</code> is the only required field
 
 
     <h3>Parameters:</h3>
@@ -238,6 +252,10 @@
 
 
 </dd>
+</dl>
+    <h2 class="section-header "><a name="Methods"></a>Methods </h2>
+
+    <dl class="function">
     <dt>
     <a name = "NoteEvent:print"></a>
     <strong>NoteEvent:print ()</strong>
@@ -449,7 +467,7 @@
     <h3>Returns:</h3>
     <ol>
 
-        NoteEvent's pitch field
+        NoteEvent's pitch value
     </ol>
 
 
@@ -468,7 +486,7 @@
     <h3>Returns:</h3>
     <ol>
 
-        NoteEvent's duration field
+        NoteEvent's duration value
     </ol>
 
 
@@ -487,7 +505,7 @@
     <h3>Returns:</h3>
     <ol>
 
-        NoteEvent's rest field
+        NoteEvent's rest value
     </ol>
 
 
@@ -506,7 +524,7 @@
     <h3>Returns:</h3>
     <ol>
 
-        NoteEvent's velocity field
+        NoteEvent's velocity value
     </ol>
 
 
@@ -525,7 +543,7 @@
     <h3>Returns:</h3>
     <ol>
 
-        NoteEvent's sequential field
+        NoteEvent's sequential value
     </ol>
 
 
@@ -544,7 +562,7 @@
     <h3>Returns:</h3>
     <ol>
 
-        NoteEvent's repetition field
+        NoteEvent's repetition value
     </ol>
 
 
@@ -563,7 +581,7 @@
     <h3>Returns:</h3>
     <ol>
 
-        NoteEvent's channel field
+        NoteEvent's channel value
     </ol>
 
 
@@ -577,7 +595,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.6</a></i>
-<i style="float:right;">Last updated 2017-05-22 19:10:36 </i>
+<i style="float:right;">Last updated 2020-02-28 01:36:33 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
