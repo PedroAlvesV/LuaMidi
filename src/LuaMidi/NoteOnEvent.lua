@@ -89,10 +89,7 @@ function NoteOnEvent.new(fields)
    else
       self.channel = 1
    end
-   self.convert_velocity = function(velocity)
-      return Util.round(velocity / 100 * 127)
-   end
-   self.velocity = self.convert_velocity(self.velocity)
+   self.velocity = Util.convert_velocity(self.velocity)
    self.get_note_on_status = function()
       return 144 + self.channel - 1
    end

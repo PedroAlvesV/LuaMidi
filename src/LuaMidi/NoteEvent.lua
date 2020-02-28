@@ -135,10 +135,7 @@ function NoteEvent.new(fields)
    else
       self.channel = 1
    end
-   self.convert_velocity = function(velocity)
-      return Util.round(velocity / 100 * 127)
-   end
-   self.velocity = self.convert_velocity(self.velocity)
+   self.velocity = Util.convert_velocity(self.velocity)
    self.get_tick_duration = function(duration, type)
       if tostring(duration):lower():sub(1,1) == 't' then
          return string.match(tostring(duration),"%d+")

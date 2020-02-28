@@ -83,7 +83,7 @@ function LuaMidi.get_MIDI_tracks(path)
          local event = LuaMidi.NoteOffEvent.new({
             channel = band(bytes[1], 0x0F) + 1,
             pitch = bytes[2],
-            velocity = LuaMidi.Util.round(bytes[3] / 127 * 100),
+            velocity = LuaMidi.Util.revert_velocity(bytes[3]),
             timestamp = sum_timestamp(current_timestamp),
          })
          return event
@@ -92,7 +92,7 @@ function LuaMidi.get_MIDI_tracks(path)
          local event = LuaMidi.NoteOnEvent.new({
             channel = band(bytes[1], 0x0F) + 1,
             pitch = bytes[2],
-            velocity = LuaMidi.Util.round(bytes[3] / 127 * 100),
+            velocity = LuaMidi.Util.revert_velocity(bytes[3]),
             timestamp = sum_timestamp(current_timestamp),
          })
          return event

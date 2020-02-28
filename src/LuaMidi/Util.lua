@@ -158,12 +158,20 @@ function Util.table_invert(table)
    return false
 end
 
-function Util.round(num)
+local function round(num)
    if num >= 0 then
       return math.floor(num+.5) 
-   else
-      return math.ceil(num-.5)
    end
+   return math.ceil(num-.5)
+end
+Util.round = round
+
+function Util.convert_velocity(v)
+   return round(v / 100 * 127)
+end
+
+function Util.revert_velocity(v)
+   return round(v / 127 * 100)
 end
 
 function Util.is_track_header(bytes)
