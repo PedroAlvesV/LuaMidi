@@ -26,4 +26,18 @@ function ArbitraryEvent.new(fields)
    return setmetatable(self, { __index = ArbitraryEvent })
 end
 
+-------------------------------------------------
+--- Methods
+-- @section methods
+-------------------------------------------------
+
+-------------------------------------------------
+-- Gets data of ArbitraryEvent
+--
+-- @return 	ArbitraryEvent's data value
+-------------------------------------------------
+function ArbitraryEvent:get_data()
+   return self.data
+end
+
 return ArbitraryEvent
