@@ -49,7 +49,7 @@ local NoteOnEvent = {}
 --		<tr>
 --       <td><b>velocity</b></td>
 --			<td>number</td>
---			<td>How loud the note should sound, values 1-100.  Default: <code>50</code></td>
+--			<td>How loud the note should sound, values 0-100.  Default: <code>50</code></td>
 --		</tr>
 --		<tr bgcolor="#dddddd">
 --			<td><b>channel</b></td>
@@ -80,7 +80,7 @@ function NoteOnEvent.new(fields)
       self.timestamp = 0
    end
    if self.velocity ~= nil then
-      assert(type(self.velocity) == 'number' and self.velocity >= 1 and self.velocity <= 100, "'velocity' must be an integer from 1 to 100")
+      assert(type(self.velocity) == 'number' and self.velocity >= 0 and self.velocity <= 100, "'velocity' must be an integer from 0 to 100")
    else
       self.velocity = 50
    end
@@ -145,12 +145,12 @@ end
 -- Sets NoteOnEvent's velocity
 --
 -- @number velocity loudness of the note sound.
--- Values from 1-100.
+-- Values from 0-100.
 --
 -- @return 	NoteOnEvent with new velocity
 -------------------------------------------------
 function NoteOnEvent:set_velocity(velocity)
-   assert(type(velocity) == 'number' and velocity >= 1 and velocity <= 100, "'velocity' must be an integer from 1 to 100")
+   assert(type(velocity) == 'number' and velocity >= 0 and velocity <= 100, "'velocity' must be an integer from 0 to 100")
    self.velocity = Util.convert_velocity(velocity)
    self.build_data()
    return self

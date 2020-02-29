@@ -49,7 +49,7 @@ local NoteOffEvent = {}
 --		<tr>
 --       <td><b>velocity</b></td>
 --			<td>number</td>
---			<td>How quickly the note should stop, values 1-100.  Default: <code>50</code></td>
+--			<td>How quickly the note should stop, values 0-100.  Default: <code>50</code></td>
 --		</tr>
 --		<tr bgcolor="#dddddd">
 --			<td><b>channel</b></td>
@@ -80,7 +80,7 @@ function NoteOffEvent.new(fields)
       self.timestamp = 0
    end
    if self.velocity ~= nil then
-      assert(type(self.velocity) == 'number' and self.velocity >= 1 and self.velocity <= 100, "'velocity' must be an integer from 1 to 100")
+      assert(type(self.velocity) == 'number' and self.velocity >= 0 and self.velocity <= 100, "'velocity' must be an integer from 0 to 100")
    else
       self.velocity = 50
    end
@@ -145,12 +145,12 @@ end
 -- Sets NoteOffEvent's velocity
 --
 -- @number velocity how quickly the note should stop.
--- Values from 1-100.
+-- Values from 0-100.
 --
 -- @return 	NoteOffEvent with new velocity
 -------------------------------------------------
 function NoteOffEvent:set_velocity(velocity)
-   assert(type(velocity) == 'number' and velocity >= 1 and velocity <= 100, "'velocity' must be an integer from 1 to 100")
+   assert(type(velocity) == 'number' and velocity >= 0 and velocity <= 100, "'velocity' must be an integer from 0 to 100")
    self.velocity = Util.convert_velocity(velocity)
    self.build_data()
    return self
