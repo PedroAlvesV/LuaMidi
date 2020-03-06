@@ -106,7 +106,7 @@ function NoteEvent.new(fields)
       repetition = fields.repetition,
    }
    if self.duration ~= nil then
-      assert(type(self.duration) == 'string' or type(self.duration) == 'number', "'duration' must be a string or a number")
+      assert(type(self.duration) == 'string' or (type(self.duration) == 'number' and self.duration >= 0), "'duration' must be a string or a number")
    else
       self.duration = '4'
    end

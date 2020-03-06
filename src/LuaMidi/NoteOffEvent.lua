@@ -178,7 +178,7 @@ end
 -- @return 	NoteOffEvent with new timestamp
 -------------------------------------------------
 function NoteOffEvent:set_timestamp(timestamp)
-   assert(type(self.timestamp) == 'number' and self.timestamp >= 0, "'timestamp' must be an positive integer representing the explicit number of ticks")
+   assert(type(timestamp) == 'number' and timestamp >= 0, "'timestamp' must be an positive integer representing the explicit number of ticks")
    self.timestamp = timestamp
    self.build_data()
    return self
