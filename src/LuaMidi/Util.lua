@@ -46,6 +46,7 @@ function Util.get_pitch(pitch)
       if pitch >= 0 and pitch <= 127 then
          return pitch
       end
+      return false
    end
    pitch = string.upper(pitch:sub(1,1))..pitch:sub(2)
    return Constants.NOTES[pitch]

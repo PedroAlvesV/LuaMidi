@@ -39,7 +39,7 @@ local NoteEvent = {}
 --		</tr>
 --		<tr bgcolor="#dddddd">
 --			<td><b>duration</b></td>
---			<td>string or array</td>
+--			<td>string or number</td>
 --			<td>
 --				How long the note should sound.
 --				<ul>
@@ -60,8 +60,8 @@ local NoteEvent = {}
 --		</tr>
 --		<tr>
 --			<td><b>rest</b></td>
---			<td>string</td>
---			<td>Rest before sounding note.  Takes same values as <b>duration</b>. Default: <code>0</code></td>
+--			<td>string or number</td>
+--			<td>Rest before starting the note.  Takes same values as <b>duration</b>. Default: <code>0</code></td>
 --		</tr>
 --		<tr bgcolor="#dddddd">
 --          <td><b>velocity</b></td>
@@ -71,12 +71,12 @@ local NoteEvent = {}
 --		<tr>
 --			<td><b>sequential</b></td>
 --			<td>boolean</td>
---			<td>If true then array of pitches will be played sequentially as opposed to simulatanously.  Default: <code>false</code></td>
+--			<td>If <code>true</code> then array of pitches will be played sequentially as opposed to simulatanously.  Default: <code>false</code></td>
 --		</tr>
 --		<tr bgcolor="#dddddd">
 --			<td><b>repetition</b></td>
 --			<td>number</td>
---			<td>How many times this event should be repeated. Default: <code>1</code></td>
+--			<td>How many times this event should play. Default: <code>1</code></td>
 --		</tr>
 --		<tr>
 --			<td><b>channel</b></td>
@@ -94,7 +94,12 @@ local NoteEvent = {}
 -------------------------------------------------
 function NoteEvent.new(fields)
    assert(type(fields.pitch) == 'string' or type(fields.pitch) == 'number' or type(fields.pitch) == 'table', "'pitch' must be a string, a number or an array")
-   if type(fields.pitch) == 'string' or type(fields.pitch) == 'number' then fields.pitch = {fields.pitch} end
+   if type(fields.pitch) == 'string' or type(fields.pitch) == 'number' then
+      assert(Util.get_pitch(fields.pitch), "Invalid 'pitch' value: "..fields.pitch)
+      fields.pitch = {fields.pitch}
+   elseif #fields.pitch == 1 then
+      assert(Util.get_pitch(fields.pitch[1]), "Invalid 'pitch' value: "..fields.pitch[1])
+   end
    local self = {
       type = 'note',
       pitch = fields.pitch,
@@ -296,7 +301,12 @@ end
 -------------------------------------------------
 function NoteEvent:set_pitch(pitch)
    assert(type(pitch) == 'string' or type(pitch) == 'number' or type(pitch) == 'table', "'pitch' must be a string, a number or an array")
-   if type(pitch) == 'string' or type(pitch) == 'number' then pitch = {pitch} end
+   if type(pitch) == 'string' or type(pitch) == 'number' then
+      assert(Util.get_pitch(pitch), "Invalid 'pitch' value: "..pitch)
+      pitch = {pitch}
+   elseif #pitch == 1 then
+      assert(Util.get_pitch(pitch[1]), "Invalid 'pitch' value: "..pitch[1])
+   end
    self.pitch = pitch
    self.build_data()
    return self

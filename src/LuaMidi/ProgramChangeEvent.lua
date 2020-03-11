@@ -25,6 +25,7 @@ local ProgramChangeEvent = {}
 -- @return 	new ProgramChangeEvent object
 -------------------------------------------------
 function ProgramChangeEvent.new(pcnumber)
+   assert(type(pcnumber) == 'number' and pcnumber >= 0x00 and pcnumber <= 0x7F, "'pcnumber' must be an integer from 0 to 127")
    local self = {
       type = 'program-change',
       data = { 0x00, Constants.PROGRAM_CHANGE_STATUS, pcnumber },
@@ -53,7 +54,7 @@ end
 -- @return 	event with new value
 -------------------------------------------------
 function ProgramChangeEvent:set_value(value)
-   if type(value) ~= 'number' then return false end
+   assert(type(value) == 'number' and value >= 0x00 and value <= 0x7F, "'value' must be an integer from 0 to 127")
    self.data[3] = value
    return self
 end
