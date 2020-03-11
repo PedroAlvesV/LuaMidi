@@ -67,6 +67,7 @@ local NoteOffEvent = {}
 -------------------------------------------------
 function NoteOffEvent.new(fields)
    assert(type(fields.pitch) == 'string' or type(fields.pitch) == 'number', "'pitch' must be a string or a number")
+   assert(Util.get_pitch(fields.pitch), "Invalid 'pitch' value: "..fields.pitch)
    local self = {
       type = 'note_off',
       pitch = fields.pitch,
@@ -75,7 +76,7 @@ function NoteOffEvent.new(fields)
       channel = fields.channel,
    }
    if self.timestamp ~= nil then
-      assert(type(self.timestamp) == 'number' and self.timestamp >= 0, "'timestamp' must be an positive integer representing the explicit number of ticks")
+      assert(type(self.timestamp) == 'number' and self.timestamp >= 0, "'timestamp' must be a positive integer representing the explicit number of ticks")
    else
       self.timestamp = 0
    end
@@ -136,6 +137,7 @@ end
 -------------------------------------------------
 function NoteOffEvent:set_pitch(pitch)
    assert(type(pitch) == 'string' or type(pitch) == 'number', "'pitch' must be a string or a number")
+   assert(Util.get_pitch(pitch), "Invalid 'pitch' value: "..pitch)
    self.pitch = pitch
    self.build_data()
    return self
@@ -178,7 +180,7 @@ end
 -- @return 	NoteOffEvent with new timestamp
 -------------------------------------------------
 function NoteOffEvent:set_timestamp(timestamp)
-   assert(type(timestamp) == 'number' and timestamp >= 0, "'timestamp' must be an positive integer representing the explicit number of ticks")
+   assert(type(timestamp) == 'number' and timestamp >= 0, "'timestamp' must be a positive integer representing the explicit number of ticks")
    self.timestamp = timestamp
    self.build_data()
    return self

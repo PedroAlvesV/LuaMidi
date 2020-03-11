@@ -23,8 +23,10 @@ local ArbitraryEvent = {}
 -------------------------------------------------
 function ArbitraryEvent.new(fields)
    assert(fields.data and type(fields.data) == 'table', "'data' field must be an array")
+   assert(#fields.data >= 1, "'data' field can't be empty")
    for _, value in ipairs(fields.data) do
-      assert(tonumber(value) == value and value>=0x00 and value<=0xFF, string.format("Invalid byte: %d", value))
+      assert(type(value) == 'number', "'data' must be an array of bytes")
+      assert(value>=0x00 and value<=0xFF, "Invalid byte: "..value)
    end
    local self = { data = fields.data }
    return setmetatable(self, { __index = ArbitraryEvent })
